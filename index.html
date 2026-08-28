@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PROXY M1NX — SOCIOS</title>
+    <!-- ✅ CDNs estables y seguros -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        /* ✅ VARIABLES CLARAS Y SIN CONFLICTOS */
         :root {
             --bg: #05050a;
             --card: #0d0d15;
@@ -20,20 +22,22 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
             background-color: var(--bg);
             color: var(--text);
             background-image: 
                 radial-gradient(circle at 0% 0%, rgba(139,92,246,0.06) 0%, transparent 40%),
                 radial-gradient(circle at 100% 0%, rgba(6,182,212,0.04) 0%, transparent 40%);
             min-height: 100vh;
+            line-height: 1.5;
         }
+        /* LOGIN */
         #login-screen {
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            padding: 2rem;
+            padding: 2rem 1rem;
         }
         .login-container { max-width: 450px; width: 100%; }
         .login-header { text-align: center; margin-bottom: 2.5rem; }
@@ -45,75 +49,82 @@
         }
         .login-box {
             background: var(--card); border: 1px solid var(--border); border-radius: 16px;
-            padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: 2rem; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
         .btn-google {
             width: 100%; background: transparent; border: 1px solid var(--border); color: var(--text);
             padding: .85rem 1rem; border-radius: 8px; font-size: .95rem; font-weight: 500;
             display: flex; align-items: center; justify-content: center; gap: .75rem;
-            margin-bottom: 2rem; cursor: pointer; transition: .2s;
+            margin-bottom: 2rem; cursor: pointer; transition: border-color 0.2s;
         }
-        .btn-google:hover { border-color: var(--accent); background: rgba(139,92,246,.05); }
+        .btn-google:hover { border-color: var(--accent); }
         .divider { position: relative; text-align: center; margin-bottom: 2rem; }
         .divider::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: var(--border); }
-        .divider span { background: var(--card); padding: 0 1rem; color: var(--muted); }
+        .divider span { background: var(--card); padding: 0 1rem; color: var(--muted); position: relative; }
         .form-group { margin-bottom: 1.5rem; }
         .form-group label { display: block; margin-bottom: .6rem; color: var(--muted); font-size: .9rem; }
         .form-group input {
             width: 100%; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px;
-            padding: .9rem 1rem; color: var(--text); font-size: 1rem;
+            padding: .9rem 1rem; color: var(--text); font-size: 1rem; font-family: inherit;
         }
         .form-group input:focus { outline: none; border-color: var(--accent); }
         .btn-primary {
             width: 100%; background: var(--accent); color: white; border: none;
             padding: .95rem; border-radius: 8px; font-size: 1rem; font-weight: 600;
-            cursor: pointer; transition: .2s;
+            cursor: pointer; transition: background-color 0.2s;
         }
         .btn-primary:hover { background: #7c3aed; }
         .alert { padding: 1rem; border-radius: 8px; margin: 1rem 0; display: none; }
         .alert.danger { background: rgba(239, 68, 68, .1); border: 1px solid var(--danger); color: var(--danger); }
         .admin-inputs { margin-bottom: 1.5rem; display: none; }
         .admin-inputs.active { display: block; }
+        /* PANEL PRINCIPAL */
         #main-panel { display: none; }
         .top-bar {
             background: rgba(13,13,21,.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
-            padding: 0 2rem; height: 70px; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 1.5rem; height: 70px; display: flex; align-items: center; justify-content: space-between;
             position: sticky; top: 0; z-index: 100;
         }
         .brand { 
             font-weight: 800; font-size: 1.3rem; 
             background: linear-gradient(90deg, var(--accent), var(--accent-alt)); 
-            -webkit-background-clip: text; color: transparent; 
+            -webkit-background-clip: text; background-clip: text; color: transparent; 
         }
         .admin-toggle-btn { 
             background: none; border: none; color: var(--text); 
-            font-size: 1.1rem; font-weight: 600; cursor: pointer; 
+            font-size: 1rem; font-weight: 600; cursor: pointer; 
             display: none; padding: 0.5rem;
         }
         .admin-toggle-btn.active { color: var(--accent); }
-        .user-tag { color: var(--muted); font-weight: 500; }
-        .btn-logout { background: var(--danger); color: white; border: none; padding: .5rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: 500; }
-        .content { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+        .user-tag { color: var(--muted); font-weight: 500; margin-left: 1rem; }
+        .btn-logout { background: var(--danger); color: white; border: none; padding: .5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 500; }
+        .content { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 5rem; }
         .page-section { display: none; }
         .page-section.active { display: block; }
-        h1 { font-size: 2rem; margin-bottom: 2rem; text-align: center; }
-        .info-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; color: var(--muted); }
-        .grid-products { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1.5rem; }
-        .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; }
-        .card-title { font-size: 1.25rem; margin-bottom: .5rem; font-weight: 700; }
-        .card-desc { color: var(--muted); margin-bottom: 1rem; }
-        .btn-action { width: 100%; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: .75rem; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        h1 { font-size: 1.8rem; margin-bottom: 2rem; text-align: center; }
+        .info-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; color: var(--muted); }
+        .grid-products, .grid-admin { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 1.5rem; }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; transition: transform 0.2s; }
+        .card:hover { transform: translateY(-4px); border-color: var(--accent); }
+        .card-title { font-size: 1.2rem; margin-bottom: .5rem; font-weight: 700; }
+        .card-desc { color: var(--muted); margin-bottom: 1rem; font-size: .95rem; }
+        .btn-action { width: 100%; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: .7rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         .btn-action:hover { background: var(--accent); color: white; }
+        .btn-sm { width: auto; padding: .4rem .8rem; font-size: .9rem; }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; background: var(--card); border-radius: 12px; overflow: hidden; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: rgba(139,92,246,.1); }
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(13,13,21,.95); backdrop-filter: blur(12px);
-            border-top: 1px solid var(--border); display: flex; justify-content: center; gap: 2rem; padding: 1.2rem 0;
+            border-top: 1px solid var(--border); display: flex; justify-content: center; gap: 2rem; padding: 1rem 0;
         }
-        .bottom-nav a { color: var(--muted); text-decoration: none; font-weight: 600; }
+        .bottom-nav a { color: var(--muted); text-decoration: none; font-weight: 600; transition: color 0.2s; }
         .bottom-nav a.active { color: var(--accent); }
     </style>
 </head>
 <body>
 
+<!-- PANTALLA DE INICIO -->
 <div id="login-screen">
     <div class="login-container">
         <div class="login-header">
@@ -135,248 +146,261 @@
                     <label>Correo Autorizado</label>
                     <input type="email" id="admin-email" placeholder="jesusgutierrezmontanez05@gmail.com">
                 </div>
-                <button class="btn-primary" id="admin-enter">Ingresar</button>
+                <button class="btn-primary" id="admin-enter">Ingresar al Control Total</button>
             </div>
 
             <div class="divider"><span>ACCESO SOCIOS</span></div>
 
-            <form id="form-socio">
+            <form id="form-login">
                 <div class="form-group">
                     <label>Nombre de Usuario</label>
-                    <input type="text" id="user-in" autocomplete="username" required>
+                    <input type="text" id="usuario-input" autocomplete="username" required>
                 </div>
                 <div class="form-group">
                     <label>PIN de Acceso</label>
-                    <input type="password" id="pin-in" autocomplete="current-password" required>
+                    <input type="password" id="pin-input" autocomplete="current-password" required>
                 </div>
-                <div class="alert danger" id="alerta-acceso">❌ ACCESO DENEGADO</div>
+                <div class="alert danger" id="mensaje-error">❌ ACCESO DENEGADO</div>
                 <button type="submit" class="btn-primary">Entrar</button>
             </form>
         </div>
     </div>
 </div>
 
+<!-- PANEL PRINCIPAL -->
 <div id="main-panel">
     <nav class="top-bar">
         <div class="top-left">
             <span class="brand">PROXY M1NX</span>
-            <button class="admin-toggle-btn" id="btn-admin-top">ADMIN PANEL</button>
+            <button class="admin-toggle-btn" id="btn-admin">ADMIN PANEL</button>
             <span class="user-tag" id="etiqueta-usuario"></span>
         </div>
-        <button class="btn-logout" id="salir-btn"><i class="fas fa-sign-out-alt"></i> Salir</button>
+        <button class="btn-logout" id="btn-salir"><i class="fas fa-sign-out-alt"></i> Salir</button>
     </nav>
 
     <main class="content">
-        <section id="admin-section" class="page-section">
-            <h1>⚙️ PANEL DE ADMINISTRACIÓN — ANÓNIMO MX</h1>
+        <!-- SECCIONES -->
+        <section id="seccion-cuenta" class="page-section active">
+            <h1>👤 TU CUENTA</h1>
             <div class="info-box">
-                Gestión completa: Usuarios, Productos y Configuración. Datos guardados automáticamente.
+                <p><strong>Usuario:</strong> <span id="nombre-usuario">—</span></p>
+                <p><strong>Estado:</strong> <span style="color: var(--success);">✅ ACTIVO</span></p>
+                <p style="margin-top:1rem;">Bienvenido a la infraestructura PROXY M1NX — Estabilidad y seguridad garantizadas.</p>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;">
+        </section>
+
+        <section id="seccion-productos" class="page-section">
+            <h1>📦 PLANES DISPONIBLES</h1>
+            <div class="grid-products" id="lista-productos"></div>
+        </section>
+
+        <section id="seccion-admin" class="page-section">
+            <h1>⚙️ PANEL ADMINISTRADOR — ANÓNIMO MX</h1>
+            <div class="info-box">
+                Gestión completa: Usuarios, Productos y Configuración. Datos guardados automáticamente en tu navegador.
+            </div>
+            <div class="grid-admin">
                 <div class="card">
                     <h3 class="card-title">👥 Usuarios</h3>
-                    <p class="card-desc">Crear y administrar cuentas con PIN.</p>
-                    <button class="btn-action" id="btn-ver-usuarios">Gestionar</button>
+                    <p class="card-desc">Crear y administrar cuentas con PIN de acceso.</p>
+                    <button class="btn-action" id="btn-gestionar-usuarios">Gestionar Usuarios</button>
                 </div>
                 <div class="card">
                     <h3 class="card-title">🛒 Productos</h3>
-                    <p class="card-desc">Modificar precios y planes.</p>
-                    <button class="btn-action" id="btn-ver-productos">Gestionar</button>
+                    <p class="card-desc">Agregar, editar y eliminar planes y precios.</p>
+                    <button class="btn-action" id="btn-gestionar-productos">Gestionar Productos</button>
                 </div>
             </div>
-            <div id="zona-usuarios" style="display:none;margin-top:2rem;">
-                <h2>Agregar Usuario</h2>
+
+            <!-- SUB-GESTIÓN -->
+            <div id="gestion-usuarios" style="display:none;margin-top:2rem;">
+                <h2>➕ Agregar Nuevo Usuario</h2>
                 <div style="display:flex;gap:1rem;flex-wrap:wrap;margin:1rem 0;">
-                    <input type="text" id="nuevo-usuario" placeholder="Usuario" class="form-control" style="flex:1 1 200px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.75rem;border-radius:8px;">
-                    <input type="text" id="nuevo-pin" placeholder="PIN" class="form-control" style="flex:1 1 150px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.75rem;border-radius:8px;">
-                    <button id="guardar-usuario" class="btn-action" style="width:auto;">Guardar</button>
+                    <input type="text" id="nuevo-usuario" placeholder="Nombre usuario" style="flex:1 1 200px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.75rem;border-radius:8px;">
+                    <input type="text" id="nuevo-pin" placeholder="PIN seguro" style="flex:1 1 150px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.75rem;border-radius:8px;">
+                    <button id="guardar-usuario" class="btn-action btn-sm">Guardar</button>
                 </div>
-                <table style="width:100%;border-collapse:collapse;margin-top:1rem;background:var(--card);border-radius:12px;overflow:hidden;">
-                    <thead><tr style="background:rgba(139,92,246,.1);"><th style="padding:1rem;text-align:left;border-bottom:1px solid var(--border);">Usuario</th><th style="padding:1rem;text-align:left;border-bottom:1px solid var(--border);">PIN</th><th style="padding:1rem;text-align:left;border-bottom:1px solid var(--border);">Acción</th></tr></thead>
-                    <tbody id="lista-usuarios"></tbody>
+                <table>
+                    <thead><tr><th>Usuario</th><th>PIN</th><th>Eliminar</th></tr></thead>
+                    <tbody id="tabla-usuarios"></tbody>
                 </table>
             </div>
-            <div id="zona-productos" style="display:none;margin-top:2rem;">
-                <h2>Agregar Producto</h2>
+
+            <div id="gestion-productos" style="display:none;margin-top:2rem;">
+                <h2>➕ Agregar / Editar Producto</h2>
                 <div style="display:flex;gap:1rem;flex-wrap:wrap;margin:1rem 0;">
-                    <input type="text" id="prod-nombre" placeholder="Nombre" style="flex:1 1 200px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.75rem;border-radius:8px;">
-                    <input type="text" id="prod-desc" placeholder="Descripción" style="flex:1 1 200px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.75rem;border-radius:8px;">
-                    <input type="number" id="prod-precio" placeholder="Precio" style="flex:1 1 120px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.75rem;border-radius:8px;">
-                    <button id="guardar-producto" class="btn-action" style="width:auto;">Guardar</button>
+                    <input type="text" id="prod-nombre" placeholder="Nombre del plan" style="flex:1 1 200px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.75rem;border-radius:8px;">
+                    <input type="text" id="prod-desc" placeholder="Descripción breve" style="flex:1 1 200px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.75rem;border-radius:8px;">
+                    <input type="number" id="prod-precio" placeholder="Precio MXN" style="flex:1 1 120px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:.75rem;border-radius:8px;">
+                    <button id="guardar-producto" class="btn-action btn-sm">Guardar</button>
                 </div>
-                <div id="lista-productos-admin" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;"></div>
+                <div class="grid-products" id="tabla-productos"></div>
             </div>
-        </section>
-
-        <section id="cuenta" class="page-section active">
-            <h1>👤 TU CUENTA</h1>
-            <div class="info-box">
-                <p><strong>Usuario:</strong> <span id="mostrar-usuario">—</span></p>
-                <p><strong>Estado:</strong> <span style="color:var(--success);">ACTIVO</span></p>
-            </div>
-        </section>
-
-        <section id="productos" class="page-section">
-            <h1>📦 PLANES DISPONIBLES</h1>
-            <div id="lista-productos" class="grid-products"></div>
         </section>
     </main>
 
     <nav class="bottom-nav">
-        <a href="#" data-target="cuenta" class="active">CUENTA</a>
-        <a href="#" data-target="productos">PLANES</a>
+        <a href="#" data-seccion="seccion-cuenta" class="active">CUENTA</a>
+        <a href="#" data-seccion="seccion-productos">PLANES</a>
     </nav>
 </div>
 
 <script>
-    // ⚙️ CONFIGURACIÓN
+    // ⚙️ CONFIGURACIÓN FIJA
     const CORREO_ADMIN = "jesusgutierrezmontanez05@gmail.com";
     const NOMBRE_ADMIN = "ANÓNIMO MX";
-    const STORAGE_USUARIOS = "team_m1nx_usuarios";
-    const STORAGE_PRODUCTOS = "team_m1nx_productos";
+    // ✅ CLAVES DE ALMACENAMIENTO ÚNICAS Y SIN CONFLICTOS
+    const STORAGE_USUARIOS = "team_m1nx_usuarios_v2";
+    const STORAGE_PRODUCTOS = "team_m1nx_productos_v2";
+
     let esAdmin = false;
+    let usuarios = {};
+    let productos = [];
 
-    // 📦 CARGA SEGURA DE DATOS
-    let usuariosRegistrados = {};
-    let listaProductos = [];
-
+    // 📦 CARGA SEGURA — FUNDAMENTAL PARA GITHUB PAGES
     function cargarDatos() {
         try {
             const u = localStorage.getItem(STORAGE_USUARIOS);
             const p = localStorage.getItem(STORAGE_PRODUCTOS);
-            if (u) usuariosRegistrados = JSON.parse(u);
-            if (p) listaProductos = JSON.parse(p);
-            else listaProductos = [
-                {id:1, nombre:"Socio Básico", desc:"Ideal para uso general", precio:100},
-                {id:2, nombre:"Socio Avanzado", desc:"Mayor rendimiento", precio:150},
-                {id:3, nombre:"Socio Estrella", desc:"Acceso total", precio:250}
-            ];
-        } catch(e) {
-            console.error("Error al cargar:", e);
-            usuariosRegistrados = {};
-            listaProductos = [];
+            if (u) usuarios = JSON.parse(u);
+            if (p) {
+                productos = JSON.parse(p);
+            } else {
+                // Productos por defecto igual a tu documentación
+                productos = [
+                    {id:1, nombre:"Socio Básico", desc:"Ideal para uso general. Conexión estable y baja latencia.", precio:100},
+                    {id:2, nombre:"Socio Avanzado", desc:"Alto rendimiento, ubicaciones exclusivas y soporte prioritario 24/7.", precio:150},
+                    {id:3, nombre:"Socio Estrella", desc:"Acceso total a todos los servicios. La opción más elegida por desarrolladores.", precio:250}
+                ];
+                guardarProductos();
+            }
+        } catch (e) {
+            // ❗ Si falla localStorage (modo privado/seguridad), iniciamos vacío pero no rompe
+            console.warn("LocalStorage no disponible:", e);
+            usuarios = {};
+            productos = [];
         }
     }
 
-    function guardarUsuarios() { localStorage.setItem(STORAGE_USUARIOS, JSON.stringify(usuariosRegistrados)); }
-    function guardarProductos() { localStorage.setItem(STORAGE_PRODUCTOS, JSON.stringify(listaProductos)); }
+    // 💾 GUARDADO SEGURO
+    function guardarUsuarios() {
+        try { localStorage.setItem(STORAGE_USUARIOS, JSON.stringify(usuarios)); }
+        catch(e) { console.error("Error guardando usuarios:", e); }
+    }
+    function guardarProductos() {
+        try { localStorage.setItem(STORAGE_PRODUCTOS, JSON.stringify(productos)); }
+        catch(e) { console.error("Error guardando productos:", e); }
+    }
 
-    // 🚀 INICIO
+    // 🚀 CARGAR ANTES DE TODO
     cargarDatos();
 
-    // ELEMENTOS
+    // 🧩 ELEMENTOS DEL DOM — REFERENCIAS DIRECTAS
     const loginScreen = document.getElementById('login-screen');
-    const mainPanel = document.getElementById('main-panel');
+    const mainScreen = document.getElementById('main-panel');
     const btnToggleAdmin = document.getElementById('btn-admin-toggle');
     const camposAdmin = document.getElementById('admin-fields');
-    const inputCorreoAdmin = document.getElementById('admin-email');
+    const inputCorreo = document.getElementById('admin-email');
     const btnEntrarAdmin = document.getElementById('admin-enter');
-    const formSocio = document.getElementById('form-socio');
-    const alertaAcceso = document.getElementById('alerta-acceso');
-    const btnSalir = document.getElementById('salir-btn');
-    const btnAdminTop = document.getElementById('btn-admin-top');
-    const secciones = document.querySelectorAll('.page-section');
+    const formLogin = document.getElementById('form-login');
+    const inputUsuario = document.getElementById('usuario-input');
+    const inputPin = document.getElementById('pin-input');
+    const errorMsg = document.getElementById('mensaje-error');
+    const btnSalir = document.getElementById('btn-salir');
+    const btnPanelAdmin = document.getElementById('btn-admin');
     const linksNav = document.querySelectorAll('.bottom-nav a');
+    const secciones = document.querySelectorAll('.page-section');
 
-    // MOSTRAR/OCULTAR ADMIN
+    // ✅ MOSTRAR CAMPOS ADMIN — FUNCIONA SIEMPRE
     btnToggleAdmin.addEventListener('click', e => {
         e.preventDefault();
         camposAdmin.classList.toggle('active');
     });
 
-    // CAMBIAR SECCIÓN
-    function cambiarSeccion(id) {
+    // 🔄 NAVEGACIÓN ENTRE PANTALLAS — LÓGICA SIMPLE SIN ERRORES
+    function cambiarSeccion(idSeccion) {
         secciones.forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        if (esAdmin) btnAdminTop.style.display = id === 'admin-section' ? 'inline-block' : 'inline-block';
-        linksNav.forEach(l => l.classList.remove('active'));
-        const linkAct = document.querySelector(`.bottom-nav a[data-target="${id}"]`);
-        if (linkAct) linkAct.classList.add('active');
+        document.getElementById(idSeccion).classList.add('active');
+        
+        // Mostrar botón admin solo si es admin
+        if (esAdmin) {
+            btnPanelAdmin.style.display = 'inline-block';
+        } else {
+            btnPanelAdmin.style.display = 'none';
+        }
+
+        // Actualizar menú inferior
+        linksNav.forEach(link => {
+            link.classList.toggle('active', link.dataset.seccion === idSeccion);
+        });
     }
 
-    btnAdminTop.addEventListener('click', () => esAdmin && cambiarSeccion('admin-section'));
+    // Navegación menú inferior
     linksNav.forEach(link => {
-        link.addEventListener('click', e => { e.preventDefault(); cambiarSeccion(link.dataset.target); });
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            cambiarSeccion(link.dataset.seccion);
+        });
     });
 
-    // ENTRAR AL SISTEMA
-    function iniciarSesion(nombre, admin = false) {
+    // Botón Panel Admin
+    btnPanelAdmin.addEventListener('click', () => {
+        if (esAdmin) cambiarSeccion('seccion-admin');
+    });
+
+    // 🔐 INICIAR SESIÓN — FUNCIÓN CENTRAL, NO SE TRABA
+    function iniciarSesion(nombreUsuario, admin = false) {
         loginScreen.style.display = 'none';
-        mainPanel.style.display = 'block';
+        mainScreen.style.display = 'block';
         esAdmin = admin;
-        document.getElementById('mostrar-usuario').textContent = admin ? NOMBRE_ADMIN : nombre;
-        document.getElementById('etiqueta-usuario').textContent = `"${admin ? NOMBRE_ADMIN : nombre}"`;
-        btnAdminTop.style.display = admin ? 'inline-block' : 'none';
-        cambiarSeccion('cuenta');
+        
+        document.getElementById('nombre-usuario').textContent = nombreUsuario;
+        document.getElementById('etiqueta-usuario').textContent = `"${nombreUsuario}"`;
+        
+        cambiarSeccion('seccion-cuenta');
         renderizarTodo();
     }
 
-    // ADMIN LOGIN
+    // LOGIN ADMIN
     btnEntrarAdmin.addEventListener('click', () => {
-        const correo = inputCorreoAdmin.value.trim().toLowerCase();
+        const correo = inputCorreo.value.trim().toLowerCase();
         if (correo === CORREO_ADMIN.toLowerCase()) {
             iniciarSesion(NOMBRE_ADMIN, true);
         } else {
-            alert("Correo inválido");
+            alert("❌ Correo no autorizado");
         }
     });
 
-    // SOCIO LOGIN — ARREGLADO PARA QUE NO SE TRABE
-    formSocio.addEventListener('submit', e => {
+    // LOGIN USUARIOS — ✅ ARREGLADO PARA QUE NO SE BLOQUEE EN GITHUB
+    formLogin.addEventListener('submit', e => {
         e.preventDefault();
-        const user = document.getElementById('user-in').value.trim();
-        const pin = document.getElementById('pin-in').value.trim();
-        alertaAcceso.style.display = 'none';
+        const usuario = inputUsuario.value.trim();
+        const pin = inputPin.value.trim();
+        errorMsg.style.display = 'none';
 
-        // ✅ VALIDACIÓN DIRECTA SIN BUCLES NI ERRORES
-        if (usuariosRegistrados.hasOwnProperty(user) && usuariosRegistrados[user] === pin) {
-            iniciarSesion(user, false);
+        // Validación directa, sin bucles complejos ni errores de tipo
+        if (usuarios.hasOwnProperty(usuario) && usuarios[usuario] === pin) {
+            iniciarSesion(usuario, false);
         } else {
-            alertaAcceso.style.display = 'block';
+            errorMsg.style.display = 'block';
         }
     });
 
+    // 🚪 CERRAR SESIÓN — LIMPIA Y SEGURA
     btnSalir.addEventListener('click', () => {
-        mainPanel.style.display = 'none';
+        mainScreen.style.display = 'none';
         loginScreen.style.display = 'flex';
-        formSocio.reset();
+        formLogin.reset();
         camposAdmin.classList.remove('active');
-        alertaAcceso.style.display = 'none';
+        errorMsg.style.display = 'none';
         esAdmin = false;
     });
 
-    // RENDERIZADO
+    // 📄 RENDERIZADO — MANTIENE TODO ACTUALIZADO
     function renderizarTodo() {
-        const tbody = document.getElementById('lista-usuarios');
-        tbody.innerHTML = '';
-        Object.entries(usuariosRegistrados).forEach(([u,p]) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `<td style="padding:1rem;border-bottom:1px solid var(--border);">${u}</td><td style="padding:1rem;border-bottom:1px solid var(--border);">${p}</td><td style="padding:1rem;border-bottom:1px solid var(--border);"><button class="btn-action" style="width:auto;padding:.4rem .8rem;font-size:.9rem;" onclick="eliminarUsuario('${u}')">Eliminar</button></td>`;
-            tbody.appendChild(tr);
-        });
-
-        const contUser = document.getElementById('lista-productos');
-        const contAdmin = document.getElementById('lista-productos-admin');
-        contUser.innerHTML = ''; contAdmin.innerHTML = '';
-        listaProductos.forEach(prod => {
-            contUser.innerHTML += `
-                <div class="card">
-                    <h3 class="card-title">${prod.nombre}</h3>
-                    <p class="card-desc">${prod.desc}</p>
-                    <div style="color:var(--accent);font-size:1.5rem;font-weight:bold;margin:1rem 0;">$${prod.precio} MXN</div>
-                    <button class="btn-action">Comprar</button>
-                </div>`;
-            contAdmin.innerHTML += `
-                <div class="card">
-                    <h3 class="card-title">${prod.nombre}</h3>
-                    <p class="card-desc">${prod.desc}</p>
-                    <div style="color:var(--accent);font-size:1.5rem;font-weight:bold;margin:1rem 0;">$${prod.precio} MXN</div>
-                    <button class="btn-action" style="width:auto;padding:.4rem .8rem;font-size:.9rem;" onclick="borrarProducto(${prod.id})">Eliminar</button>
-                </div>`;
-        });
-    }
-
-    window.eliminarUsuario = function(nombre) {
-        if (confirm(`¿Eliminar ${nombre}?`)) {
-            delete usuariosRegistrados[nombre];
-            guardarUsuarios()
+        // Productos para usuarios
+        const contProductos = document.getElementById('lista-productos');
+        contProductos.innerHTML = productos.map(p => `
+            <div class="card">
+                <h3 class="card-title">${p.nombre}</h3>
+                <
