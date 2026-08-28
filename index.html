@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROXY M1NX - SOCIOS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #05050a;
+            --bg-card: #0d0d15;
+            --bg-card-2: #12121d;
+            --border: #1a1a2e;
+            --accent: #8b5cf6; /* Color original BlackLink */
+            --accent-alt: #06b6d4;
+            --text-white: #ffffff;
+            --text-gray: #a1a1aa;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 100% 0%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
+            min-height: 100vh;
+        }
+
+        /* NAVEGACIÓN - IGUAL A BLACKLINK */
+        nav {
+            background: rgba(5,5,10,0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            padding: 0 2rem;
+        }
+
+        .nav-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.35rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: var(--text-white);
+        }
+
+        .btn-login {
+            background: var(--accent);
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            color: white !important;
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            color: var(--text-gray);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* GRID DE TARJETAS - ESTILO BLACKLINK */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.75rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .badge {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .card-description {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .btn-buy {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.6rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .btn-buy:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* CARACTERÍSTICAS */
+        .features {
+            margin-top: 6rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .feature-box {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-card-2);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .feature-box i {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .feature-box h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .feature-box p {
+            color: var(--text-gray);
+            font-size: 0.85rem;
+        }
+
+        /* PIE DE PÁGINA */
+        footer {
+            border-top: 1px solid var(--border);
+            background: rgba(5,5,10,0.5);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 0.85rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .features { grid-template-columns: 1fr; }
+            .nav-menu { display: none; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 2rem 1rem; }
+            .hero h1 { font-size: 2rem; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVEGACIÓN ORIGINAL -->
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="logo">PEOXY M1MX SOCIOS</a>
+            <ul class="nav-menu">
+                <li><a href="#" class="active">Inicio</a></li>
+                <li><a href="#">Productos</a></li>
+                <li><a href="#">Estado</a></li>
+                <li><a href="#">Documentación</a></li>
+                <li><a href="#" class="btn-login">Acceder</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- CONTENIDO -->
+    <div class="container">
+        <div class="hero">
+            <h1>Infraestructura de alto rendimiento</h1>
+            <p>La solución definitiva para tus proyectos. Estabilidad, velocidad y anonimato en un solo lugar.</p>
+        </div>
+
+        <div class="grid">
+            <!-- PRODUCTO 1 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Proxy Estándar</h3>
+                    <span class="badge">Disponible</span>
+                </div>
+                <p class="card-description">Ideal para uso general. Conexión estable y baja latencia. Sin límites de transferencia.</p>
+                <div class="card-footer">
+                    <span class="price">$10.00</span>
+                    <a href="#" class="btn-buy">Comprar</a>
+                </div>
+            </div>
+
+            <!-- PRODUCTO 2 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Proxy Premium</h3>
+                    <span class="badge" style="background:rgba(6,182,212,0.15);color:var(--accent-alt);border-color:rgba(6,182,212,0.3)">Recomendado</span>
+                </div>
+                <p class="card-description">Alto rendimiento, ubicaciones exclusivas y soporte prioritario 24/7.</p>
+                <div class="card-footer">
+                    <span class="price">$25.00</span>
+                    <a href="#" class="btn-buy">Comprar</a>
+                </div>
+            </div>
+
+            <!-- PRODUCTO 3 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Paquete Completo</h3>
+                    <span class="badge">Disponible</span>
+                </div>
+                <p class="card-description">Acceso total a todos los servicios. La opción más elegida por desarrolladores.</p>
+                <div class="card-footer">
+                    <span class="price">$50.00</span>
+                    <a href="#" class="btn-buy">Comprar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-box">
+                <i class="fas fa-bolt"></i>
+                <h3>Velocidad</h3>
+                <p>Red optimizada para máxima velocidad.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Seguridad</h3>
+                <p>Protección avanzada y cifrado total.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-server"></i>
+                <h3>Estabilidad</h3>
+                <p>Tiempo de actividad garantizado 99.9%.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PIE -->
+    <footer>
+        © 2026 BlackLink Clone. Diseño original replicado fielmente.
+    </footer>
+</body>
+</html>
