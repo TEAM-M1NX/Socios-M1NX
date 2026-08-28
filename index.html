@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROXY M1NX — ANÓNIMO MX</title>
+    <title>PROXY M1NX — ANÓNIMO MX (DATOS GUARDADOS)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
@@ -147,7 +147,7 @@
     <div class="login-container">
         <div class="login-header">
             <div class="logo">PROXY M1NX</div>
-            <p>Acceso seguro — Solo usuarios registrados</p>
+            <p>Acceso seguro — Datos guardados permanentemente</p>
         </div>
         <div class="login-box">
             <button class="btn-google" id="btn-admin-toggle">
@@ -202,7 +202,7 @@
         <section id="admin-section" class="page-section">
             <h1>⚙️ PANEL DE CONTROL TOTAL — SOLO PARA ANÓNIMO MX</h1>
             <div class="info-box">
-                Aquí gestionas TODO: Crear usuarios con PIN, eliminar, editar, agregar/modificar/quitar productos, ajustar precios y configuraciones.
+                💾 <strong>Guardado Automático:</strong> Todos los cambios se guardan en tu navegador y permanecen al recargar.
             </div>
 
             <div class="grid-admin">
@@ -219,7 +219,7 @@
                     <input type="text" id="nuevo-pin" class="form-control" placeholder="PIN de acceso">
                     <button id="crear-usuario" class="btn-action">Guardar Usuario</button>
                 </div>
-                <div class="alert success" id="alert-usuario-ok">Usuario creado correctamente ✅</div>
+                <div class="alert success" id="alert-usuario-ok">✅ Usuario guardado permanentemente</div>
 
                 <h2 style="margin-top:3rem;">📋 Lista de Usuarios Registrados</h2>
                 <table>
@@ -237,7 +237,7 @@
                     <input type="number" id="prod-precio" class="form-control" placeholder="Precio MXN">
                     <button id="agregar-producto" class="btn-action">Guardar Producto</button>
                 </div>
-                <div class="alert success" id="alert-prod-ok">Producto actualizado ✅</div>
+                <div class="alert success" id="alert-prod-ok">✅ Producto guardado permanentemente</div>
 
                 <h2 style="margin-top:3rem;">📦 Productos Actuales (Edita o elimina)</h2>
                 <div id="lista-productos-admin" class="grid-products"></div>
@@ -248,7 +248,7 @@
                 <h2>📊 Estado del Sistema</h2>
                 <div class="grid-admin">
                     <div class="card"><h3>Total Usuarios</h3><p style="font-size:2rem; color:var(--accent)" id="stat-total">0</p></div>
-                    <div class="card"><h3>Estado General</h3><p style="font-size:1.3rem; color:var(--success)">EN LÍNEA</p></div>
+                    <div class="card"><h3>Estado General</h3><p style="font-size:1.3rem; color:var(--success)">💾 DATOS PERSISTENTES</p></div>
                 </div>
             </div>
         </section>
@@ -259,7 +259,7 @@
             <div class="info-box">
                 <p><strong>Usuario:</strong> <span id="mostrar-usuario">—</span></p>
                 <p><strong>Rol:</strong> <span id="tipo-cuenta">Socio</span></p>
-                <p><strong>Estado:</strong> <span style="color:var(--success);">Activo</span></p>
+                <p><strong>Estado:</strong> <span style="color:var(--success);">✅ Guardado</span></p>
             </div>
         </section>
 
@@ -275,6 +275,7 @@
             <h1>✨ BENEFICIOS</h1>
             <div class="info-box">
                 <ul style="margin-top:1rem; padding-left:1.2rem;">
+                    <li>💾 Datos guardados permanentemente</li>
                     <li>Conexión rápida y segura</li>
                     <li>Soporte directo</li>
                     <li>Estabilidad 99.9%</li>
@@ -294,15 +295,46 @@
     // ⚙️ CONFIGURACIÓN PRINCIPAL
     const CORREO_ADMIN = "jesusgutierrezmontanez05@gmail.com";
     let esAdmin = false;
-    const NOMBRE_ADMIN = "ANÓNIMO MX"; // Tu nombre personalizado
+    const NOMBRE_ADMIN = "ANÓNIMO MX";
 
-    // 📦 BASE DE DATOS SIMULADA
-    let usuariosRegistrados = {}; // {nombre: pin}
-    let listaProductos = [
-        {id:1, nombre:"Socio Básico", desc:"Conexión estable", precio:100},
-        {id:2, nombre:"Socio Avanzado", desc:"Mayor rendimiento", precio:150},
-        {id:3, nombre:"Socio Premium", desc:"Acceso total", precio:250}
-    ];
+    // 📦 CLAVES PARA LOCALSTORAGE (GUARDADO PERMANENTE)
+    const STORAGE_USUARIOS = "proxy_usuarios";
+    const STORAGE_PRODUCTOS = "proxy_productos";
+
+    // 📦 CARGAR DATOS GUARDADOS AL INICIAR
+    function cargarDatos() {
+        const usuariosGuardados = localStorage.getItem(STORAGE_USUARIOS);
+        const productosGuardados = localStorage.getItem(STORAGE_PRODUCTOS);
+        
+        if (usuariosGuardados) {
+            usuariosRegistrados = JSON.parse(usuariosGuardados);
+        } else {
+            usuariosRegistrados = {};
+        }
+
+        if (productosGuardados) {
+            listaProductos = JSON.parse(productosGuardados);
+        } else {
+            // Productos por defecto si es primera vez
+            listaProductos = [
+                {id:1, nombre:"Socio Básico", desc:"Conexión estable", precio:100},
+                {id:2, nombre:"Socio Avanzado", desc:"Mayor rendimiento", precio:150},
+                {id:3, nombre:"Socio Premium", desc:"Acceso total", precio:250}
+            ];
+            guardarProductos();
+        }
+    }
+
+    // 💾 FUNCIONES PARA GUARDAR
+    function guardarUsuarios() {
+        localStorage.setItem(STORAGE_USUARIOS, JSON.stringify(usuariosRegistrados));
+    }
+    function guardarProductos() {
+        localStorage.setItem(STORAGE_PRODUCTOS, JSON.stringify(listaProductos));
+    }
+
+    // CARGAR ANTES DE TODO
+    cargarDatos();
 
     // ELEMENTOS
     const login = document.getElementById('login-screen');
@@ -332,16 +364,12 @@
         fieldsAdmin.style.display = fieldsAdmin.style.display === 'block' ? 'none' : 'block';
     });
 
-    // 🔑 FUNCIÓN CLAVE: CAMBIAR SECCIÓN
+    // 🔑 FUNCIÓN CAMBIAR SECCIÓN
     function cambiarSeccion(id) {
-        // Ocultar todas
         secciones.forEach(s => s.classList.remove('active'));
-        // Mostrar la pedida
         const seccionObjetivo = document.getElementById(id);
-        if (seccionObjetivo) {
-            seccionObjetivo.classList.add('active');
-        }
-        // Controlar visibilidad botón admin
+        if (seccionObjetivo) seccionObjetivo.classList.add('active');
+        
         if(esAdmin && id !== 'admin-section') {
             btnAdminArriba.style.display = 'inline-block';
             btnAdminArriba.classList.remove('active');
@@ -351,193 +379,11 @@
         } else {
             btnAdminArriba.style.display = 'none';
         }
-        // Actualizar menú inferior
+        
         navInferior.forEach(l => l.classList.remove('active'));
         const linkAct = document.querySelector(`.bottom-nav a[data-target="${id}"]`);
         if(linkAct) linkAct.classList.add('active');
     }
 
-    // ✅ BOTÓN ADMIN PANEL FUNCIONAL
-    btnAdminArriba.addEventListener('click', () => {
-        if (esAdmin) {
-            cambiarSeccion('admin-section');
-        }
-    });
-
-    // NAVEGACIÓN INFERIOR
-    navInferior.forEach(link => {
-        link.addEventListener('click', e => {
-            e.preventDefault();
-            cambiarSeccion(link.dataset.target);
-        });
-    });
-
-    // SUB-SECCIONES DENTRO DE ADMIN
-    btnsSubAdmin.forEach(btn => {
-        btn.addEventListener('click', () => {
-            btnsSubAdmin.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            subSecciones.forEach(s => s.classList.remove('active'));
-            const subObjetivo = document.getElementById(btn.dataset.target);
-            if (subObjetivo) subObjetivo.classList.add('active');
-        });
-    });
-
-    // CERRAR SESIÓN
-    function volverLogin() {
-        main.style.display = 'none';
-        login.style.display = 'flex';
-        formSocio.reset();
-        inputEmail.value = '';
-        fieldsAdmin.style.display = 'none';
-        alertaAcceso.style.display = 'none';
-        esAdmin = false;
-    }
-    salirBtn.addEventListener('click', volverLogin);
-
-    // ENTRAR AL SISTEMA
-    function entrar(nombre, admin=false) {
-        login.style.display = 'none';
-        main.style.display = 'block';
-        esAdmin = admin;
-        
-        // Si es admin, usar tu nombre personalizado
-        if (esAdmin) {
-            mostrarUsuario.textContent = NOMBRE_ADMIN;
-            etiquetaUsuario.textContent = `"${NOMBRE_ADMIN}"`;
-            tipoCuenta.textContent = "ADMINISTRADOR";
-        } else {
-            mostrarUsuario.textContent = nombre;
-            etiquetaUsuario.textContent = `"${nombre}"`;
-            tipoCuenta.textContent = "Socio Registrado";
-        }
-        
-        cambiarSeccion('cuenta');
-        renderizarTablaAdmin();
-    }
-
-    // LOGIN ADMIN
-    btnEntrarAdmin.addEventListener('click', () => {
-        if (inputEmail.value.trim().toLowerCase() === CORREO_ADMIN.toLowerCase()) {
-            entrar(NOMBRE_ADMIN, true);
-        } else {
-            alert("❌ Solo el dueño con correo autorizado");
-        }
-    });
-
-    // 🔐 VALIDACIÓN USUARIOS REGISTRADOS
-    formSocio.addEventListener('submit', e => {
-        e.preventDefault();
-        const user = document.getElementById('user-in').value.trim();
-        const pin = document.getElementById('pin-in').value.trim();
-        if(usuariosRegistrados[user] && usuariosRegistrados[user] === pin) {
-            alertaAcceso.style.display = 'none';
-            entrar(user, false);
-        } else {
-            alertaAcceso.style.display = 'block';
-        }
-    });
-
-    // 👤 ADMIN: CREAR USUARIO
-    document.getElementById('crear-usuario').addEventListener('click', () => {
-        const nom = document.getElementById('nuevo-nombre').value.trim();
-        const pin = document.getElementById('nuevo-pin').value.trim();
-        if(!nom || !pin) return alert("Llena ambos campos");
-        usuariosRegistrados[nom] = pin;
-        document.getElementById('alert-usuario-ok').style.display = 'block';
-        setTimeout(() => document.getElementById('alert-usuario-ok').style.display = 'none', 2500);
-        document.getElementById('nuevo-nombre').value = '';
-        document.getElementById('nuevo-pin').value = '';
-        renderizarTablaAdmin();
-    });
-
-    function renderizarTablaAdmin() {
-        const tbody = document.getElementById('tabla-usuarios');
-        tbody.innerHTML = '';
-        Object.entries(usuariosRegistrados).forEach(([u,p]) => {
-            const fila = document.createElement('tr');
-            fila.innerHTML = `<td>${u}</td><td>${p}</td><td><button class="btn-action btn-sm btn-danger" onclick="eliminarUsuario('${u}')">Eliminar</button></td>`;
-            tbody.appendChild(fila);
-        });
-        document.getElementById('stat-total').textContent = Object.keys(usuariosRegistrados).length;
-    }
-    window.eliminarUsuario = function(nombre) {
-        if(confirm(`¿Eliminar usuario ${nombre}?`)) {
-            delete usuariosRegistrados[nombre];
-            renderizarTablaAdmin();
-        }
-    };
-
-    // 🛒 PRODUCTOS
-    function renderizarProductos() {
-        const contUser = document.getElementById('lista-productos');
-        const contAdmin = document.getElementById('lista-productos-admin');
-        contUser.innerHTML = ''; contAdmin.innerHTML = '';
-
-        listaProductos.forEach(prod => {
-            // Vista Usuario
-            const cardU = document.createElement('div');
-            cardU.className = 'card';
-            cardU.innerHTML = `
-                <h3 class="card-title">${prod.nombre}</h3>
-                <p class="card-desc">${prod.desc}</p>
-                <div style="color:var(--accent);font-size:1.5rem;font-weight:bold;margin:1rem 0;">$${prod.precio} MXN</div>
-                <button class="btn-action comprar" data-id="${prod.id}">Comprar</button>
-            `;
-            contUser.appendChild(cardU);
-
-            // Vista Admin
-            const cardA = document.createElement('div');
-            cardA.className = 'card';
-            cardA.innerHTML = `
-                <h3 class="card-title">${prod.nombre}</h3>
-                <p class="card-desc">${prod.desc}</p>
-                <div style="color:var(--accent);font-size:1.5rem;font-weight:bold;margin:1rem 0;">$${prod.precio} MXN</div>
-                <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
-                    <button class="btn-action btn-sm" onclick="editarProducto(${prod.id})">Editar</button>
-                    <button class="btn-action btn-sm btn-danger" onclick="borrarProducto(${prod.id})">Eliminar</button>
-                </div>
-            `;
-            contAdmin.appendChild(cardA);
-        });
-
-        document.querySelectorAll('.comprar').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.getElementById('alerta-compra').style.display = 'block';
-                setTimeout(()=>document.getElementById('alerta-compra').style.display='none',3000);
-            });
-        });
-    }
-
-    document.getElementById('agregar-producto').addEventListener('click', () => {
-        const nom = document.getElementById('prod-nombre').value.trim();
-        const desc = document.getElementById('prod-desc').value.trim();
-        const pre = parseInt(document.getElementById('prod-precio').value);
-        if(!nom || !desc || !pre) return alert("Llena todo");
-        listaProductos.push({id:Date.now(), nombre:nom, desc:desc, precio:pre});
-        document.getElementById('alert-prod-ok').style.display = 'block';
-        setTimeout(()=>document.getElementById('alert-prod-ok').style.display='none',2500);
-        document.getElementById('prod-nombre').value='';
-        document.getElementById('prod-desc').value='';
-        document.getElementById('prod-precio').value='';
-        renderizarProductos();
-    });
-
-    window.borrarProducto = function(id) {
-        if(confirm("¿Eliminar este producto?")) {
-            listaProductos = listaProductos.filter(p => p.id !== id);
-            renderizarProductos();
-        }
-    };
-    window.editarProducto = function(id) {
-        const prod = listaProductos.find(p=>p.id===id);
-        if(prod) {
-            document.getElementById('prod-nombre').value = prod.nombre;
-            document.getElementById('prod-desc').value = prod.desc;
-            document.getElementById('prod-precio').value = prod.precio;
-            borrarProducto(id);
-        }
-    };
-</script>
-</body>
-</html>
+    btnAdminArriba.addEventListener('click', () => { if (esAdmin) cambiarSeccion('admin-section'); });
+    navInferior.forEach(link => { link.addEventListener('click', e => { e.pre
