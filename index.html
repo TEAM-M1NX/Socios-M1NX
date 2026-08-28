@@ -202,7 +202,7 @@
         <section id="admin-section" class="page-section">
             <h1>⚙️ PANEL DE CONTROL TOTAL — SOLO PARA ANÓNIMO MX</h1>
             <div class="info-box">
-                Aquí gestionas TODO: Crear usuarios con PIN, eliminar, editar, agregar/modificar/quitar productos, ajustar precios y configuraciones.
+                Aquí gestionas TODO: Crear usuarios con PIN, eliminar, editar, agregar/modificar/quitar productos, ajustar precios y configuraciones. <strong>Todo se guarda automáticamente.</strong>
             </div>
 
             <div class="grid-admin">
@@ -248,7 +248,7 @@
                 <h2>📊 Estado del Sistema</h2>
                 <div class="grid-admin">
                     <div class="card"><h3>Total Usuarios</h3><p style="font-size:2rem; color:var(--accent)" id="stat-total">0</p></div>
-                    <div class="card"><h3>Estado General</h3><p style="font-size:1.3rem; color:var(--success)">EN LÍNEA</p></div>
+                    <div class="card"><h3>Estado General</h3><p style="font-size:1.3rem; color:var(--success)">💾 DATOS GUARDADOS</p></div>
                 </div>
             </div>
         </section>
@@ -294,15 +294,53 @@
     // ⚙️ CONFIGURACIÓN PRINCIPAL
     const CORREO_ADMIN = "jesusgutierrezmontanez05@gmail.com";
     let esAdmin = false;
-    const NOMBRE_ADMIN = "ANÓNIMO MX"; // Tu nombre personalizado
+    const NOMBRE_ADMIN = "ANÓNIMO MX";
+    
+    // 🔑 CLAVES PARA LOCALSTORAGE (GUARDADO PERMANENTE)
+    const STORAGE_USUARIOS = "proxy_m1nx_usuarios";
+    const STORAGE_PRODUCTOS = "proxy_m1nx_productos";
 
-    // 📦 BASE DE DATOS SIMULADA
-    let usuariosRegistrados = {}; // {nombre: pin}
-    let listaProductos = [
-        {id:1, nombre:"Socio Básico", desc:"Conexión estable", precio:100},
-        {id:2, nombre:"Socio Avanzado", desc:"Mayor rendimiento", precio:150},
-        {id:3, nombre:"Socio Premium", desc:"Acceso total", precio:250}
-    ];
+    // 📦 CARGAR DATOS AL INICIAR
+    let usuariosRegistrados = {};
+    let listaProductos = [];
+
+    function cargarDatos() {
+        try {
+            const usuariosGuardados = localStorage.getItem(STORAGE_USUARIOS);
+            const productosGuardados = localStorage.getItem(STORAGE_PRODUCTOS);
+            
+            if (usuariosGuardados) {
+                usuariosRegistrados = JSON.parse(usuariosGuardados);
+            }
+            
+            if (productosGuardados) {
+                listaProductos = JSON.parse(productosGuardados);
+            } else {
+                // Productos por defecto si es primera vez
+                listaProductos = [
+                    {id:1, nombre:"Socio Básico", desc:"Conexión estable", precio:100},
+                    {id:2, nombre:"Socio Avanzado", desc:"Mayor rendimiento", precio:150},
+                    {id:3, nombre:"Socio Premium", desc:"Acceso total", precio:250}
+                ];
+                guardarProductos();
+            }
+        } catch (e) {
+            console.error("Error al cargar datos:", e);
+            usuariosRegistrados = {};
+            listaProductos = [];
+        }
+    }
+
+    // 💾 FUNCIONES PARA GUARDAR
+    function guardarUsuarios() {
+        localStorage.setItem(STORAGE_USUARIOS, JSON.stringify(usuariosRegistrados));
+    }
+    function guardarProductos() {
+        localStorage.setItem(STORAGE_PRODUCTOS, JSON.stringify(listaProductos));
+    }
+
+    // CARGAR ANTES DE TODO
+    cargarDatos();
 
     // ELEMENTOS
     const login = document.getElementById('login-screen');
@@ -325,7 +363,7 @@
 
     // INICIO
     alertaAcceso.style.display = 'none';
-    renderizarProductos();
+    renderizarTodo();
 
     // MOSTRAR CAMPOS ADMIN
     btnToggle.addEventListener('click', () => {
@@ -334,14 +372,10 @@
 
     // 🔑 FUNCIÓN CLAVE: CAMBIAR SECCIÓN
     function cambiarSeccion(id) {
-        // Ocultar todas
         secciones.forEach(s => s.classList.remove('active'));
-        // Mostrar la pedida
         const seccionObjetivo = document.getElementById(id);
-        if (seccionObjetivo) {
-            seccionObjetivo.classList.add('active');
-        }
-        // Controlar visibilidad botón admin
+        if (seccionObjetivo) seccionObjetivo.classList.add('active');
+        
         if(esAdmin && id !== 'admin-section') {
             btnAdminArriba.style.display = 'inline-block';
             btnAdminArriba.classList.remove('active');
@@ -351,46 +385,7 @@
         } else {
             btnAdminArriba.style.display = 'none';
         }
-        // Actualizar menú inferior
+        
         navInferior.forEach(l => l.classList.remove('active'));
         const linkAct = document.querySelector(`.bottom-nav a[data-target="${id}"]`);
-        if(linkAct) linkAct.classList.add('active');
-    }
-
-    // ✅ BOTÓN ADMIN PANEL FUNCIONAL
-    btnAdminArriba.addEventListener('click', () => {
-        if (esAdmin) {
-            cambiarSeccion('admin-section');
-        }
-    });
-
-    // NAVEGACIÓN INFERIOR
-    navInferior.forEach(link => {
-        link.addEventListener('click', e => {
-            e.preventDefault();
-            cambiarSeccion(link.dataset.target);
-        });
-    });
-
-    // SUB-SECCIONES DENTRO DE ADMIN
-    btnsSubAdmin.forEach(btn => {
-        btn.addEventListener('click', () => {
-            btnsSubAdmin.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            subSecciones.forEach(s => s.classList.remove('active'));
-            const subObjetivo = document.getElementById(btn.dataset.target);
-            if (subObjetivo) subObjetivo.classList.add('active');
-        });
-    });
-
-    // CERRAR SESIÓN
-    function volverLogin() {
-        main.style.display = 'none';
-        login.style.display = 'flex';
-        formSocio.reset();
-        inputEmail.value = '';
-        fieldsAdmin.style.display = 'none';
-        alertaAcceso.style.display = 'none';
-        esAdmin = false;
-    }
-                
+        if(li                
