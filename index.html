@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROXY M1NX - Sistema Completo Estable</title>
+    <title>PROXY M1NX - Login Corregido</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
@@ -227,7 +227,7 @@
         <nav class="base-nav">
             <div class="nav-wrap">
                 <a href="#" class="brand">PROXY M1NX SOCIOS</a>
-                <div class="nav-actions"><button class="btn-logout" onclick="volverLogin()"><i class="fas fa-sign-out-alt"></i> Salir</button></div>
+                <div class="nav-actions"><button class="btn-logout" id="btnLogoutSocio"><i class="fas fa-sign-out-alt"></i> Salir</button></div>
             </div>
         </nav>
         <div class="container">
@@ -265,7 +265,7 @@
         <nav class="base-nav">
             <div class="nav-wrap">
                 <span class="brand">⚙️ PANEL ADMIN — PROXY M1NX</span>
-                <div class="nav-actions"><button class="btn-logout" onclick="volverLogin()"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button></div>
+                <div class="nav-actions"><button class="btn-logout" id="btnLogoutAdmin"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button></div>
             </div>
         </nav>
         <div class="container admin-wrap">
@@ -295,7 +295,7 @@
                     </div>
                 </section>
                 <section id="socios" class="admin-section">
-                    <div class="panel-head"><h2>Gestión de Socios</h2><button class="btn-save" onclick="alert('Formulario agregar socio listo')"><i class="fas fa-plus"></i> Nuevo Socio</button></div>
+                    <div class="panel-head"><h2>Gestión de Socios</h2><button class="btn-save" id="btnNuevoSocio"><i class="fas fa-plus"></i> Nuevo Socio</button></div>
                     <div class="table-wrap">
                         <table><thead><tr><th>ID</th><th>Usuario</th><th>Correo/Contacto</th><th>Plan</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>
                             <tr><td>001</td><td>socio_01</td><td>info@ejemplo.com</td><td>Básico</td><td><span class="tag ok">Activo</span></td><td><button class="btn-sm btn-edit">Editar</button> <button class="btn-sm btn-del">Bloquear</button></td></tr>
@@ -303,4 +303,5 @@
                         </tbody></table>
                     </div>
                 </section>
-                <section id="planes" class
+                <section id="planes" class="admin-section">
+                    <div class
