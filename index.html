@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROXY M1NX - FUNCIONAL 100%</title>
+    <title>PROXY M1NX — COMPLETO Y FUNCIONAL</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
@@ -12,298 +12,291 @@
             --border: #1a1a2e;
             --accent: #8b5cf6;
             --accent-alt: #06b6d4;
-            --text: #fff;
+            --text: #ffffff;
             --muted: #a1a1aa;
             --input-bg: #0a0a10;
             --success: #22c55e;
             --danger: #ef4444;
         }
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: var(--bg);
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg);
             color: var(--text);
             background-image: 
-                radial-gradient(circle at 0% 0%, rgba(139,92,246,.06) 0%, transparent 40%),
-                radial-gradient(circle at 100% 0%, rgba(6,182,212,.04) 0%, transparent 40%);
+                radial-gradient(circle at 0% 0%, rgba(139,92,246,0.06) 0%, transparent 40%),
+                radial-gradient(circle at 100% 0%, rgba(6,182,212,0.04) 0%, transparent 40%);
             min-height: 100vh;
         }
 
         /* LOGIN */
-        #login {
+        #login-screen {
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             padding: 2rem;
         }
-        .container-login { max-width: 420px; width: 100%; }
-        .cabecera { text-align: center; margin-bottom: 2.5rem; }
+        .login-container { max-width: 420px; width: 100%; }
+        .login-header { text-align: center; margin-bottom: 2.5rem; }
         .logo {
             font-size: 1.8rem; font-weight: 800;
             background: linear-gradient(90deg, var(--accent), var(--accent-alt));
-            -webkit-background-clip: text; color: transparent;
+            -webkit-background-clip: text; background-clip: text; color: transparent;
             margin-bottom: 1rem;
+            white-space: nowrap;
         }
-        .caja-login {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2.5rem;
-            box-shadow: 0 10px 40px rgba(0,0,0,.3);
+        .login-header p { color: var(--muted); }
+        .login-box {
+            background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+            padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
-        .divider {
-            margin: 1.5rem 0;
-            text-align: center;
-            position: relative;
-        }
-        .divider::before {
-            content: '';
-            position: absolute;
-            top: 50%; left: 0; width: 100%; height: 1px; background: var(--border);
-        }
-        .divider span { background: var(--card); padding: 0 1rem; color: var(--muted); }
-        .grupo { margin-bottom: 1.5rem; }
-        label { display: block; margin-bottom: .5rem; color: var(--muted); font-size: .9rem; }
-        input {
-            width: 100%;
-            background: var(--input-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: .9rem;
-            color: var(--text);
-            font-size: 1rem;
-        }
-        input:focus { outline: none; border-color: var(--accent); }
-        .btn {
-            width: 100%;
-            padding: .95rem;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1rem;
-            border: none;
-            cursor: pointer;
-            transition: .2s;
-        }
-        .btn-accent { background: var(--accent); color: white; }
-        .btn-accent:hover { background: #7c3aed; }
         .btn-google {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: .75rem;
-            margin-bottom: 1rem;
+            width: 100%; background: transparent; border: 1px solid var(--border); color: var(--text);
+            padding: .85rem 1rem; border-radius: 8px; font-size: .95rem; font-weight: 500;
+            display: flex; align-items: center; justify-content: center; gap: .75rem;
+            margin-bottom: 2rem; cursor: pointer; transition: .2s;
         }
-        .btn-google:hover { border-color: var(--accent); }
+        .btn-google:hover { border-color: var(--accent); background: rgba(139,92,246,.05); }
         .btn-google svg { width: 18px; height: 18px; }
-
-        /* PÁGINAS OCULTAS */
-        #panel-socio, #panel-admin { display: none; }
-
-        /* NAVEGACIÓN */
-        nav {
-            background: rgba(13,13,21,.85);
-            border-bottom: 1px solid var(--border);
-            padding: 0 2rem;
-            height: 70px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top:0;
-            z-index: 100;
+        .divider { position: relative; text-align: center; margin-bottom: 2rem; }
+        .divider::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: var(--border); }
+        .divider span { background: var(--card); padding: 0 1rem; color: var(--muted); position: relative; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: .6rem; color: var(--muted); font-size: .9rem; }
+        .form-group input {
+            width: 100%; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px;
+            padding: .9rem 1rem; color: var(--text); font-size: 1rem;
         }
-        .brand {
-            font-weight: 800;
-            font-size: 1.3rem;
-            background: linear-gradient(90deg, var(--accent), var(--accent-alt));
-            -webkit-background-clip: text; color: transparent;
+        .form-group input:focus { outline: none; border-color: var(--accent); }
+        .btn-primary {
+            width: 100%; background: var(--accent); color: white; border: none;
+            padding: .95rem; border-radius: 8px; font-size: 1rem; font-weight: 600;
+            cursor: pointer; transition: .2s;
         }
-        .btn-salir { background: var(--danger); color: white; padding: .5rem 1rem; border-radius: 6px; border: none; cursor: pointer; }
-        .contenido { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem; }
+        .btn-primary:hover { background: #7c3aed; }
+        .login-footer { text-align: center; margin-top: 2rem; color: var(--muted); font-size: .85rem; }
+        .admin-inputs { margin-bottom: 1.5rem; display: none; }
+        .admin-inputs input { margin-bottom: .75rem; }
 
-        /* SIDEBAR ADMIN */
-        .admin-layout { display: grid; grid-template-columns: 260px 1fr; gap: 2rem; }
-        .sidebar {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            height: fit-content;
+        /* ESTRUCTURA PRINCIPAL */
+        #main-panel { display: none; }
+        .top-bar {
+            background: rgba(13,13,21,.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+            padding: 0 2rem; height: 70px; display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 100;
         }
-        .sidebar ul { list-style: none; }
-        .sidebar a {
-            display: block;
-            padding: .75rem 1rem;
-            margin-bottom: .5rem;
-            border-radius: 8px;
-            color: var(--muted);
-            text-decoration: none;
+        .top-left { display: flex; align-items: center; gap: 1rem; }
+        .brand { 
+            font-weight: 800; font-size: 1.3rem; 
+            background: linear-gradient(90deg, var(--accent), var(--accent-alt)); 
+            -webkit-background-clip: text; color: transparent; 
+            white-space: nowrap;
         }
-        .sidebar a.activo, .sidebar a:hover { background: rgba(139,92,246,.1); color: var(--accent); }
-        .seccion { display: none; }
-        .seccion.activa { display: block; }
+        .sep { color: var(--border); font-size: 1.2rem; }
+        .admin-toggle-btn { 
+            background: none; border: none; color: var(--text); 
+            font-size: 1.1rem; font-weight: 600; cursor: pointer; 
+            transition: color .2s;
+        }
+        .admin-toggle-btn:hover { color: var(--accent); }
+        .btn-logout { background: var(--danger); color: white; border: none; padding: .5rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: 500; }
 
-        /* TARJETAS Y TABLAS */
-        .grid-planes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap:1.5rem; margin-top: 2rem; }
-        .tarjeta { background: var(--card); border:1px solid var(--border); border-radius:12px; padding:2rem; }
-        .tabla-wrap { background: var(--card); border:1px solid var(--border); border-radius:12px; overflow-x:auto; margin-top:1rem; }
-        table { width:100%; border-collapse: collapse; }
-        th, td { padding:1rem; text-align:left; border-bottom:1px solid var(--border); }
+        /* CONTENIDO */
+        .content { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+        .page-section { display: none; }
+        .page-section.active { display: block; }
+        h1 { font-size: 2rem; margin-bottom: 2rem; text-align: center; }
+        .info-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; color: var(--muted); line-height: 1.6; }
+        .grid-admin, .grid-products { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1.5rem; }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; transition: transform .3s; }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .card-title { font-size: 1.25rem; margin-bottom: .5rem; font-weight: 700; }
+        .card-desc { color: var(--muted); margin-bottom: 1rem; font-size: .95rem; }
+        .btn-action { width: 100%; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: .75rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: .2s; }
+        .btn-action:hover { background: var(--accent); color: white; }
+
+        /* NAVEGACIÓN INFERIOR */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(13,13,21,.95); backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border); display: flex; justify-content: center; gap: 2rem; padding: 1.2rem 0;
+        }
+        .bottom-nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 1rem; transition: .2s; }
+        .bottom-nav a:hover, .bottom-nav a.active { color: var(--accent); }
     </style>
 </head>
 <body>
 
 <!-- PANTALLA DE INICIO -->
-<div id="login">
-    <div class="container-login">
-        <div class="cabecera">
+<div id="login-screen">
+    <div class="login-container">
+        <div class="login-header">
             <div class="logo">PROXY M1NX</div>
-            <h1>Bienvenido</h1>
-            <p style="color:var(--muted);">Acceso directo sin errores</p>
+            <h1>Inicio de Sesión</h1>
+            <p>Acceso seguro al sistema</p>
         </div>
-        <div class="caja-login">
-            <!-- ADMIN -->
-            <button class="btn btn-google" id="btnAdmin">
-                <svg viewBox="0 0 24 24">
+        <div class="login-box">
+            <button class="btn-google" id="btn-admin-toggle">
+                <svg viewBox="0 0 24 24" width="18" height="18">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                     <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l2.96-2.96C18.45 2.09 15.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
-                Iniciar como ADMIN
+                Acceso Administrador
             </button>
-            <div class="grupo">
-                <label>Correo Admin</label>
-                <input type="email" id="inputCorreo" placeholder="Tu correo autorizado">
+            <div class="admin-inputs" id="admin-fields">
+                <div class="form-group">
+                    <label>Correo Autorizado</label>
+                    <input type="email" id="admin-email" placeholder="tu@email.com">
+                </div>
+                <button class="btn-primary" id="admin-enter">Ingresar</button>
             </div>
 
-            <div class="divider"><span>ACCESO SOCIOS</span></div>
+            <div class="divider"><span>ENTRADA SOCIOS</span></div>
 
-            <!-- SOCIOS -->
-            <form id="formSocio">
-                <div class="grupo">
+            <form id="form-socio">
+                <div class="form-group">
                     <label>Usuario</label>
-                    <input type="text" id="usu" required>
+                    <input type="text" id="user-in" required>
                 </div>
-                <div class="grupo">
+                <div class="form-group">
                     <label>PIN</label>
-                    <input type="password" id="pin" required>
+                    <input type="password" id="pin-in" required>
                 </div>
-                <button type="submit" class="btn btn-accent">Ingresar Socio</button>
+                <button type="submit" class="btn-primary">Entrar</button>
             </form>
         </div>
     </div>
 </div>
 
-<!-- PANEL SOCIO -->
-<div id="panel-socio">
-    <nav>
-        <div class="brand">SOCIO — PROXY M1NX</div>
-        <button class="btn-salir" onclick="volver()"><i class="fas fa-sign-out-alt"></i> Salir</button>
-    </nav>
-    <div class="contenido">
-        <h1 style="text-align:center;">Bienvenido Socio</h1>
-        <p style="text-align:center;color:var(--muted);">Servicios activos</p>
-        <div class="grid-planes">
-            <div class="tarjeta"><h3>Básico</h3><p style="color:var(--muted);">Conexión estable</p><div style="font-size:1.5rem;color:var(--accent);margin-top:1rem;">$100</div></div>
-            <div class="tarjeta"><h3>Avanzado</h3><p style="color:var(--muted);">Rápido y seguro</p><div style="font-size:1.5rem;color:var(--accent);margin-top:1rem;">$150</div></div>
+<!-- PANEL PRINCIPAL -->
+<div id="main-panel">
+    <!-- BARRA SUPERIOR: PROXY M1NX | ADMIN PANEL (BOTÓN) | CERRAR SESIÓN -->
+    <nav class="top-bar">
+        <div class="top-left">
+            <span class="brand">PROXY M1NX</span>
+            <span class="sep">|</span>
+            <button class="admin-toggle-btn" data-target="admin-section">ADMIN PANEL</button>
         </div>
-    </div>
-</div>
-
-<!-- PANEL ADMIN -->
-<div id="panel-admin">
-    <nav>
-        <div class="brand">ADMIN — PROXY M1NX</div>
-        <button class="btn-salir" onclick="volver()"><i class="fas fa-sign-out-alt"></i> Salir</button>
+        <button class="btn-logout" id="salir-btn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
     </nav>
-    <div class="contenido admin-layout">
-        <aside class="sidebar">
-            <ul>
-                <li><a href="#" class="activo" data-sec="inicio"><i class="fas fa-home"></i> Inicio</a></li>
-                <li><a href="#" data-sec="users"><i class="fas fa-users"></i> Usuarios</a></li>
-            </ul>
-        </aside>
-        <main>
-            <div id="inicio" class="seccion activa">
-                <h2>Resumen</h2>
-                <div class="tabla-wrap">
-                    <table><thead><tr><th>Dato</th><th>Valor</th></tr></thead>
-                    <tbody><tr><td>Estado</td><td style="color:var(--success);">En línea</td></tr></tbody></table>
-                </div>
+
+    <!-- CONTENIDO -->
+    <main class="content">
+        <section id="admin-section" class="page-section">
+            <h1>⚙️ PANEL DE ADMINISTRACIÓN</h1>
+            <div class="info-box">Control total del sistema: gestiona usuarios, revisa estadísticas, configura planes y seguridad.</div>
+            <div class="grid-admin">
+                <div class="card"><h3 class="card-title">👥 Usuarios</h3><p class="card-desc">Agrega, edita, bloquea o elimina cuentas.</p><button class="btn-action">Gestionar</button></div>
+                <div class="card"><h3 class="card-title">📊 Estadísticas</h3><p class="card-desc">Ingresos, actividad y planes activos.</p><button class="btn-action">Ver Datos</button></div>
+                <div class="card"><h3 class="card-title">⚙️ Configuración</h3><p class="card-desc">Ajustes generales y seguridad del sistema.</p><button class="btn-action">Configurar</button></div>
             </div>
-            <div id="users" class="seccion">
-                <h2>Gestión de Usuarios</h2>
-                <div class="tabla-wrap">
-                    <table><thead><tr><th>Usuario</th><th>Estado</th></tr></thead>
-                    <tbody>
-                        <tr><td>socio_01</td><td style="color:var(--success);">Activo</td></tr>
-                    </tbody>
-                </div>
+        </section>
+
+        <section id="cuenta" class="page-section">
+            <h1>👤 CUENTA</h1>
+            <div class="info-box">Tus datos personales, estado de membresía y configuraciones de perfil.</div>
+        </section>
+
+        <section id="productos" class="page-section">
+            <h1>📦 PRODUCTOS</h1>
+            <div class="grid-products">
+                <div class="card"><h3 class="card-title">Básico</h3><p class="card-desc">Conexión estable para uso general.</p><div style="color:var(--accent);font-size:1.5rem;font-weight:bold;margin:1rem 0;">$100 MXN</div><button class="btn-action">Comprar</button></div>
+                <div class="card"><h3 class="card-title">Avanzado</h3><p class="card-desc">Mayor rendimiento y estabilidad.</p><div style="color:var(--accent);font-size:1.5rem;font-weight:bold;margin:1rem 0;">$150 MXN</div><button class="btn-action">Comprar</button></div>
+                <div class="card"><h3 class="card-title">Premium</h3><p class="card-desc">Acceso total a todos los recursos.</p><div style="color:var(--accent);font-size:1.5rem;font-weight:bold;margin:1rem 0;">$250 MXN</div><button class="btn-action">Comprar</button></div>
             </div>
-        </main>
-    </div>
+        </section>
+
+        <section id="beneficios" class="page-section">
+            <h1>✨ BENEFICIOS</h1>
+            <div class="info-box">
+                <ul style="margin-top:1rem; padding-left:1.2rem;">
+                    <li>Velocidad optimizada sin límites de ancho de banda</li>
+                    <li>Cifrado total y anonimato protegido</li>
+                    <li>Soporte técnico prioritario 24/7</li>
+                    <li>Estabilidad garantizada 99.9%</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- NAVEGACIÓN INFERIOR -->
+    <nav class="bottom-nav">
+        <a href="#" data-target="cuenta">CUENTA</a>
+        <a href="#" data-target="productos">PRODUCTOS</a>
+        <a href="#" data-target="beneficios">BENEFICIOS</a>
+    </nav>
 </div>
 
 <script>
-    // CONFIGURACIÓN
     const CORREO_ADMIN = "jesusgutierrezmontanez05@gmail.com";
 
     // ELEMENTOS
-    const loginEl = document.getElementById('login');
-    const panelSocio = document.getElementById('panel-socio');
-    const panelAdmin = document.getElementById('panel-admin');
-    const formSocio = document.getElementById('formSocio');
-    const btnAdmin = document.getElementById('btnAdmin');
-    const inputCorreo = document.getElementById('inputCorreo');
+    const login = document.getElementById('login-screen');
+    const main = document.getElementById('main-panel');
+    const btnToggle = document.getElementById('btn-admin-toggle');
+    const fieldsAdmin = document.getElementById('admin-fields');
+    const inputEmail = document.getElementById('admin-email');
+    const btnEntrarAdmin = document.getElementById('admin-enter');
+    const formSocio = document.getElementById('form-socio');
+    const salirBtn = document.getElementById('salir-btn');
+    const secciones = document.querySelectorAll('.page-section');
+    const navInferior = document.querySelectorAll('.bottom-nav a');
+    const btnAdminArriba = document.querySelector('.admin-toggle-btn');
 
-    // FUNCIONES
-    function volver() {
-        loginEl.style.display = 'flex';
-        panelSocio.style.display = 'none';
-        panelAdmin.style.display = 'none';
-    }
-    function irAdmin() {
-        loginEl.style.display = 'none';
-        panelSocio.style.display = 'none';
-        panelAdmin.style.display = 'block';
-    }
-    function irSocio() {
-        loginEl.style.display = 'none';
-        panelAdmin.style.display = 'none';
-        panelSocio.style.display = 'block';
-    }
-
-    // EVENTO ADMIN
-    btnAdmin.addEventListener('click', () => {
-        const correo = inputCorreo.value.trim().toLowerCase();
-        if (correo === CORREO_ADMIN.toLowerCase()) {
-            irAdmin();
-        } else {
-            alert("❌ Correo incorrecto");
-        }
+    // MOSTRAR CAMPOS ADMIN
+    btnToggle.addEventListener('click', () => {
+        fieldsAdmin.style.display = fieldsAdmin.style.display === 'block' ? 'none' : 'block';
     });
 
-    // EVENTO SOCIO
-    formSocio.addEventListener('submit', (e) => {
-        e.preventDefault();
-        irSocio();
-    });
+    // FUNCIÓN GENERAL PARA CAMBIAR SECCIÓN
+    function cambiarSeccion(id) {
+        secciones.forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
 
-    // NAVEGACIÓN ADMIN
-    document.querySelectorAll('.sidebar a').forEach(link => {
+    // BOTÓN ADMIN PANEL ARRIBA
+    btnAdminArriba.addEventListener('click', () => cambiarSeccion('admin-section'));
+
+    // NAVEGACIÓN INFERIOR
+    navInferior.forEach(link => {
         link.addEventListener('click', e => {
             e.preventDefault();
-            document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('activo'));
-            link.classList.add('activo');
-            const sec = link.dataset.sec;
-            document.querySelectorAll('.seccion').forEach(s => s.classList.remove('activa'));
-            document.getElementById(sec).classList.add('activa');
+            navInferior.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            cambiarSeccion(link.dataset.target);
         });
+    });
+
+    // CERRAR SESIÓN
+    function volverLogin() {
+        main.style.display = 'none';
+        login.style.display = 'flex';
+        formSocio.reset();
+        inputEmail.value = '';
+        fieldsAdmin.style.display = 'none';
+    }
+    salirBtn.addEventListener('click', volverLogin);
+
+    // ENTRAR AL SISTEMA
+    function entrar() {
+        login.style.display = 'none';
+        main.style.display = 'block';
+        cambiarSeccion('admin-section'); // Por defecto abre Admin
+        window.scrollTo(0,0);
+    }
+
+    // LOGIN ADMIN
+    btnEntrarAdmin.addEventListener('click', () => {
+        if (inputEmail.value.trim().toLowerCase() === CORREO_ADMIN.toLowerCase()) entrar();
+        else alert("❌ Correo incorrecto");
+    });
+
+    // LOGIN SOCIO
+    formSocio.addEventListener('submit', e => {
+        e.preventDefault();
+        entrar();
     });
 </script>
 </body>
