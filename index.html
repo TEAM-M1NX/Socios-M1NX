@@ -3,303 +3,308 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROXY M1NX - SISTEMA COMPLETO FUNCIONAL</title>
+    <title>PROXY M1NX - FUNCIONAL 100%</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --bg: #05050a;
             --card: #0d0d15;
             --border: #1a1a2e;
             --accent: #8b5cf6;
             --accent-alt: #06b6d4;
-            --text: #ffffff;
+            --text: #fff;
             --muted: #a1a1aa;
             --input-bg: #0a0a10;
             --success: #22c55e;
             --danger: #ef4444;
-            --warning: #f59e0b;
         }
-
+        * { margin:0; padding:0; box-sizing:border-box; }
         body {
-            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: var(--bg);
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--bg);
             color: var(--text);
-            min-height: 100vh;
             background-image: 
-                radial-gradient(circle at 0% 0%, rgba(139,92,246,0.06) 0%, transparent 40%),
-                radial-gradient(circle at 100% 0%, rgba(6,182,212,0.04) 0%, transparent 40%);
+                radial-gradient(circle at 0% 0%, rgba(139,92,246,.06) 0%, transparent 40%),
+                radial-gradient(circle at 100% 0%, rgba(6,182,212,.04) 0%, transparent 40%);
+            min-height: 100vh;
         }
 
-        /* PANTALLA LOGIN */
-        #login-screen {
+        /* LOGIN */
+        #login {
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             padding: 2rem;
         }
-        .login-container { width: 100%; max-width: 420px; }
-        .login-header { text-align: center; margin-bottom: 2.5rem; }
+        .container-login { max-width: 420px; width: 100%; }
+        .cabecera { text-align: center; margin-bottom: 2.5rem; }
         .logo {
             font-size: 1.8rem; font-weight: 800;
             background: linear-gradient(90deg, var(--accent), var(--accent-alt));
-            -webkit-background-clip: text; background-clip: text; color: transparent;
-            margin-bottom: 1rem; display: inline-block;
+            -webkit-background-clip: text; color: transparent;
+            margin-bottom: 1rem;
         }
-        .login-header h1 { font-size: 1.75rem; margin-bottom: 0.75rem; }
-        .login-header p { color: var(--muted); font-size: 1rem; }
-        .login-box {
-            background: var(--card); border: 1px solid var(--border); border-radius: 16px;
-            padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        .caja-login {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,.3);
         }
-        .btn-google {
-            width: 100%; background: transparent; border: 1px solid var(--border); color: var(--text);
-            padding: 0.85rem 1rem; border-radius: 8px; font-size: 0.95rem; font-weight: 500;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.75rem;
-            margin-bottom: 2rem; transition: border-color 0.2s, background 0.2s;
+        .divider {
+            margin: 1.5rem 0;
+            text-align: center;
+            position: relative;
         }
-        .btn-google svg { width: 18px; height: 18px; }
-        .btn-google:hover { border-color: var(--accent); background: rgba(139,92,246,0.05); }
-        .divider { position: relative; text-align: center; margin-bottom: 2rem; }
         .divider::before {
-            content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: var(--border);
+            content: '';
+            position: absolute;
+            top: 50%; left: 0; width: 100%; height: 1px; background: var(--border);
         }
-        .divider span { background: var(--card); padding: 0 1rem; color: var(--muted); font-size: 0.9rem; position: relative; }
-        .form-group { margin-bottom: 1.5rem; }
-        .form-group label { display: block; margin-bottom: 0.6rem; color: var(--muted); font-size: 0.9rem; }
-        .form-group input {
-            width: 100%; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px;
-            padding: 0.9rem 1rem; color: var(--text); font-size: 1rem; transition: border-color 0.2s, box-shadow 0.2s;
+        .divider span { background: var(--card); padding: 0 1rem; color: var(--muted); }
+        .grupo { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: .5rem; color: var(--muted); font-size: .9rem; }
+        input {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: .9rem;
+            color: var(--text);
+            font-size: 1rem;
         }
-        .form-group input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(139,92,246,0.15); }
-        .form-options { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; font-size: 0.9rem; }
-        .remember { display: flex; align-items: center; gap: 0.5rem; color: var(--muted); cursor: pointer; }
-        .remember input[type="checkbox"] { accent-color: var(--accent); width: auto; }
-        .btn-primary {
-            width: 100%; background: var(--accent); color: white; border: none;
-            padding: 0.95rem; border-radius: 8px; font-size: 1rem; font-weight: 600;
-            cursor: pointer; transition: background 0.2s;
+        input:focus { outline: none; border-color: var(--accent); }
+        .btn {
+            width: 100%;
+            padding: .95rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: .2s;
         }
-        .btn-primary:hover { background: #7c3aed; }
-        .login-footer { text-align: center; margin-top: 2rem; color: var(--muted); font-size: 0.85rem; }
+        .btn-accent { background: var(--accent); color: white; }
+        .btn-accent:hover { background: #7c3aed; }
+        .btn-google {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .75rem;
+            margin-bottom: 1rem;
+        }
+        .btn-google:hover { border-color: var(--accent); }
+        .btn-google svg { width: 18px; height: 18px; }
 
-        /* MODAL */
-        .modal-alert {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-            justify-content: center; align-items: center; z-index: 999; padding: 1rem;
-        }
-        .modal-alert.active { display: flex; }
-        .modal-content { background: #1e1e24; border-radius: 12px; width: 100%; max-width: 400px; padding: 1.5rem; border: 1px solid var(--border); }
-        .modal-header { font-size: 0.95rem; color: var(--muted); margin-bottom: 1rem; }
-        .modal-body { margin-bottom: 1.5rem; line-height: 1.5; }
-        .modal-body.success { color: var(--success); }
-        .modal-body.denied { color: var(--danger); }
-        .modal-body.admin { color: var(--accent); }
-        .modal-body .email { font-weight: bold; color: var(--text); word-break: break-all; }
-        .modal-footer { text-align: right; }
-        .modal-btn { background: transparent; border: none; color: var(--accent); font-weight: 500; font-size: 1rem; cursor: pointer; }
+        /* PÁGINAS OCULTAS */
+        #panel-socio, #panel-admin { display: none; }
 
-        /* NAVEGACIÓN GENERAL */
-        .base-nav {
-            background: rgba(13,13,21,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
-            position: sticky; top: 0; z-index: 100;
+        /* NAVEGACIÓN */
+        nav {
+            background: rgba(13,13,21,.85);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top:0;
+            z-index: 100;
         }
-        .nav-wrap { max-width: 1200px; margin: 0 auto; padding: 0 2rem; height: 70px; display: flex; justify-content: space-between; align-items: center; }
-        .brand { font-weight: 800; font-size: 1.3rem; background: linear-gradient(90deg, var(--accent), var(--accent-alt)); -webkit-background-clip: text; background-clip: text; color: transparent; text-decoration: none; }
-        .nav-actions { display: flex; gap: 1rem; align-items: center; }
-        .btn-logout { background: var(--danger); color: white; padding: 0.5rem 1rem; border-radius: 6px; border: none; cursor: pointer; font-size: 0.9rem; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem; }
-
-        /* PANEL SOCIOS */
-        #socio-panel { display: none; }
-        .hero { text-align: center; margin-bottom: 4rem; }
-        .hero h1 { font-size: clamp(2rem,5vw,3rem); margin-bottom: 1rem; }
-        .hero p { color: var(--muted); font-size: 1.2rem; max-width:750px; margin:0 auto; }
-        .grid-plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1.5rem; margin-bottom: 5rem; }
-        .plan-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; transition: transform 0.3s, border-color 0.3s; }
-        .plan-card:hover { transform: translateY(-5px); border-color: var(--accent); }
-        .plan-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
-        .plan-title { font-size: 1.25rem; font-weight: 700; }
-        .plan-badge { font-size: 0.75rem; padding: 0.25rem 0.75rem; border-radius: 20px; border: 1px solid; }
-        .badge-available { background: rgba(34,197,94,0.15); color: var(--success); border-color: rgba(34,197,94,0.3); }
-        .badge-recommended { background: rgba(6,182,212,0.15); color: var(--accent-alt); border-color: rgba(6,182,212,0.3); }
-        .plan-desc { color: var(--muted); margin-bottom: 1.5rem; font-size: 0.95rem; }
-        .plan-price { font-size: 1.5rem; font-weight: bold; margin-bottom: 1.5rem; color: var(--accent); }
-        .btn-plan { display: block; width: 100%; text-align: center; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 0.75rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: 0.2s; }
-        .btn-plan:hover { background: var(--accent); color: white; }
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 2rem; }
-        .feature-item { text-align: center; padding: 1.5rem; }
-        .feature-item i { font-size: 2rem; color: var(--accent); margin-bottom: 1rem; }
-        .feature-item h3 { margin-bottom: 0.5rem; }
-        .feature-item p { color: var(--muted); font-size: 0.9rem; }
-
-        /* PANEL ADMINISTRADOR */
-        #admin-panel { display: none; }
-        .admin-wrap { display: grid; grid-template-columns: 260px 1fr; gap: 2rem; }
-        .sidebar { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; height: fit-content; position: sticky; top: 90px; }
-        .sidebar-menu { list-style: none; }
-        .sidebar-menu li { margin-bottom: 0.75rem; }
-        .sidebar-menu a { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 8px; color: var(--muted); text-decoration: none; transition: 0.2s; }
-        .sidebar-menu a:hover, .sidebar-menu a.active { background: rgba(139,92,246,0.1); color: var(--accent); }
-        .admin-section { display: none; }
-        .admin-section.active { display: block; }
-        .panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
-        .panel-head h2 { font-size: 1.5rem; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1.25rem; margin-bottom: 2rem; }
-        .stat-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
-        .stat-box .num { font-size: 1.75rem; font-weight: bold; color: var(--accent); margin-bottom: 0.25rem; }
-        .stat-box .label { color: var(--muted); font-size: 0.9rem; }
-        .table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: rgba(139,92,246,0.05); color: var(--accent); font-weight: 600; font-size: 0.9rem; }
-        tr:hover { background: rgba(255,255,255,0.02); }
-        .tag { display: inline-block; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
-        .tag.ok { background: rgba(34,197,94,0.15); color: var(--success); }
-        .tag.blocked { background: rgba(239,68,68,0.15); color: var(--danger); }
-        .btn-sm { padding: 0.4rem 0.75rem; border-radius: 4px; border: none; font-size: 0.8rem; cursor: pointer; }
-        .btn-edit { background: var(--warning); color: #000; }
-        .btn-del { background: var(--danger); color: white; }
-        .form-admin { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; max-width: 600px; }
-        .form-row { margin-bottom: 1.25rem; }
-        .form-row label { display: block; margin-bottom: 0.5rem; color: var(--muted); font-size: 0.9rem; }
-        .form-row input, .form-row select { width: 100%; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem; color: var(--text); font-size: 1rem; }
-        .btn-save { background: var(--success); color: white; border: none; padding: 0.75rem 1.25rem; border-radius: 6px; cursor: pointer; font-weight: 600; }
-
-        @media (max-width: 900px) {
-            .admin-wrap { grid-template-columns: 1fr; }
-            .sidebar { position: static; }
+        .brand {
+            font-weight: 800;
+            font-size: 1.3rem;
+            background: linear-gradient(90deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text; color: transparent;
         }
-        @media (max-width: 768px) {
-            .nav-wrap { padding: 0 1rem; }
-            .container { padding: 2rem 1rem; }
+        .btn-salir { background: var(--danger); color: white; padding: .5rem 1rem; border-radius: 6px; border: none; cursor: pointer; }
+        .contenido { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem; }
+
+        /* SIDEBAR ADMIN */
+        .admin-layout { display: grid; grid-template-columns: 260px 1fr; gap: 2rem; }
+        .sidebar {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: fit-content;
         }
+        .sidebar ul { list-style: none; }
+        .sidebar a {
+            display: block;
+            padding: .75rem 1rem;
+            margin-bottom: .5rem;
+            border-radius: 8px;
+            color: var(--muted);
+            text-decoration: none;
+        }
+        .sidebar a.activo, .sidebar a:hover { background: rgba(139,92,246,.1); color: var(--accent); }
+        .seccion { display: none; }
+        .seccion.activa { display: block; }
+
+        /* TARJETAS Y TABLAS */
+        .grid-planes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap:1.5rem; margin-top: 2rem; }
+        .tarjeta { background: var(--card); border:1px solid var(--border); border-radius:12px; padding:2rem; }
+        .tabla-wrap { background: var(--card); border:1px solid var(--border); border-radius:12px; overflow-x:auto; margin-top:1rem; }
+        table { width:100%; border-collapse: collapse; }
+        th, td { padding:1rem; text-align:left; border-bottom:1px solid var(--border); }
     </style>
 </head>
 <body>
-    <!-- PANTALLA INICIO -->
-    <div id="login-screen">
-        <div class="login-container">
-            <div class="login-header">
-                <div class="logo">PROXY M1NX</div>
-                <h1>Bienvenido de nuevo</h1>
-                <p>Ingresa según tu tipo de cuenta.</p>
+
+<!-- PANTALLA DE INICIO -->
+<div id="login">
+    <div class="container-login">
+        <div class="cabecera">
+            <div class="logo">PROXY M1NX</div>
+            <h1>Bienvenido</h1>
+            <p style="color:var(--muted);">Acceso directo sin errores</p>
+        </div>
+        <div class="caja-login">
+            <!-- ADMIN -->
+            <button class="btn btn-google" id="btnAdmin">
+                <svg viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l2.96-2.96C18.45 2.09 15.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Iniciar como ADMIN
+            </button>
+            <div class="grupo">
+                <label>Correo Admin</label>
+                <input type="email" id="inputCorreo" placeholder="Tu correo autorizado">
             </div>
-            <div class="login-box">
-                <button class="btn-google" id="btnGoogle">
-                    <svg viewBox="0 0 24 24">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l2.96-2.96C18.45 2.09 15.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                    </svg>
-                    Continuar con Google (Admin)
-                </button>
-                <div class="divider"><span>Acceso Socios</span></div>
-                <form id="socioForm">
-                    <div class="form-group">
-                        <label for="user">Usuario</label>
-                        <input type="text" id="user" placeholder="Tu usuario" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="pin">PIN de Acceso</label>
-                        <input type="password" id="pin" placeholder="Tu PIN seguro" required>
-                    </div>
-                    <div class="form-options">
-                        <label class="remember"><input type="checkbox"> Mantener sesión</label>
-                    </div>
-                    <button type="submit" class="btn-primary">Ingresar como Socio</button>
-                </form>
-            </div>
-            <div class="login-footer">¿Problemas? Contacta al administrador.</div>
+
+            <div class="divider"><span>ACCESO SOCIOS</span></div>
+
+            <!-- SOCIOS -->
+            <form id="formSocio">
+                <div class="grupo">
+                    <label>Usuario</label>
+                    <input type="text" id="usu" required>
+                </div>
+                <div class="grupo">
+                    <label>PIN</label>
+                    <input type="password" id="pin" required>
+                </div>
+                <button type="submit" class="btn btn-accent">Ingresar Socio</button>
+            </form>
         </div>
     </div>
+</div>
 
-    <!-- MODAL -->
-    <div class="modal-alert" id="modal">
-        <div class="modal-content">
-            <div class="modal-header">team-m1nx.github.io dice:</div>
-            <div class="modal-body" id="modalBody"></div>
-            <div class="modal-footer"><button class="modal-btn" id="modalOk">Aceptar</button></div>
+<!-- PANEL SOCIO -->
+<div id="panel-socio">
+    <nav>
+        <div class="brand">SOCIO — PROXY M1NX</div>
+        <button class="btn-salir" onclick="volver()"><i class="fas fa-sign-out-alt"></i> Salir</button>
+    </nav>
+    <div class="contenido">
+        <h1 style="text-align:center;">Bienvenido Socio</h1>
+        <p style="text-align:center;color:var(--muted);">Servicios activos</p>
+        <div class="grid-planes">
+            <div class="tarjeta"><h3>Básico</h3><p style="color:var(--muted);">Conexión estable</p><div style="font-size:1.5rem;color:var(--accent);margin-top:1rem;">$100</div></div>
+            <div class="tarjeta"><h3>Avanzado</h3><p style="color:var(--muted);">Rápido y seguro</p><div style="font-size:1.5rem;color:var(--accent);margin-top:1rem;">$150</div></div>
         </div>
     </div>
+</div>
 
-    <!-- PANEL SOCIOS -->
-    <div id="socio-panel">
-        <nav class="base-nav">
-            <div class="nav-wrap">
-                <a href="#" class="brand">PROXY M1NX SOCIOS</a>
-                <div class="nav-actions"><button class="btn-logout" id="btnLogoutSocio"><i class="fas fa-sign-out-alt"></i> Salir</button></div>
-            </div>
-        </nav>
-        <div class="container">
-            <section class="hero">
-                <h1>Infraestructura de alto rendimiento</h1>
-                <p>Estabilidad, velocidad y anonimato en un solo lugar.</p>
-            </section>
-            <div class="grid-plans">
-                <div class="plan-card">
-                    <div class="plan-header"><h3 class="plan-title">Socio Básico</h3><span class="plan-badge badge-available">Disponible</span></div>
-                    <p class="plan-desc">Ideal para uso general. Conexión estable y baja latencia.</p>
-                    <div class="plan-price">$100 MXN</div><a href="#" class="btn-plan">Seleccionar</a>
-                </div>
-                <div class="plan-card">
-                    <div class="plan-header"><h3 class="plan-title">Socio Avanzado</h3><span class="plan-badge badge-recommended">Recomendado</span></div>
-                    <p class="plan-desc">Alto rendimiento, ubicaciones exclusivas y soporte 24/7.</p>
-                    <div class="plan-price">$150 MXN</div><a href="#" class="btn-plan">Seleccionar</a>
-                </div>
-                <div class="plan-card">
-                    <div class="plan-header"><h3 class="plan-title">Socio Estrella</h3><span class="plan-badge badge-available">Disponible</span></div>
-                    <p class="plan-desc">Acceso total a todos los servicios. La opción más elegida.</p>
-                    <div class="plan-price">$250 MXN</div><a href="#" class="btn-plan">Seleccionar</a>
+<!-- PANEL ADMIN -->
+<div id="panel-admin">
+    <nav>
+        <div class="brand">ADMIN — PROXY M1NX</div>
+        <button class="btn-salir" onclick="volver()"><i class="fas fa-sign-out-alt"></i> Salir</button>
+    </nav>
+    <div class="contenido admin-layout">
+        <aside class="sidebar">
+            <ul>
+                <li><a href="#" class="activo" data-sec="inicio"><i class="fas fa-home"></i> Inicio</a></li>
+                <li><a href="#" data-sec="users"><i class="fas fa-users"></i> Usuarios</a></li>
+            </ul>
+        </aside>
+        <main>
+            <div id="inicio" class="seccion activa">
+                <h2>Resumen</h2>
+                <div class="tabla-wrap">
+                    <table><thead><tr><th>Dato</th><th>Valor</th></tr></thead>
+                    <tbody><tr><td>Estado</td><td style="color:var(--success);">En línea</td></tr></tbody></table>
                 </div>
             </div>
-            <div class="features">
-                <div class="feature-item"><i class="fas fa-tachometer-alt"></i><h3>Velocidad</h3><p>Red optimizada al máximo.</p></div>
-                <div class="feature-item"><i class="fas fa-shield-alt"></i><h3>Seguridad</h3><p>Cifrado total y protección avanzada.</p></div>
-                <div class="feature-item"><i class="fas fa-server"></i><h3>Estabilidad</h3><p>Garantía 99.9% de actividad.</p></div>
+            <div id="users" class="seccion">
+                <h2>Gestión de Usuarios</h2>
+                <div class="tabla-wrap">
+                    <table><thead><tr><th>Usuario</th><th>Estado</th></tr></thead>
+                    <tbody>
+                        <tr><td>socio_01</td><td style="color:var(--success);">Activo</td></tr>
+                    </tbody>
+                </div>
             </div>
-        </div>
+        </main>
     </div>
+</div>
 
-    <!-- PANEL ADMINISTRADOR -->
-    <div id="admin-panel">
-        <nav class="base-nav">
-            <div class="nav-wrap">
-                <span class="brand">⚙️ PANEL ADMIN — PROXY M1NX</span>
-                <div class="nav-actions"><button class="btn-logout" id="btnLogoutAdmin"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button></div>
-            </div>
-        </nav>
-        <div class="container admin-wrap">
-            <aside class="sidebar">
-                <ul class="sidebar-menu">
-                    <li><a href="#" class="active" data-section="inicio"><i class="fas fa-home"></i> Inicio</a></li>
-                    <li><a href="#" data-section="socios"><i class="fas fa-users"></i> Socios</a></li>
-                    <li><a href="#" data-section="planes"><i class="fas fa-box"></i> Planes</a></li>
-                    <li><a href="#" data-section="config"><i class="fas fa-cog"></i> Configuración</a></li>
-                </ul>
-            </aside>
-            <main>
-                <section id="inicio" class="admin-section active">
-                    <div class="panel-head"><h2>Resumen del Sistema</h2><span style="color:var(--success);font-size:.9rem;">● En línea</span></div>
-                    <div class="stats-grid">
-                        <div class="stat-box"><div class="num">142</div><div class="label">Socios Activos</div></div>
-                        <div class="stat-box"><div class="num">$24,500</div><div class="label">Ingresos (MXN)</div></div>
-                        <div class="stat-box"><div class="num">99.9%</div><div class="label">Estabilidad</div></div>
-                        <div class="stat-box"><div class="num">3</div><div class="label">Planes Activos</div></div>
-                    </div>
-                    <div class="table-wrap">
-                        <table><thead><tr><th>Usuario</th><th>Plan</th><th>Estado</th><th>Último Acceso</th></tr></thead><tbody>
-                            <tr><td>socio_01</td><td>Básico</td><td><span class="tag ok">Activo</span></td><td>Hace 10 min</td></tr>
-                            <tr><td>elite_user</td><td>Estrella</td><td><span class="tag ok">Activo</span></td><td>Hace 25 min</td></tr>
-                            <tr><td>test_cuenta</td><td>—</td><td><span class="tag blocked">Bloqueado</span></td><td>Hace 2 días</td></tr>
-                        </tbody></table>
-                    </div>
-                </section>
-                <section id="socios" class="admin-section">
-                    <div class="panel-head"><h2>Gestión de Socios</h2><button class="btn-save" id="btnNuevoSocio"><i class="fas fa-plus"></i> Nuevo Socio</button></div>
-                    <div class="table-wrap">
-                        <table><thead><tr><th>ID</th><th>Usuario</th><th>Correo/Contacto</th><th>Plan</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>
-                            <tr><td>001</td><td>socio_01</td><td>info@ejemplo.com</td><td>Básico</td><td><span class="tag ok">Activo</span></td><td><button class="btn-sm btn-edit">Editar</button> <button class="btn-sm btn-del">Bloquear</button></td></tr>
-                            <tr><td>002</td><td>elite_user</td><td>contacto@ejemplo.com</td><td>Estrella</td><td><span class="tag ok">Activo</span
+<script>
+    // CONFIGURACIÓN
+    const CORREO_ADMIN = "jesusgutierrezmontanez05@gmail.com";
+
+    // ELEMENTOS
+    const loginEl = document.getElementById('login');
+    const panelSocio = document.getElementById('panel-socio');
+    const panelAdmin = document.getElementById('panel-admin');
+    const formSocio = document.getElementById('formSocio');
+    const btnAdmin = document.getElementById('btnAdmin');
+    const inputCorreo = document.getElementById('inputCorreo');
+
+    // FUNCIONES
+    function volver() {
+        loginEl.style.display = 'flex';
+        panelSocio.style.display = 'none';
+        panelAdmin.style.display = 'none';
+    }
+    function irAdmin() {
+        loginEl.style.display = 'none';
+        panelSocio.style.display = 'none';
+        panelAdmin.style.display = 'block';
+    }
+    function irSocio() {
+        loginEl.style.display = 'none';
+        panelAdmin.style.display = 'none';
+        panelSocio.style.display = 'block';
+    }
+
+    // EVENTO ADMIN
+    btnAdmin.addEventListener('click', () => {
+        const correo = inputCorreo.value.trim().toLowerCase();
+        if (correo === CORREO_ADMIN.toLowerCase()) {
+            irAdmin();
+        } else {
+            alert("❌ Correo incorrecto");
+        }
+    });
+
+    // EVENTO SOCIO
+    formSocio.addEventListener('submit', (e) => {
+        e.preventDefault();
+        irSocio();
+    });
+
+    // NAVEGACIÓN ADMIN
+    document.querySelectorAll('.sidebar a').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('activo'));
+            link.classList.add('activo');
+            const sec = link.dataset.sec;
+            document.querySelectorAll('.seccion').forEach(s => s.classList.remove('activa'));
+            document.getElementById(sec).classList.add('activa');
+        });
+    });
+</script>
+</body>
+</html>
