@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROXY M1NX - Acceso y Panel de Socios</title>
+    <title>PROXY M1NX - Sistema Completo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
@@ -17,6 +17,7 @@
             --input-bg: #0a0a10;
             --success: #22c55e;
             --danger: #ef4444;
+            --warning: #f59e0b;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -29,7 +30,7 @@
             min-height: 100vh;
         }
 
-        /* PANTALLA DE LOGIN */
+        /* PANTALLA LOGIN */
         #login-screen {
             display: flex;
             align-items: center;
@@ -59,12 +60,8 @@
         }
         .btn-google:hover { border-color: var(--accent); background: rgba(139,92,246,.05); }
         .btn-google svg { width: 18px; height: 18px; }
-        .divider {
-            position: relative; text-align: center; margin-bottom: 2rem;
-        }
-        .divider::before {
-            content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: var(--border);
-        }
+        .divider { position: relative; text-align: center; margin-bottom: 2rem; }
+        .divider::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: var(--border); }
         .divider span { background: var(--card); padding: 0 1rem; color: var(--muted); position: relative; }
         .form-group { margin-bottom: 1.5rem; }
         .form-group label { display: block; margin-bottom: .6rem; color: var(--muted); font-size: .9rem; }
@@ -73,9 +70,7 @@
             padding: .9rem 1rem; color: var(--text); font-size: 1rem; transition: .2s;
         }
         .form-group input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(139,92,246,.15); }
-        .form-options {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; font-size: .9rem;
-        }
+        .form-options { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; font-size: .9rem; }
         .remember { display: flex; align-items: center; gap: .5rem; color: var(--muted); cursor: pointer; }
         .remember input { accent-color: var(--accent); }
         .btn-primary {
@@ -92,45 +87,34 @@
             justify-content: center; align-items: center; z-index: 999; padding: 1rem;
         }
         .modal-alert.active { display: flex; }
-        .modal-content {
-            background: #1e1e24; border-radius: 12px; width: 100%; max-width: 400px;
-            padding: 1.5rem; border: 1px solid var(--border);
-        }
+        .modal-content { background: #1e1e24; border-radius: 12px; width: 100%; max-width: 400px; padding: 1.5rem; border: 1px solid var(--border); }
         .modal-header { font-size: .95rem; color: var(--muted); margin-bottom: 1rem; }
         .modal-body { margin-bottom: 1.5rem; line-height: 1.5; }
         .modal-body.success { color: var(--success); }
         .modal-body.denied { color: var(--danger); }
+        .modal-body.admin { color: var(--accent); }
         .modal-body .email { font-weight: bold; color: var(--text); word-break: break-all; }
         .modal-footer { text-align: right; }
         .modal-btn { background: transparent; border: none; color: var(--accent); font-weight: 500; font-size: 1rem; cursor: pointer; }
 
-        /* PANTALLA DE SOCIOS (OCULTA AL INICIO) */
-        #dashboard-screen { display: none; }
-        nav {
+        /* ESTRUCTURAS PANELES */
+        #socio-panel, #admin-panel { display: none; }
+        .base-nav {
             background: rgba(13,13,21,.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
             position: sticky; top: 0; z-index: 100;
         }
-        .nav-container {
-            max-width: 1100px; margin: 0 auto; padding: 0 2rem; height: 70px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .nav-logo { font-weight: 800; color: var(--accent); text-decoration: none; font-size: 1.3rem; }
-        .nav-links { display: flex; gap: 2rem; list-style: none; }
-        .nav-links a { color: var(--muted); text-decoration: none; transition: color .2s; }
-        .nav-links a:hover, .nav-links a.active { color: var(--text); }
-        .btn-logout { background: var(--danger); color: white; padding: .5rem 1rem; border-radius: 6px; text-decoration: none; font-size: .9rem; }
+        .nav-wrap { max-width: 1200px; margin: 0 auto; padding: 0 2rem; height: 70px; display: flex; justify-content: space-between; align-items: center; }
+        .brand { font-weight: 800; font-size: 1.3rem; background: linear-gradient(90deg, var(--accent), var(--accent-alt)); -webkit-background-clip: text; color: transparent; text-decoration: none; }
+        .nav-actions { display: flex; gap: 1rem; align-items: center; }
+        .btn-logout { background: var(--danger); color: white; padding: .5rem 1rem; border-radius: 6px; border: none; cursor: pointer; font-size: .9rem; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem; }
 
-        .container { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
-        .hero { text-align: center; margin-bottom: 5rem; }
+        /* PANEL SOCIOS */
+        .hero { text-align: center; margin-bottom: 4rem; }
         .hero h1 { font-size: clamp(2rem,5vw,3rem); margin-bottom: 1rem; }
         .hero p { color: var(--muted); font-size: 1.2rem; max-width:750px; margin:0 auto; }
-        .grid-plans {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1.5rem; margin-bottom: 6rem;
-        }
-        .plan-card {
-            background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem;
-            transition: transform .3s, border-color .3s;
-        }
+        .grid-plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1.5rem; margin-bottom: 5rem; }
+        .plan-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; transition: transform .3s, border-color .3s; }
         .plan-card:hover { transform: translateY(-5px); border-color: var(--accent); }
         .plan-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
         .plan-title { font-size: 1.25rem; font-weight: 700; }
@@ -139,27 +123,54 @@
         .badge-recommended { background: rgba(6,182,212,.15); color: var(--accent-alt); border-color: rgba(6,182,212,.3); }
         .plan-desc { color: var(--muted); margin-bottom: 1.5rem; font-size: .95rem; }
         .plan-price { font-size: 1.5rem; font-weight: bold; margin-bottom: 1.5rem; color: var(--accent); }
-        .btn-plan {
-            display: block; width: 100%; text-align: center; background: transparent; border: 1px solid var(--accent);
-            color: var(--accent); padding: .75rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: .2s;
-        }
+        .btn-plan { display: block; width: 100%; text-align: center; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: .75rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: .2s; }
         .btn-plan:hover { background: var(--accent); color: white; }
-        .features {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 2rem;
-        }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 2rem; }
         .feature-item { text-align: center; padding: 1.5rem; }
         .feature-item i { font-size: 2rem; color: var(--accent); margin-bottom: 1rem; }
         .feature-item h3 { margin-bottom: .5rem; }
         .feature-item p { color: var(--muted); font-size: .9rem; }
 
-        @media (max-width:768px) {
-            .nav-links { display: none; }
-            .container { padding: 2rem 1.5rem; }
+        /* PANEL ADMINISTRADOR */
+        .admin-wrap { display: grid; grid-template-columns: 260px 1fr; gap: 2rem; }
+        .sidebar { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; height: fit-content; position: sticky; top: 90px; }
+        .sidebar-menu { list-style: none; }
+        .sidebar-menu li { margin-bottom: .75rem; }
+        .sidebar-menu a { display: flex; align-items: center; gap: .75rem; padding: .75rem 1rem; border-radius: 8px; color: var(--muted); text-decoration: none; transition: .2s; }
+        .sidebar-menu a:hover, .sidebar-menu a.active { background: rgba(139,92,246,.1); color: var(--accent); }
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
+        .panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+        .panel-head h2 { font-size: 1.5rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1.25rem; margin-bottom: 2rem; }
+        .stat-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
+        .stat-box .num { font-size: 1.75rem; font-weight: bold; color: var(--accent); margin-bottom: .25rem; }
+        .stat-box .label { color: var(--muted); font-size: .9rem; }
+        .table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: rgba(139,92,246,.05); color: var(--accent); font-weight: 600; font-size: .9rem; }
+        tr:hover { background: rgba(255,255,255,.02); }
+        .tag { display: inline-block; padding: .25rem .6rem; border-radius: 4px; font-size: .75rem; font-weight: 600; }
+        .tag.ok { background: rgba(34,197,94,.15); color: var(--success); }
+        .tag.blocked { background: rgba(239,68,68,.15); color: var(--danger); }
+        .btn-sm { padding: .4rem .75rem; border-radius: 4px; border: none; font-size: .8rem; cursor: pointer; }
+        .btn-edit { background: var(--warning); color: #000; }
+        .btn-del { background: var(--danger); color: white; }
+        .form-admin { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; max-width: 600px; }
+        .form-row { margin-bottom: 1.25rem; }
+        .form-row label { display: block; margin-bottom: .5rem; color: var(--muted); font-size: .9rem; }
+        .form-row input, .form-row select { width: 100%; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; padding: .75rem; color: var(--text); }
+        .btn-save { background: var(--success); color: white; border: none; padding: .75rem 1.25rem; border-radius: 6px; cursor: pointer; font-weight: 600; }
+
+        @media (max-width: 900px) {
+            .admin-wrap { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
         }
     </style>
 </head>
 <body>
-    <!-- PANTALLA INICIO: LOGIN -->
+    <!-- PANTALLA INICIO -->
     <div id="login-screen">
         <div class="login-container">
             <div class="login-header">
@@ -175,17 +186,17 @@
                         <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                         <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l2.96-2.96C18.45 2.09 15.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                     </svg>
-                    Continuar con Google
+                    Continuar con Google (Admin)
                 </button>
                 <div class="divider"><span>Acceso Socios</span></div>
                 <form id="socioForm">
                     <div class="form-group">
-                        <label for="username">Usuario</label>
-                        <input type="text" id="username" placeholder="Tu usuario registrado" required>
+                        <label for="user">Usuario</label>
+                        <input type="text" id="user" placeholder="Tu usuario" required>
                     </div>
                     <div class="form-group">
                         <label for="pin">PIN de Acceso</label>
-                        <input type="password" id="pin" placeholder="Tu código PIN seguro" required>
+                        <input type="password" id="pin" placeholder="Tu PIN seguro" required>
                     </div>
                     <div class="form-options">
                         <label class="remember"><input type="checkbox"> Mantener sesión</label>
@@ -198,132 +209,96 @@
     </div>
 
     <!-- MODAL -->
-    <div class="modal-alert" id="googleModal">
+    <div class="modal-alert" id="modal">
         <div class="modal-content">
             <div class="modal-header">team-m1nx.github.io dice:</div>
             <div class="modal-body" id="modalBody"></div>
-            <div class="modal-footer"><button class="modal-btn" id="modalClose">Aceptar</button></div>
+            <div class="modal-footer"><button class="modal-btn" id="modalOk">Aceptar</button></div>
         </div>
     </div>
 
-    <!-- PANTALLA DE SOCIOS / PANEL -->
-    <div id="dashboard-screen">
-        <nav>
-            <div class="nav-container">
-                <a href="#" class="nav-logo">PROXY M1NX SOCIOS</a>
-                <ul class="nav-links">
-                    <li><a href="#" class="active">Inicio</a></li>
-                    <li><a href="#planes">Planes</a></li>
-                    <li><a href="#caracteristicas">Características</a></li>
-                </ul>
-                <a href="#" class="btn-logout" id="btnLogout">Cerrar sesión</a>
+    <!-- PANEL SOCIOS -->
+    <div id="socio-panel">
+        <nav class="base-nav">
+            <div class="nav-wrap">
+                <a href="#" class="brand">PROXY M1NX SOCIOS</a>
+                <div class="nav-actions"><button class="btn-logout" onclick="volverLogin()"><i class="fas fa-sign-out-alt"></i> Salir</button></div>
             </div>
         </nav>
         <div class="container">
             <section class="hero">
                 <h1>Infraestructura de alto rendimiento</h1>
-                <p>La solución definitiva para tus proyectos. Estabilidad, velocidad y anonimato en un solo lugar.</p>
+                <p>Estabilidad, velocidad y anonimato en un solo lugar.</p>
             </section>
-            <div id="planes" class="grid-plans">
+            <div class="grid-plans">
                 <div class="plan-card">
-                    <div class="plan-header">
-                        <h3 class="plan-title">Socio Básico</h3>
-                        <span class="plan-badge badge-available">Disponible</span>
-                    </div>
-                    <p class="plan-desc">Ideal para uso general. Conexión estable y baja latencia. Sin límites de transferencia.</p>
-                    <div class="plan-price">$100 MXN</div>
-                    <a href="#" class="btn-plan">Seleccionar</a>
+                    <div class="plan-header"><h3 class="plan-title">Socio Básico</h3><span class="plan-badge badge-available">Disponible</span></div>
+                    <p class="plan-desc">Ideal para uso general. Conexión estable y baja latencia.</p>
+                    <div class="plan-price">$100 MXN</div><a href="#" class="btn-plan">Seleccionar</a>
                 </div>
                 <div class="plan-card">
-                    <div class="plan-header">
-                        <h3 class="plan-title">Socio Avanzado</h3>
-                        <span class="plan-badge badge-recommended">Recomendado</span>
-                    </div>
-                    <p class="plan-desc">Alto rendimiento, ubicaciones exclusivas y soporte prioritario 24/7.</p>
-                    <div class="plan-price">$150 MXN</div>
-                    <a href="#" class="btn-plan">Seleccionar</a>
+                    <div class="plan-header"><h3 class="plan-title">Socio Avanzado</h3><span class="plan-badge badge-recommended">Recomendado</span></div>
+                    <p class="plan-desc">Alto rendimiento, ubicaciones exclusivas y soporte 24/7.</p>
+                    <div class="plan-price">$150 MXN</div><a href="#" class="btn-plan">Seleccionar</a>
                 </div>
                 <div class="plan-card">
-                    <div class="plan-header">
-                        <h3 class="plan-title">Socio Estrella</h3>
-                        <span class="plan-badge badge-available">Disponible</span>
-                    </div>
-                    <p class="plan-desc">Acceso total a todos los servicios. La opción más elegida por desarrolladores.</p>
-                    <div class="plan-price">$250 MXN</div>
-                    <a href="#" class="btn-plan">Seleccionar</a>
+                    <div class="plan-header"><h3 class="plan-title">Socio Estrella</h3><span class="plan-badge badge-available">Disponible</span></div>
+                    <p class="plan-desc">Acceso total a todos los servicios. La opción más elegida.</p>
+                    <div class="plan-price">$250 MXN</div><a href="#" class="btn-plan">Seleccionar</a>
                 </div>
             </div>
-            <div id="caracteristicas" class="features">
-                <div class="feature-item">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <h3>Velocidad</h3>
-                    <p>Red optimizada para máxima velocidad.</p>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-shield-alt"></i>
-                    <h3>Seguridad</h3>
-                    <p>Protección avanzada y cifrado total.</p>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-server"></i>
-                    <h3>Estabilidad</h3>
-                    <p>Tiempo de actividad garantizado 99.9%.</p>
-                </div>
+            <div class="features">
+                <div class="feature-item"><i class="fas fa-tachometer-alt"></i><h3>Velocidad</h3><p>Red optimizada al máximo.</p></div>
+                <div class="feature-item"><i class="fas fa-shield-alt"></i><h3>Seguridad</h3><p>Cifrado total y protección avanzada.</p></div>
+                <div class="feature-item"><i class="fas fa-server"></i><h3>Estabilidad</h3><p>Garantía 99.9% de actividad.</p></div>
             </div>
         </div>
     </div>
 
-    <script>
-        const CORREO_ADMIN = "jesusgutierrezmontanez05@gmail.com";
-        const loginScreen = document.getElementById('login-screen');
-        const dashScreen = document.getElementById('dashboard-screen');
-        const modal = document.getElementById('googleModal');
-        const modalBody = document.getElementById('modalBody');
-        const modalClose = document.getElementById('modalClose');
-
-        function mostrarPanel() {
-            loginScreen.style.display = 'none';
-            dashScreen.style.display = 'block';
-            window.scrollTo(0,0);
-        }
-        function mostrarLogin() {
-            dashScreen.style.display = 'none';
-            loginScreen.style.display = 'flex';
-        }
-
-        // Google
-        document.getElementById('btnGoogle').addEventListener('click', () => {
-            const cuenta = prompt("🔐 Selecciona cuenta de Google (escribe correo):", "");
-            if (!cuenta) return;
-            if (cuenta.trim().toLowerCase() === CORREO_ADMIN.toLowerCase()) {
-                modalBody.className = "modal-body success";
-                modalBody.innerHTML = `<p>✅ Cuenta autorizada:</p><p class="email">${cuenta}</p><p>Accediendo al Panel de Administrador...</p>`;
-                modal.classList.add('active');
-                setTimeout(() => { modal.classList.remove('active'); mostrarPanel(); }, 1200);
-            } else {
-                modalBody.className = "modal-body denied";
-                modalBody.innerHTML = `<p>❌ Acceso denegado:</p><p class="email">${cuenta}</p><p>No eres el administrador autorizado.</p>`;
-                modal.classList.add('active');
-            }
-        });
-        modalClose.addEventListener('click', () => modal.classList.remove('active'));
-
-        // Socios
-        document.getElementById('socioForm').addEventListener('submit', e => {
-            e.preventDefault();
-            const u = document.getElementById('username');
-            const p = document.getElementById('pin');
-            if (!u.value.trim() || !p.value.trim()) { alert("Completa los campos"); return; }
-            const btn = e.target.querySelector('.btn-primary');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
-            setTimeout(() => { mostrarPanel(); }, 1000);
-        });
-
-        // Cerrar sesión
-        document.getElementById('btnLogout').addEventListener('click', e => {
-            e.preventDefault();
-            mostrarLogin();
-        });
-    </script>
-</body>
-</html>
+    <!-- PANEL ADMINISTRADOR -->
+    <div id="admin-panel">
+        <nav class="base-nav">
+            <div class="nav-wrap">
+                <span class="brand">⚙️ PANEL ADMIN — PROXY M1NX</span>
+                <div class="nav-actions"><button class="btn-logout" onclick="volverLogin()"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button></div>
+            </div>
+        </nav>
+        <div class="container admin-wrap">
+            <aside class="sidebar">
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active" data-section="inicio"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="#" data-section="socios"><i class="fas fa-users"></i> Socios</a></li>
+                    <li><a href="#" data-section="planes"><i class="fas fa-box"></i> Planes</a></li>
+                    <li><a href="#" data-section="config"><i class="fas fa-cog"></i> Configuración</a></li>
+                </ul>
+            </aside>
+            <main>
+                <section id="inicio" class="admin-section active">
+                    <div class="panel-head"><h2>Resumen del Sistema</h2><span style="color:var(--success);font-size:.9rem;">● En línea</span></div>
+                    <div class="stats-grid">
+                        <div class="stat-box"><div class="num">142</div><div class="label">Socios Activos</div></div>
+                        <div class="stat-box"><div class="num">$24,500</div><div class="label">Ingresos (MXN)</div></div>
+                        <div class="stat-box"><div class="num">99.9%</div><div class="label">Estabilidad</div></div>
+                        <div class="stat-box"><div class="num">3</div><div class="label">Planes Activos</div></div>
+                    </div>
+                    <div class="table-wrap">
+                        <table><thead><tr><th>Usuario</th><th>Plan</th><th>Estado</th><th>Último Acceso</th></tr></thead><tbody>
+                            <tr><td>socio_01</td><td>Básico</td><td><span class="tag ok">Activo</span></td><td>Hace 10 min</td></tr>
+                            <tr><td>elite_user</td><td>Estrella</td><td><span class="tag ok">Activo</span></td><td>Hace 25 min</td></tr>
+                            <tr><td>test_cuenta</td><td>—</td><td><span class="tag blocked">Bloqueado</span></td><td>Hace 2 días</td></tr>
+                        </tbody></table>
+                    </div>
+                </section>
+                <section id="socios" class="admin-section">
+                    <div class="panel-head"><h2>Gestión de Socios</h2><button class="btn-save" onclick="alert('Formulario agregar socio listo')"><i class="fas fa-plus"></i> Nuevo Socio</button></div>
+                    <div class="table-wrap">
+                        <table><thead><tr><th>ID</th><th>Usuario</th><th>Correo/Contacto</th><th>Plan</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>
+                            <tr><td>001</td><td>socio_01</td><td>info@ejemplo.com</td><td>Básico</td><td><span class="tag ok">Activo</span></td><td><button class="btn-sm btn-edit">Editar</button> <button class="btn-sm btn-del">Bloquear</button></td></tr>
+                            <tr><td>002</td><td>elite_user</td><td>contacto@ejemplo.com</td><td>Estrella</td><td><span class="tag ok">Activo</span></td><td><button class="btn-sm btn-edit">Editar</button> <button class="btn-sm btn-del">Bloquear</button></td></tr>
+                        </tbody></table>
+                    </div>
+                </section>
+                <section id="planes" class="admin-section">
+                    <div class="panel-head"><h2>Editar Planes y Precios</h2></div>
+                    <form class="form-admin">
+                        <div class="f
