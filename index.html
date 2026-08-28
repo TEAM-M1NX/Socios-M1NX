@@ -3,339 +3,327 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROXY M1NX - SOCIOS VIP</title>
+    <title>PROXY M1NX - Acceso y Panel de Socios</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         :root {
-            --bg-dark: #05050a;
-            --bg-card: #0d0d15;
-            --bg-card-2: #12121d;
+            --bg: #05050a;
+            --card: #0d0d15;
             --border: #1a1a2e;
-            --accent: #8b5cf6; /* Color original BlackLink */
+            --accent: #8b5cf6;
             --accent-alt: #06b6d4;
-            --text-white: #ffffff;
-            --text-gray: #a1a1aa;
+            --text: #ffffff;
+            --muted: #a1a1aa;
+            --input-bg: #0a0a10;
             --success: #22c55e;
             --danger: #ef4444;
         }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-white);
-            line-height: 1.6;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
             background-image: 
-                radial-gradient(circle at 0% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 100% 0%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
+                radial-gradient(circle at 0% 0%, rgba(139,92,246,0.06) 0%, transparent 40%),
+                radial-gradient(circle at 100% 0%, rgba(6,182,212,0.04) 0%, transparent 40%);
             min-height: 100vh;
         }
 
-        /* NAVEGACIÓN - IGUAL A BLACKLINK */
-        nav {
-            background: rgba(5,5,10,0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 999;
-            padding: 0 2rem;
-        }
-
-        .nav-wrapper {
-            max-width: 1200px;
-            margin: 0 auto;
+        /* PANTALLA DE LOGIN */
+        #login-screen {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            height: 70px;
+            justify-content: center;
+            padding: 2rem;
+            min-height: 100vh;
         }
-
+        .login-container { width: 100%; max-width: 420px; }
+        .login-header { text-align: center; margin-bottom: 2.5rem; }
         .logo {
-            font-size: 1.35rem;
-            font-weight: 800;
+            font-size: 1.8rem; font-weight: 800;
             background: linear-gradient(90deg, var(--accent), var(--accent-alt));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-decoration: none;
+            -webkit-background-clip: text; color: transparent;
+            margin-bottom: 1rem; display: inline-block;
         }
-
-        .nav-menu {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-            align-items: center;
+        .login-header h1 { font-size: 1.75rem; margin-bottom: .75rem; }
+        .login-header p { color: var(--muted); }
+        .login-box {
+            background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+            padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,.3);
         }
-
-        .nav-menu a {
-            color: var(--text-gray);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: color 0.2s;
+        .btn-google {
+            width: 100%; background: transparent; border: 1px solid var(--border); color: var(--text);
+            padding: .85rem 1rem; border-radius: 8px; font-size: .95rem; font-weight: 500;
+            display: flex; align-items: center; justify-content: center; gap: .75rem;
+            margin-bottom: 2rem; cursor: pointer; transition: .2s;
         }
-
-        .nav-menu a:hover, .nav-menu a.active {
-            color: var(--text-white);
+        .btn-google:hover { border-color: var(--accent); background: rgba(139,92,246,.05); }
+        .btn-google svg { width: 18px; height: 18px; }
+        .divider {
+            position: relative; text-align: center; margin-bottom: 2rem;
         }
-
-        .btn-login {
-            background: var(--accent);
-            padding: 0.5rem 1.25rem;
-            border-radius: 6px;
-            color: white !important;
+        .divider::before {
+            content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: var(--border);
         }
-
-        /* CONTENEDOR PRINCIPAL */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
+        .divider span { background: var(--card); padding: 0 1rem; color: var(--muted); position: relative; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: .6rem; color: var(--muted); font-size: .9rem; }
+        .form-group input {
+            width: 100%; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px;
+            padding: .9rem 1rem; color: var(--text); font-size: 1rem; transition: .2s;
         }
-
-        /* HERO SECTION */
-        .hero {
-            text-align: center;
-            margin-bottom: 5rem;
+        .form-group input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(139,92,246,.15); }
+        .form-options {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; font-size: .9rem;
         }
-
-        .hero h1 {
-            font-size: 3.2rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
+        .remember { display: flex; align-items: center; gap: .5rem; color: var(--muted); cursor: pointer; }
+        .remember input { accent-color: var(--accent); }
+        .btn-primary {
+            width: 100%; background: var(--accent); color: white; border: none;
+            padding: .95rem; border-radius: 8px; font-size: 1rem; font-weight: 600;
+            cursor: pointer; transition: .2s;
         }
+        .btn-primary:hover { background: #7c3aed; }
+        .login-footer { text-align: center; margin-top: 2rem; color: var(--muted); font-size: .85rem; }
 
-        .hero p {
-            color: var(--text-gray);
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto;
+        /* MODAL */
+        .modal-alert {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7);
+            justify-content: center; align-items: center; z-index: 999; padding: 1rem;
         }
-
-        /* GRID DE TARJETAS - ESTILO BLACKLINK */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1.5rem;
+        .modal-alert.active { display: flex; }
+        .modal-content {
+            background: #1e1e24; border-radius: 12px; width: 100%; max-width: 400px;
+            padding: 1.5rem; border: 1px solid var(--border);
         }
+        .modal-header { font-size: .95rem; color: var(--muted); margin-bottom: 1rem; }
+        .modal-body { margin-bottom: 1.5rem; line-height: 1.5; }
+        .modal-body.success { color: var(--success); }
+        .modal-body.denied { color: var(--danger); }
+        .modal-body .email { font-weight: bold; color: var(--text); word-break: break-all; }
+        .modal-footer { text-align: right; }
+        .modal-btn { background: transparent; border: none; color: var(--accent); font-weight: 500; font-size: 1rem; cursor: pointer; }
 
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.75rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+        /* PANTALLA DE SOCIOS (OCULTA AL INICIO) */
+        #dashboard-screen { display: none; }
+        nav {
+            background: rgba(13,13,21,.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 100;
         }
-
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15);
+        .nav-container {
+            max-width: 1100px; margin: 0 auto; padding: 0 2rem; height: 70px;
+            display: flex; justify-content: space-between; align-items: center;
         }
+        .nav-logo { font-weight: 800; color: var(--accent); text-decoration: none; font-size: 1.3rem; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { color: var(--muted); text-decoration: none; transition: color .2s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--text); }
+        .btn-logout { background: var(--danger); color: white; padding: .5rem 1rem; border-radius: 6px; text-decoration: none; font-size: .9rem; }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
+        .container { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
+        .hero { text-align: center; margin-bottom: 5rem; }
+        .hero h1 { font-size: clamp(2rem,5vw,3rem); margin-bottom: 1rem; }
+        .hero p { color: var(--muted); font-size: 1.2rem; max-width:750px; margin:0 auto; }
+        .grid-plans {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1.5rem; margin-bottom: 6rem;
         }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 700;
+        .plan-card {
+            background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem;
+            transition: transform .3s, border-color .3s;
         }
-
-        .badge {
-            font-size: 0.7rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            background: rgba(34, 197, 94, 0.15);
-            color: var(--success);
-            border: 1px solid rgba(34, 197, 94, 0.3);
+        .plan-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .plan-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .plan-title { font-size: 1.25rem; font-weight: 700; }
+        .plan-badge { font-size: .75rem; padding: .25rem .75rem; border-radius: 20px; border: 1px solid; }
+        .badge-available { background: rgba(34,197,94,.15); color: var(--success); border-color: rgba(34,197,94,.3); }
+        .badge-recommended { background: rgba(6,182,212,.15); color: var(--accent-alt); border-color: rgba(6,182,212,.3); }
+        .plan-desc { color: var(--muted); margin-bottom: 1.5rem; font-size: .95rem; }
+        .plan-price { font-size: 1.5rem; font-weight: bold; margin-bottom: 1.5rem; color: var(--accent); }
+        .btn-plan {
+            display: block; width: 100%; text-align: center; background: transparent; border: 1px solid var(--accent);
+            color: var(--accent); padding: .75rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: .2s;
         }
-
-        .card-description {
-            color: var(--text-gray);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .price {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .btn-buy {
-            background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 0.6rem 1.5rem;
-            border-radius: 6px;
-            font-weight: 600;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-
-        .btn-buy:hover {
-            background: var(--accent);
-            color: white;
-        }
-
-        /* CARACTERÍSTICAS */
+        .btn-plan:hover { background: var(--accent); color: white; }
         .features {
-            margin-top: 6rem;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 2rem;
         }
+        .feature-item { text-align: center; padding: 1.5rem; }
+        .feature-item i { font-size: 2rem; color: var(--accent); margin-bottom: 1rem; }
+        .feature-item h3 { margin-bottom: .5rem; }
+        .feature-item p { color: var(--muted); font-size: .9rem; }
 
-        .feature-box {
-            text-align: center;
-            padding: 2rem;
-            background: var(--bg-card-2);
-            border-radius: 10px;
-            border: 1px solid var(--border);
-        }
-
-        .feature-box i {
-            font-size: 2rem;
-            color: var(--accent);
-            margin-bottom: 1rem;
-        }
-
-        .feature-box h3 {
-            margin-bottom: 0.5rem;
-            font-size: 1rem;
-        }
-
-        .feature-box p {
-            color: var(--text-gray);
-            font-size: 0.85rem;
-        }
-
-        /* PIE DE PÁGINA */
-        footer {
-            border-top: 1px solid var(--border);
-            background: rgba(5,5,10,0.5);
-            padding: 2rem;
-            text-align: center;
-            color: var(--text-gray);
-            font-size: 0.85rem;
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 900px) {
-            .features { grid-template-columns: 1fr; }
-            .nav-menu { display: none; }
-        }
-
-        @media (max-width: 480px) {
-            .container { padding: 2rem 1rem; }
-            .hero h1 { font-size: 2rem; }
-            .grid { grid-template-columns: 1fr; }
+        @media (max-width:768px) {
+            .nav-links { display: none; }
+            .container { padding: 2rem 1.5rem; }
         }
     </style>
 </head>
 <body>
-    <!-- NAVEGACIÓN ORIGINAL -->
-    <nav>
-        <div class="nav-wrapper">
-            <a href="#" class="logo">PEOXY M1NX SOCIOS</a>
-            <ul class="nav-menu">
-                <li><a href="#" class="active">Inicio</a></li>
-                <li><a href="#">Productos</a></li>
-                <li><a href="#">Estado</a></li>
-                <li><a href="#">Documentación</a></li>
-                <li><a href="#" class="btn-login">Acceder</a></li>
-            </ul>
+    <!-- PANTALLA INICIO: LOGIN -->
+    <div id="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="logo">PROXY M1NX</div>
+                <h1>Bienvenido de nuevo</h1>
+                <p>Ingresa según tu tipo de cuenta.</p>
+            </div>
+            <div class="login-box">
+                <button class="btn-google" id="btnGoogle">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l2.96-2.96C18.45 2.09 15.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Continuar con Google
+                </button>
+                <div class="divider"><span>Acceso Socios</span></div>
+                <form id="socioForm">
+                    <div class="form-group">
+                        <label for="username">Usuario</label>
+                        <input type="text" id="username" placeholder="Tu usuario registrado" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pin">PIN de Acceso</label>
+                        <input type="password" id="pin" placeholder="Tu código PIN seguro" required>
+                    </div>
+                    <div class="form-options">
+                        <label class="remember"><input type="checkbox"> Mantener sesión</label>
+                    </div>
+                    <button type="submit" class="btn-primary">Ingresar como Socio</button>
+                </form>
+            </div>
+            <div class="login-footer">¿Problemas? Contacta al administrador.</div>
         </div>
-    </nav>
+    </div>
 
-    <!-- CONTENIDO -->
-    <div class="container">
-        <div class="hero">
-            <h1>Infraestructura de alto rendimiento</h1>
-            <p>La solución definitiva para tus proyectos. Estabilidad, velocidad y anonimato en un solo lugar.</p>
+    <!-- MODAL -->
+    <div class="modal-alert" id="googleModal">
+        <div class="modal-content">
+            <div class="modal-header">team-m1nx.github.io dice:</div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer"><button class="modal-btn" id="modalClose">Aceptar</button></div>
         </div>
+    </div>
 
-        <div class="grid">
-            <!-- PRODUCTO 1 -->
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Socio Básico</h3>
-                    <span class="badge">Disponible</span>
+    <!-- PANTALLA DE SOCIOS / PANEL -->
+    <div id="dashboard-screen">
+        <nav>
+            <div class="nav-container">
+                <a href="#" class="nav-logo">PROXY M1NX SOCIOS</a>
+                <ul class="nav-links">
+                    <li><a href="#" class="active">Inicio</a></li>
+                    <li><a href="#planes">Planes</a></li>
+                    <li><a href="#caracteristicas">Características</a></li>
+                </ul>
+                <a href="#" class="btn-logout" id="btnLogout">Cerrar sesión</a>
+            </div>
+        </nav>
+        <div class="container">
+            <section class="hero">
+                <h1>Infraestructura de alto rendimiento</h1>
+                <p>La solución definitiva para tus proyectos. Estabilidad, velocidad y anonimato en un solo lugar.</p>
+            </section>
+            <div id="planes" class="grid-plans">
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <h3 class="plan-title">Socio Básico</h3>
+                        <span class="plan-badge badge-available">Disponible</span>
+                    </div>
+                    <p class="plan-desc">Ideal para uso general. Conexión estable y baja latencia. Sin límites de transferencia.</p>
+                    <div class="plan-price">$100 MXN</div>
+                    <a href="#" class="btn-plan">Seleccionar</a>
                 </div>
-                <p class="card-description">Ideal para uso general. Conexión estable y baja latencia. Sin límites de transferencia.</p>
-                <div class="card-footer">
-                    <span class="price">$100 MXN</span>
-                    <a href="#" class="btn-buy">Comprar</a>
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <h3 class="plan-title">Socio Avanzado</h3>
+                        <span class="plan-badge badge-recommended">Recomendado</span>
+                    </div>
+                    <p class="plan-desc">Alto rendimiento, ubicaciones exclusivas y soporte prioritario 24/7.</p>
+                    <div class="plan-price">$150 MXN</div>
+                    <a href="#" class="btn-plan">Seleccionar</a>
+                </div>
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <h3 class="plan-title">Socio Estrella</h3>
+                        <span class="plan-badge badge-available">Disponible</span>
+                    </div>
+                    <p class="plan-desc">Acceso total a todos los servicios. La opción más elegida por desarrolladores.</p>
+                    <div class="plan-price">$250 MXN</div>
+                    <a href="#" class="btn-plan">Seleccionar</a>
                 </div>
             </div>
-
-            <!-- PRODUCTO 2 -->
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Socio Avanzado</h3>
-                    <span class="badge" style="background:rgba(6,182,212,0.15);color:var(--accent-alt);border-color:rgba(6,182,212,0.3)">Recomendado</span>
+            <div id="caracteristicas" class="features">
+                <div class="feature-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <h3>Velocidad</h3>
+                    <p>Red optimizada para máxima velocidad.</p>
                 </div>
-                <p class="card-description">Alto rendimiento, ubicaciones exclusivas y soporte prioritario 24/7.</p>
-                <div class="card-footer">
-                    <span class="price">$150 MXN</span>
-                    <a href="#" class="btn-buy">Comprar</a>
+                <div class="feature-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Seguridad</h3>
+                    <p>Protección avanzada y cifrado total.</p>
                 </div>
-            </div>
-
-            <!-- PRODUCTO 3 -->
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Socio Estrella</h3>
-                    <span class="badge">Disponible</span>
+                <div class="feature-item">
+                    <i class="fas fa-server"></i>
+                    <h3>Estabilidad</h3>
+                    <p>Tiempo de actividad garantizado 99.9%.</p>
                 </div>
-                <p class="card-description">Acceso total a todos los servicios. La opción más elegida por desarrolladores.</p>
-                <div class="card-footer">
-                    <span class="price">$250 MXN</span>
-                    <a href="#" class="btn-buy">Comprar</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="features">
-            <div class="feature-box">
-                <i class="fas fa-bolt"></i>
-                <h3>Velocidad</h3>
-                <p>Red optimizada para máxima velocidad.</p>
-            </div>
-            <div class="feature-box">
-                <i class="fas fa-shield-alt"></i>
-                <h3>Seguridad</h3>
-                <p>Protección avanzada y cifrado total.</p>
-            </div>
-            <div class="feature-box">
-                <i class="fas fa-server"></i>
-                <h3>Estabilidad</h3>
-                <p>Tiempo de actividad garantizado 99.9%.</p>
             </div>
         </div>
     </div>
 
-    <!-- PIE -->
-    <footer>
-        © PROXY TEAM N1NX todos los derechos de Auto reservados.
-    </footer>
+    <script>
+        const CORREO_ADMIN = "jesusgutierrezmontanez05@gmail.com";
+        const loginScreen = document.getElementById('login-screen');
+        const dashScreen = document.getElementById('dashboard-screen');
+        const modal = document.getElementById('googleModal');
+        const modalBody = document.getElementById('modalBody');
+        const modalClose = document.getElementById('modalClose');
+
+        function mostrarPanel() {
+            loginScreen.style.display = 'none';
+            dashScreen.style.display = 'block';
+            window.scrollTo(0,0);
+        }
+        function mostrarLogin() {
+            dashScreen.style.display = 'none';
+            loginScreen.style.display = 'flex';
+        }
+
+        // Google
+        document.getElementById('btnGoogle').addEventListener('click', () => {
+            const cuenta = prompt("🔐 Selecciona cuenta de Google (escribe correo):", "");
+            if (!cuenta) return;
+            if (cuenta.trim().toLowerCase() === CORREO_ADMIN.toLowerCase()) {
+                modalBody.className = "modal-body success";
+                modalBody.innerHTML = `<p>✅ Cuenta autorizada:</p><p class="email">${cuenta}</p><p>Accediendo al Panel de Administrador...</p>`;
+                modal.classList.add('active');
+                setTimeout(() => { modal.classList.remove('active'); mostrarPanel(); }, 1200);
+            } else {
+                modalBody.className = "modal-body denied";
+                modalBody.innerHTML = `<p>❌ Acceso denegado:</p><p class="email">${cuenta}</p><p>No eres el administrador autorizado.</p>`;
+                modal.classList.add('active');
+            }
+        });
+        modalClose.addEventListener('click', () => modal.classList.remove('active'));
+
+        // Socios
+        document.getElementById('socioForm').addEventListener('submit', e => {
+            e.preventDefault();
+            const u = document.getElementById('username');
+            const p = document.getElementById('pin');
+            if (!u.value.trim() || !p.value.trim()) { alert("Completa los campos"); return; }
+            const btn = e.target.querySelector('.btn-primary');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
+            setTimeout(() => { mostrarPanel(); }, 1000);
+        });
+
+        // Cerrar sesión
+        document.getElementById('btnLogout').addEventListener('click', e => {
+            e.preventDefault();
+            mostrarLogin();
+        });
+    </script>
 </body>
 </html>
