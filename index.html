@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROXY M1NX — ANÓNIMO MX (DATOS GUARDADOS)</title>
+    <title>PROXY M1NX — ANÓNIMO MX</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
@@ -81,6 +81,7 @@
         .alert.danger { background: rgba(239, 68, 68, .1); border: 1px solid var(--danger); color: var(--danger); }
         .alert.warning { background: rgba(245, 158, 11, .1); border: 1px solid var(--warning); color: var(--warning); }
         .admin-inputs { margin-bottom: 1.5rem; display: none; }
+        .admin-inputs.mostrar { display: block; } /* Clase para mostrar */
 
         /* ESTRUCTURA PRINCIPAL */
         #main-panel { display: none; }
@@ -150,6 +151,7 @@
             <p>Acceso seguro — Datos guardados permanentemente</p>
         </div>
         <div class="login-box">
+            <!-- ✅ BOTÓN ARREGLADO: usa clase para mostrar/ocultar -->
             <button class="btn-google" id="btn-admin-toggle">
                 <svg viewBox="0 0 24 24" width="18" height="18">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -159,6 +161,8 @@
                 </svg>
                 Acceso Administrador
             </button>
+            
+            <!-- ✅ Ahora usa clase .mostrar en lugar de cambiar style directamente -->
             <div class="admin-inputs" id="admin-fields">
                 <div class="form-group">
                     <label>Correo Autorizado (Dueño)</label>
@@ -297,11 +301,11 @@
     let esAdmin = false;
     const NOMBRE_ADMIN = "ANÓNIMO MX";
 
-    // 📦 CLAVES PARA LOCALSTORAGE (GUARDADO PERMANENTE)
+    // 📦 CLAVES PARA LOCALSTORAGE
     const STORAGE_USUARIOS = "proxy_usuarios";
     const STORAGE_PRODUCTOS = "proxy_productos";
 
-    // 📦 CARGAR DATOS GUARDADOS AL INICIAR
+    // 📦 CARGAR DATOS AL INICIAR
     function cargarDatos() {
         const usuariosGuardados = localStorage.getItem(STORAGE_USUARIOS);
         const productosGuardados = localStorage.getItem(STORAGE_PRODUCTOS);
@@ -315,7 +319,6 @@
         if (productosGuardados) {
             listaProductos = JSON.parse(productosGuardados);
         } else {
-            // Productos por defecto si es primera vez
             listaProductos = [
                 {id:1, nombre:"Socio Básico", desc:"Conexión estable", precio:100},
                 {id:2, nombre:"Socio Avanzado", desc:"Mayor rendimiento", precio:150},
@@ -325,7 +328,7 @@
         }
     }
 
-    // 💾 FUNCIONES PARA GUARDAR
+    // 💾 FUNCIONES DE GUARDADO
     function guardarUsuarios() {
         localStorage.setItem(STORAGE_USUARIOS, JSON.stringify(usuariosRegistrados));
     }
@@ -333,7 +336,6 @@
         localStorage.setItem(STORAGE_PRODUCTOS, JSON.stringify(listaProductos));
     }
 
-    // CARGAR ANTES DE TODO
     cargarDatos();
 
     // ELEMENTOS
@@ -359,12 +361,13 @@
     alertaAcceso.style.display = 'none';
     renderizarProductos();
 
-    // MOSTRAR CAMPOS ADMIN
-    btnToggle.addEventListener('click', () => {
-        fieldsAdmin.style.display = fieldsAdmin.style.display === 'block' ? 'none' : 'block';
+    // ✅ FUNCION DE MOSTRAR ADMIN: ahora funciona con clases sin errores
+    btnToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        fieldsAdmin.classList.toggle('mostrar');
     });
 
-    // 🔑 FUNCIÓN CAMBIAR SECCIÓN
+    // 🔑 CAMBIAR SECCIÓN
     function cambiarSeccion(id) {
         secciones.forEach(s => s.classList.remove('active'));
         const seccionObjetivo = document.getElementById(id);
@@ -385,5 +388,4 @@
         if(linkAct) linkAct.classList.add('active');
     }
 
-    btnAdminArriba.addEventListener('click', () => { if (esAdmin) cambiarSeccion('admin-section'); });
-    navInferior.forEach(link => { link.addEventListener('click', e => { e.pre
+    btnAdminArriba.addEventListener('click', ()
