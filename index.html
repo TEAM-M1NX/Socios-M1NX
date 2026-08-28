@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROXY M1NX — COMPLETO Y FUNCIONAL</title>
+    <title>PROXY M1NX — PANEL ADMIN FUNCIONAL</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
@@ -17,6 +17,7 @@
             --input-bg: #0a0a10;
             --success: #22c55e;
             --danger: #ef4444;
+            --warning: #f59e0b;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -37,7 +38,7 @@
             min-height: 100vh;
             padding: 2rem;
         }
-        .login-container { max-width: 420px; width: 100%; }
+        .login-container { max-width: 450px; width: 100%; }
         .login-header { text-align: center; margin-bottom: 2.5rem; }
         .logo {
             font-size: 1.8rem; font-weight: 800;
@@ -64,20 +65,22 @@
         .divider span { background: var(--card); padding: 0 1rem; color: var(--muted); position: relative; }
         .form-group { margin-bottom: 1.5rem; }
         .form-group label { display: block; margin-bottom: .6rem; color: var(--muted); font-size: .9rem; }
-        .form-group input {
+        .form-group input, .form-control {
             width: 100%; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px;
-            padding: .9rem 1rem; color: var(--text); font-size: 1rem;
+            padding: .9rem 1rem; color: var(--text); font-size: 1rem; font-family: inherit;
         }
-        .form-group input:focus { outline: none; border-color: var(--accent); }
+        .form-group input:focus, .form-control:focus { outline: none; border-color: var(--accent); }
         .btn-primary {
             width: 100%; background: var(--accent); color: white; border: none;
             padding: .95rem; border-radius: 8px; font-size: 1rem; font-weight: 600;
             cursor: pointer; transition: .2s;
         }
         .btn-primary:hover { background: #7c3aed; }
-        .login-footer { text-align: center; margin-top: 2rem; color: var(--muted); font-size: .85rem; }
+        .alert { padding: 1rem; border-radius: 8px; margin: 1rem 0; display: none; }
+        .alert.success { background: rgba(34, 197, 94, .1); border: 1px solid var(--success); color: var(--success); }
+        .alert.danger { background: rgba(239, 68, 68, .1); border: 1px solid var(--danger); color: var(--danger); }
+        .alert.warning { background: rgba(245, 158, 11, .1); border: 1px solid var(--warning); color: var(--warning); }
         .admin-inputs { margin-bottom: 1.5rem; display: none; }
-        .admin-inputs input { margin-bottom: .75rem; }
 
         /* ESTRUCTURA PRINCIPAL */
         #main-panel { display: none; }
@@ -97,16 +100,21 @@
         .admin-toggle-btn { 
             background: none; border: none; color: var(--text); 
             font-size: 1.1rem; font-weight: 600; cursor: pointer; 
-            transition: color .2s;
+            transition: color .2s; display: none;
+            padding: 0.5rem;
         }
-        .admin-toggle-btn:hover { color: var(--accent); }
+        .admin-toggle-btn:hover, .admin-toggle-btn.active { color: var(--accent); }
+        .user-tag { color: var(--muted); font-weight: 500; }
         .btn-logout { background: var(--danger); color: white; border: none; padding: .5rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: 500; }
 
         /* CONTENIDO */
         .content { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 6rem; }
         .page-section { display: none; }
         .page-section.active { display: block; }
+        .sub-seccion { display: none; margin-top: 2rem; }
+        .sub-seccion.active { display: block; }
         h1 { font-size: 2rem; margin-bottom: 2rem; text-align: center; }
+        h2 { font-size: 1.4rem; margin-bottom: 1.5rem; color: var(--accent); }
         .info-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; color: var(--muted); line-height: 1.6; }
         .grid-admin, .grid-products { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1.5rem; }
         .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; transition: transform .3s; }
@@ -114,7 +122,14 @@
         .card-title { font-size: 1.25rem; margin-bottom: .5rem; font-weight: 700; }
         .card-desc { color: var(--muted); margin-bottom: 1rem; font-size: .95rem; }
         .btn-action { width: 100%; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: .75rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: .2s; }
-        .btn-action:hover { background: var(--accent); color: white; }
+        .btn-action:hover, .btn-action.active { background: var(--accent); color: white; }
+        .btn-danger { border-color: var(--danger); color: var(--danger); }
+        .btn-danger:hover { background: var(--danger); color: white; }
+        .btn-sm { width: auto; padding: .4rem .8rem; font-size: .9rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: var(--card); border-radius: 12px; overflow: hidden; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: rgba(139,92,246,.1); }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0; }
 
         /* NAVEGACIÓN INFERIOR */
         .bottom-nav {
@@ -132,8 +147,7 @@
     <div class="login-container">
         <div class="login-header">
             <div class="logo">PROXY M1NX</div>
-            <h1>Inicio de Sesión</h1>
-            <p>Acceso seguro al sistema</p>
+            <p>Acceso seguro — Solo usuarios registrados</p>
         </div>
         <div class="login-box">
             <button class="btn-google" id="btn-admin-toggle">
@@ -147,24 +161,25 @@
             </button>
             <div class="admin-inputs" id="admin-fields">
                 <div class="form-group">
-                    <label>Correo Autorizado</label>
-                    <input type="email" id="admin-email" placeholder="tu@email.com">
+                    <label>Correo Autorizado (Dueño)</label>
+                    <input type="email" id="admin-email" placeholder="jesusgutierrezmontanez05@gmail.com">
                 </div>
-                <button class="btn-primary" id="admin-enter">Ingresar</button>
+                <button class="btn-primary" id="admin-enter">Ingresar al Control Total</button>
             </div>
 
-            <div class="divider"><span>ENTRADA SOCIOS</span></div>
+            <div class="divider"><span>ACCESO USUARIOS REGISTRADOS</span></div>
 
             <form id="form-socio">
                 <div class="form-group">
-                    <label>Usuario</label>
+                    <label>Nombre de Usuario</label>
                     <input type="text" id="user-in" required>
                 </div>
                 <div class="form-group">
-                    <label>PIN</label>
+                    <label>PIN de Acceso</label>
                     <input type="password" id="pin-in" required>
                 </div>
-                <button type="submit" class="btn-primary">Entrar</button>
+                <div class="alert danger" id="alerta-acceso">❌ ACCESO DENEGADO: Usuario o PIN incorrectos / No registrado</div>
+                <button type="submit" class="btn-primary">Entrar al Sistema</button>
             </form>
         </div>
     </div>
@@ -172,65 +187,121 @@
 
 <!-- PANEL PRINCIPAL -->
 <div id="main-panel">
-    <!-- BARRA SUPERIOR: PROXY M1NX | ADMIN PANEL (BOTÓN) | CERRAR SESIÓN -->
     <nav class="top-bar">
         <div class="top-left">
             <span class="brand">PROXY M1NX</span>
             <span class="sep">|</span>
-            <button class="admin-toggle-btn" data-target="admin-section">ADMIN PANEL</button>
+            <button class="admin-toggle-btn" id="btn-admin-top">ADMIN PANEL</button>
+            <span class="user-tag" id="etiqueta-usuario"></span>
         </div>
         <button class="btn-logout" id="salir-btn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
     </nav>
 
-    <!-- CONTENIDO -->
     <main class="content">
+        <!-- SECCIÓN ADMIN -->
         <section id="admin-section" class="page-section">
-            <h1>⚙️ PANEL DE ADMINISTRACIÓN</h1>
-            <div class="info-box">Control total del sistema: gestiona usuarios, revisa estadísticas, configura planes y seguridad.</div>
+            <h1>⚙️ PANEL DE CONTROL TOTAL — SOLO PARA TI</h1>
+            <div class="info-box">
+                Aquí gestionas TODO: Crear usuarios con PIN, eliminar, editar, agregar/modificar/quitar productos, ajustar precios y configuraciones.
+            </div>
+
             <div class="grid-admin">
-                <div class="card"><h3 class="card-title">👥 Usuarios</h3><p class="card-desc">Agrega, edita, bloquea o elimina cuentas.</p><button class="btn-action">Gestionar</button></div>
-                <div class="card"><h3 class="card-title">📊 Estadísticas</h3><p class="card-desc">Ingresos, actividad y planes activos.</p><button class="btn-action">Ver Datos</button></div>
-                <div class="card"><h3 class="card-title">⚙️ Configuración</h3><p class="card-desc">Ajustes generales y seguridad del sistema.</p><button class="btn-action">Configurar</button></div>
+                <div class="card"><h3 class="card-title">👥 Gestión de Usuarios</h3><p class="card-desc">Crea, revisa y elimina cuentas con su PIN de acceso.</p><button class="btn-action admin-sub active" data-target="mod-usuarios">Ir a Usuarios</button></div>
+                <div class="card"><h3 class="card-title">🛒 Gestión de Productos</h3><p class="card-desc">Agrega nuevos planes, cambia precios o elimina lo que no quieras.</p><button class="btn-action admin-sub" data-target="mod-productos">Ir a Productos</button></div>
+                <div class="card"><h3 class="card-title">📊 Sistema y Ajustes</h3><p class="card-desc">Estadísticas y control general del sistema.</p><button class="btn-action admin-sub" data-target="mod-sistema">Ver Sistema</button></div>
+            </div>
+
+            <!-- SUB: USUARIOS -->
+            <div id="mod-usuarios" class="sub-seccion active">
+                <h2>➕ Crear Nuevo Usuario</h2>
+                <div class="form-row">
+                    <input type="text" id="nuevo-nombre" class="form-control" placeholder="Nombre usuario">
+                    <input type="text" id="nuevo-pin" class="form-control" placeholder="PIN de acceso">
+                    <button id="crear-usuario" class="btn-action">Guardar Usuario</button>
+                </div>
+                <div class="alert success" id="alert-usuario-ok">Usuario creado correctamente ✅</div>
+
+                <h2 style="margin-top:3rem;">📋 Lista de Usuarios Registrados</h2>
+                <table>
+                    <thead><tr><th>Usuario</th><th>PIN</th><th>Acción</th></tr></thead>
+                    <tbody id="tabla-usuarios"></tbody>
+                </table>
+            </div>
+
+            <!-- SUB: PRODUCTOS -->
+            <div id="mod-productos" class="sub-seccion">
+                <h2>➕ Agregar / Editar Producto</h2>
+                <div class="form-row">
+                    <input type="text" id="prod-nombre" class="form-control" placeholder="Nombre del plan">
+                    <input type="text" id="prod-desc" class="form-control" placeholder="Descripción">
+                    <input type="number" id="prod-precio" class="form-control" placeholder="Precio MXN">
+                    <button id="agregar-producto" class="btn-action">Guardar Producto</button>
+                </div>
+                <div class="alert success" id="alert-prod-ok">Producto actualizado ✅</div>
+
+                <h2 style="margin-top:3rem;">📦 Productos Actuales (Edita o elimina)</h2>
+                <div id="lista-productos-admin" class="grid-products"></div>
+            </div>
+
+            <!-- SUB: SISTEMA -->
+            <div id="mod-sistema" class="sub-seccion">
+                <h2>📊 Estado del Sistema</h2>
+                <div class="grid-admin">
+                    <div class="card"><h3>Total Usuarios</h3><p style="font-size:2rem; color:var(--accent)" id="stat-total">0</p></div>
+                    <div class="card"><h3>Estado General</h3><p style="font-size:1.3rem; color:var(--success)">EN LÍNEA</p></div>
+                </div>
             </div>
         </section>
 
-        <section id="cuenta" class="page-section">
-            <h1>👤 CUENTA</h1>
-            <div class="info-box">Tus datos personales, estado de membresía y configuraciones de perfil.</div>
+        <!-- CUENTA -->
+        <section id="cuenta" class="page-section active">
+            <h1>👤 TU CUENTA</h1>
+            <div class="info-box">
+                <p><strong>Usuario:</strong> <span id="mostrar-usuario">—</span></p>
+                <p><strong>Rol:</strong> <span id="tipo-cuenta">Socio</span></p>
+                <p><strong>Estado:</strong> <span style="color:var(--success);">Activo</span></p>
+            </div>
         </section>
 
+        <!-- TIENDA USUARIOS -->
         <section id="productos" class="page-section">
-            <h1>📦 PRODUCTOS</h1>
-            <div class="grid-products">
-                <div class="card"><h3 class="card-title">Básico</h3><p class="card-desc">Conexión estable para uso general.</p><div style="color:var(--accent);font-size:1.5rem;font-weight:bold;margin:1rem 0;">$100 MXN</div><button class="btn-action">Comprar</button></div>
-                <div class="card"><h3 class="card-title">Avanzado</h3><p class="card-desc">Mayor rendimiento y estabilidad.</p><div style="color:var(--accent);font-size:1.5rem;font-weight:bold;margin:1rem 0;">$150 MXN</div><button class="btn-action">Comprar</button></div>
-                <div class="card"><h3 class="card-title">Premium</h3><p class="card-desc">Acceso total a todos los recursos.</p><div style="color:var(--accent);font-size:1.5rem;font-weight:bold;margin:1rem 0;">$250 MXN</div><button class="btn-action">Comprar</button></div>
-            </div>
+            <h1>📦 NUESTROS PLANES</h1>
+            <div id="lista-productos" class="grid-products"></div>
+            <div class="alert success" id="alerta-compra">✅ Compra realizada con éxito</div>
         </section>
 
+        <!-- BENEFICIOS -->
         <section id="beneficios" class="page-section">
             <h1>✨ BENEFICIOS</h1>
             <div class="info-box">
                 <ul style="margin-top:1rem; padding-left:1.2rem;">
-                    <li>Velocidad optimizada sin límites de ancho de banda</li>
-                    <li>Cifrado total y anonimato protegido</li>
-                    <li>Soporte técnico prioritario 24/7</li>
-                    <li>Estabilidad garantizada 99.9%</li>
+                    <li>Conexión rápida y segura</li>
+                    <li>Soporte directo</li>
+                    <li>Estabilidad 99.9%</li>
                 </ul>
             </div>
         </section>
     </main>
 
-    <!-- NAVEGACIÓN INFERIOR -->
     <nav class="bottom-nav">
-        <a href="#" data-target="cuenta">CUENTA</a>
+        <a href="#" data-target="cuenta" class="active">CUENTA</a>
         <a href="#" data-target="productos">PRODUCTOS</a>
         <a href="#" data-target="beneficios">BENEFICIOS</a>
     </nav>
 </div>
 
 <script>
+    // ⚙️ CONFIGURACIÓN PRINCIPAL
     const CORREO_ADMIN = "jesusgutierrezmontanez05@gmail.com";
+    let esAdmin = false;
+
+    // 📦 BASE DE DATOS SIMULADA
+    let usuariosRegistrados = {}; // {nombre: pin}
+    let listaProductos = [
+        {id:1, nombre:"Socio Básico", desc:"Conexión estable", precio:100},
+        {id:2, nombre:"Socio Avanzado", desc:"Mayor rendimiento", precio:150},
+        {id:3, nombre:"Socio Premium", desc:"Acceso total", precio:250}
+    ];
 
     // ELEMENTOS
     const login = document.getElementById('login-screen');
@@ -240,32 +311,74 @@
     const inputEmail = document.getElementById('admin-email');
     const btnEntrarAdmin = document.getElementById('admin-enter');
     const formSocio = document.getElementById('form-socio');
+    const alertaAcceso = document.getElementById('alerta-acceso');
     const salirBtn = document.getElementById('salir-btn');
     const secciones = document.querySelectorAll('.page-section');
     const navInferior = document.querySelectorAll('.bottom-nav a');
-    const btnAdminArriba = document.querySelector('.admin-toggle-btn');
+    const btnAdminArriba = document.getElementById('btn-admin-top');
+    const mostrarUsuario = document.getElementById('mostrar-usuario');
+    const etiquetaUsuario = document.getElementById('etiqueta-usuario');
+    const tipoCuenta = document.getElementById('tipo-cuenta');
+    const btnsSubAdmin = document.querySelectorAll('.admin-sub');
+    const subSecciones = document.querySelectorAll('.sub-seccion');
+
+    // INICIO
+    alertaAcceso.style.display = 'none';
+    renderizarProductos();
 
     // MOSTRAR CAMPOS ADMIN
     btnToggle.addEventListener('click', () => {
         fieldsAdmin.style.display = fieldsAdmin.style.display === 'block' ? 'none' : 'block';
     });
 
-    // FUNCIÓN GENERAL PARA CAMBIAR SECCIÓN
+    // 🔑 FUNCIÓN CLAVE: CAMBIAR SECCIÓN
     function cambiarSeccion(id) {
+        // Ocultar todas
         secciones.forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
+        // Mostrar la pedida
+        const seccionObjetivo = document.getElementById(id);
+        if (seccionObjetivo) {
+            seccionObjetivo.classList.add('active');
+        }
+        // Controlar visibilidad botón admin
+        if(esAdmin && id !== 'admin-section') {
+            btnAdminArriba.style.display = 'inline-block';
+            btnAdminArriba.classList.remove('active');
+        } else if(esAdmin && id === 'admin-section') {
+            btnAdminArriba.style.display = 'inline-block';
+            btnAdminArriba.classList.add('active');
+        } else {
+            btnAdminArriba.style.display = 'none';
+        }
+        // Actualizar menú inferior
+        navInferior.forEach(l => l.classList.remove('active'));
+        const linkAct = document.querySelector(`.bottom-nav a[data-target="${id}"]`);
+        if(linkAct) linkAct.classList.add('active');
     }
 
-    // BOTÓN ADMIN PANEL ARRIBA
-    btnAdminArriba.addEventListener('click', () => cambiarSeccion('admin-section'));
+    // ✅ BOTÓN ADMIN PANEL FUNCIONAL
+    btnAdminArriba.addEventListener('click', () => {
+        if (esAdmin) {
+            cambiarSeccion('admin-section');
+        }
+    });
 
     // NAVEGACIÓN INFERIOR
     navInferior.forEach(link => {
         link.addEventListener('click', e => {
             e.preventDefault();
-            navInferior.forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
             cambiarSeccion(link.dataset.target);
+        });
+    });
+
+    // SUB-SECCIONES DENTRO DE ADMIN
+    btnsSubAdmin.forEach(btn => {
+        btn.addEventListener('click', () => {
+            btnsSubAdmin.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            subSecciones.forEach(s => s.classList.remove('active'));
+            const subObjetivo = document.getElementById(btn.dataset.target);
+            if (subObjetivo) subObjetivo.classList.add('active');
         });
     });
 
@@ -276,28 +389,9 @@
         formSocio.reset();
         inputEmail.value = '';
         fieldsAdmin.style.display = 'none';
+        alertaAcceso.style.display = 'none';
+        esAdmin = false;
     }
     salirBtn.addEventListener('click', volverLogin);
 
-    // ENTRAR AL SISTEMA
-    function entrar() {
-        login.style.display = 'none';
-        main.style.display = 'block';
-        cambiarSeccion('admin-section'); // Por defecto abre Admin
-        window.scrollTo(0,0);
-    }
-
-    // LOGIN ADMIN
-    btnEntrarAdmin.addEventListener('click', () => {
-        if (inputEmail.value.trim().toLowerCase() === CORREO_ADMIN.toLowerCase()) entrar();
-        else alert("❌ Correo incorrecto");
-    });
-
-    // LOGIN SOCIO
-    formSocio.addEventListener('submit', e => {
-        e.preventDefault();
-        entrar();
-    });
-</script>
-</body>
-</html>
+    // EN
