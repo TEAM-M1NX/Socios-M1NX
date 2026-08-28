@@ -1,4 +1,4 @@
-   <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -79,7 +79,6 @@
         .alert { padding: 1rem; border-radius: 8px; margin: 1rem 0; display: none; }
         .alert.success { background: rgba(34, 197, 94, .1); border: 1px solid var(--success); color: var(--success); }
         .alert.danger { background: rgba(239, 68, 68, .1); border: 1px solid var(--danger); color: var(--danger); }
-        .alert.warning { background: rgba(245, 158, 11, .1); border: 1px solid var(--warning); color: var(--warning); }
         .admin-inputs { margin-bottom: 1.5rem; display: none; }
 
         /* ESTRUCTURA PRINCIPAL */
@@ -147,7 +146,7 @@
     <div class="login-container">
         <div class="login-header">
             <div class="logo">PROXY M1NX</div>
-            <p>Acceso seguro — Solo usuarios registrados</p>
+            <p>Acceso seguro — Solo usuarios autorizados</p>
         </div>
         <div class="login-box">
             <button class="btn-google" id="btn-admin-toggle">
@@ -167,7 +166,7 @@
                 <button class="btn-primary" id="admin-enter">Ingresar al Control Total</button>
             </div>
 
-            <div class="divider"><span>ACCESO USUARIOS REGISTRADOS</span></div>
+            <div class="divider"><span>ACCESO USUARIOS AUTORIZADOS</span></div>
 
             <form id="form-socio">
                 <div class="form-group">
@@ -178,7 +177,7 @@
                     <label>PIN de Acceso</label>
                     <input type="password" id="pin-in" required>
                 </div>
-                <div class="alert danger" id="alerta-acceso">❌ ACCESO DENEGADO: Usuario o PIN incorrectos / No registrado</div>
+                <div class="alert danger" id="alerta-acceso">❌ ACCESO DENEGADO: Usuario o PIN incorrectos</div>
                 <button type="submit" class="btn-primary">Entrar al Sistema</button>
             </form>
         </div>
@@ -202,13 +201,13 @@
         <section id="admin-section" class="page-section">
             <h1>⚙️ PANEL DE CONTROL TOTAL — SOLO PARA ANÓNIMO MX</h1>
             <div class="info-box">
-                Aquí gestionas TODO: Crear usuarios con PIN, eliminar, editar, agregar/modificar/quitar productos, ajustar precios y configuraciones. <strong>Todo se guarda automáticamente.</strong>
+                Aquí gestionas TODO: Crear usuarios con PIN, eliminar, editar, agregar/modificar/quitar productos. <strong>Todo se guarda automáticamente.</strong>
             </div>
 
             <div class="grid-admin">
                 <div class="card"><h3 class="card-title">👥 Gestión de Usuarios</h3><p class="card-desc">Crea, revisa y elimina cuentas con su PIN de acceso.</p><button class="btn-action admin-sub active" data-target="mod-usuarios">Ir a Usuarios</button></div>
                 <div class="card"><h3 class="card-title">🛒 Gestión de Productos</h3><p class="card-desc">Agrega nuevos planes, cambia precios o elimina lo que no quieras.</p><button class="btn-action admin-sub" data-target="mod-productos">Ir a Productos</button></div>
-                <div class="card"><h3 class="card-title">📊 Sistema y Ajustes</h3><p class="card-desc">Estadísticas y control general del sistema.</p><button class="btn-action admin-sub" data-target="mod-sistema">Ver Sistema</button></div>
+                <div class="card"><h3 class="card-title">📊 Sistema</h3><p class="card-desc">Información y estado del sistema.</p><button class="btn-action admin-sub" data-target="mod-sistema">Ver Sistema</button></div>
             </div>
 
             <!-- SUB: USUARIOS -->
@@ -239,7 +238,7 @@
                 </div>
                 <div class="alert success" id="alert-prod-ok">Producto actualizado ✅</div>
 
-                <h2 style="margin-top:3rem;">📦 Productos Actuales (Edita o elimina)</h2>
+                <h2 style="margin-top:3rem;">📦 Productos Actuales</h2>
                 <div id="lista-productos-admin" class="grid-products"></div>
             </div>
 
@@ -248,7 +247,7 @@
                 <h2>📊 Estado del Sistema</h2>
                 <div class="grid-admin">
                     <div class="card"><h3>Total Usuarios</h3><p style="font-size:2rem; color:var(--accent)" id="stat-total">0</p></div>
-                    <div class="card"><h3>Estado General</h3><p style="font-size:1.3rem; color:var(--success)">💾 DATOS GUARDADOS</p></div>
+                    <div class="card"><h3>Estado</h3><p style="font-size:1.3rem; color:var(--success)">💾 DATOS GUARDADOS</p></div>
                 </div>
             </div>
         </section>
@@ -258,8 +257,8 @@
             <h1>👤 TU CUENTA</h1>
             <div class="info-box">
                 <p><strong>Usuario:</strong> <span id="mostrar-usuario">—</span></p>
-                <p><strong>Rol:</strong> <span id="tipo-cuenta">Socio</span></p>
-                <p><strong>Estado:</strong> <span style="color:var(--success);">Activo</span></p>
+                <p><strong>Rol:</strong> <span id="tipo-cuenta">Socio Autorizado</span></p>
+                <p><strong>Estado:</strong> <span style="color:var(--success);">✅ ACTIVO</span></p>
             </div>
         </section>
 
@@ -275,9 +274,10 @@
             <h1>✨ BENEFICIOS</h1>
             <div class="info-box">
                 <ul style="margin-top:1rem; padding-left:1.2rem;">
-                    <li>Conexión rápida y segura</li>
-                    <li>Soporte directo</li>
-                    <li>Estabilidad 99.9%</li>
+                    <li>🔒 Conexión segura y privada</li>
+                    <li>⚡ Velocidad optimizada</li>
+                    <li>🛡️ Soporte prioritario</li>
+                    <li>📈 Estabilidad 99.9%</li>
                 </ul>
             </div>
         </section>
@@ -296,12 +296,20 @@
     let esAdmin = false;
     const NOMBRE_ADMIN = "ANÓNIMO MX";
     
-    // 🔑 CLAVES PARA LOCALSTORAGE (GUARDADO PERMANENTE)
+    // 🔒 USUARIOS FIJOS (SOLO ESTOS PUEDEN ENTRAR)
+    const USUARIOS_FIJOS = {
+        "+593 98 342 5400": "3076",
+        "+1 (829) 325-9377": "1990",
+        "+52 55 1696 2513": "1010",
+        "+52 720 792 8578": "0012"
+    };
+    
+    // 🔑 CLAVES PARA LOCALSTORAGE
     const STORAGE_USUARIOS = "proxy_m1nx_usuarios";
     const STORAGE_PRODUCTOS = "proxy_m1nx_productos";
 
-    // 📦 CARGAR DATOS AL INICIAR
-    let usuariosRegistrados = {};
+    // 📦 DATOS
+    let usuariosRegistrados = {...USUARIOS_FIJOS}; // Empiezan siempre los fijos
     let listaProductos = [];
 
     function cargarDatos() {
@@ -310,13 +318,14 @@
             const productosGuardados = localStorage.getItem(STORAGE_PRODUCTOS);
             
             if (usuariosGuardados) {
-                usuariosRegistrados = JSON.parse(usuariosGuardados);
+                // Carga adicionales, pero mantiene los fijos
+                const adicionales = JSON.parse(usuariosGuardados);
+                usuariosRegistrados = {...USUARIOS_FIJOS, ...adicionales};
             }
             
             if (productosGuardados) {
                 listaProductos = JSON.parse(productosGuardados);
             } else {
-                // Productos por defecto si es primera vez
                 listaProductos = [
                     {id:1, nombre:"Socio Básico", desc:"Conexión estable", precio:100},
                     {id:2, nombre:"Socio Avanzado", desc:"Mayor rendimiento", precio:150},
@@ -325,21 +334,27 @@
                 guardarProductos();
             }
         } catch (e) {
-            console.error("Error al cargar datos:", e);
-            usuariosRegistrados = {};
+            console.error("Error:", e);
+            usuariosRegistrados = {...USUARIOS_FIJOS};
             listaProductos = [];
         }
     }
 
-    // 💾 FUNCIONES PARA GUARDAR
+    // 💾 GUARDAR
     function guardarUsuarios() {
-        localStorage.setItem(STORAGE_USUARIOS, JSON.stringify(usuariosRegistrados));
+        // No guarda los fijos, solo los nuevos
+        const guardarSeparados = {};
+        for (let u in usuariosRegistrados) {
+            if (!USUARIOS_FIJOS[u]) {
+                guardarSeparados[u] = usuariosRegistrados[u];
+            }
+        }
+        localStorage.setItem(STORAGE_USUARIOS, JSON.stringify(guardarSeparados));
     }
     function guardarProductos() {
         localStorage.setItem(STORAGE_PRODUCTOS, JSON.stringify(listaProductos));
     }
 
-    // CARGAR ANTES DE TODO
     cargarDatos();
 
     // ELEMENTOS
@@ -361,204 +376,20 @@
     const btnsSubAdmin = document.querySelectorAll('.admin-sub');
     const subSecciones = document.querySelectorAll('.sub-seccion');
 
-    // INICIO
     alertaAcceso.style.display = 'none';
     renderizarTodo();
 
-    // MOSTRAR CAMPOS ADMIN
     btnToggle.addEventListener('click', () => {
         fieldsAdmin.style.display = fieldsAdmin.style.display === 'block' ? 'none' : 'block';
     });
 
-    // 🔑 FUNCIÓN CLAVE: CAMBIAR SECCIÓN
     function cambiarSeccion(id) {
         secciones.forEach(s => s.classList.remove('active'));
         const seccionObjetivo = document.getElementById(id);
         if (seccionObjetivo) seccionObjetivo.classList.add('active');
         
-        if(esAdmin && id !== 'admin-section') {
-            btnAdminArriba.style.display = 'inline-block';
-            btnAdminArriba.classList.remove('active');
-        } else if(esAdmin && id === 'admin-section') {
-            btnAdminArriba.style.display = 'inline-block';
-            btnAdminArriba.classList.add('active');
-        } else {
-            btnAdminArriba.style.display = 'none';
-        }
+        btnAdminArriba.style.display = esAdmin ? 'inline-block' : 'none';
+        btnAdminArriba.classList.toggle('active', esAdmin && id === 'admin-section');
         
         navInferior.forEach(l => l.classList.remove('active'));
-        const linkAct = document.querySelector(`.bottom-nav a[data-target="${id}"]`);
-        if(linkAct) linkAct.classList.add('active');
-    }
-
-    btnAdminArriba.addEventListener('click', () => { if (esAdmin) cambiarSeccion('admin-section'); });
-    navInferior.forEach(link => { link.addEventListener('click', e => { e.preventDefault(); cambiarSeccion(link.dataset.target); }); });
-    btnsSubAdmin.forEach(btn => {
-        btn.addEventListener('click', () => {
-            btnsSubAdmin.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            subSecciones.forEach(s => s.classList.remove('active'));
-            const subObjetivo = document.getElementById(btn.dataset.target);
-            if (subObjetivo) subObjetivo.classList.add('active');
-        });
-    });
-
-    function volverLogin() {
-        main.style.display = 'none';
-        login.style.display = 'flex';
-        formSocio.reset();
-        inputEmail.value = '';
-        fieldsAdmin.style.display = 'none';
-        alertaAcceso.style.display = 'none';
-        esAdmin = false;
-    }
-    salirBtn.addEventListener('click', volverLogin);
-
-    function entrar(nombre, admin=false) {
-        login.style.display = 'none';
-        main.style.display = 'block';
-        esAdmin = admin;
-        
-        if (esAdmin) {
-            mostrarUsuario.textContent = NOMBRE_ADMIN;
-            etiquetaUsuario.textContent = `"${NOMBRE_ADMIN}"`;
-            tipoCuenta.textContent = "ADMINISTRADOR";
-        } else {
-            mostrarUsuario.textContent = nombre;
-            etiquetaUsuario.textContent = `"${nombre}"`;
-            tipoCuenta.textContent = "Socio Registrado";
-        }
-        
-        cambiarSeccion('cuenta');
-        renderizarTodo();
-    }
-
-    btnEntrarAdmin.addEventListener('click', () => {
-        if (inputEmail.value.trim().toLowerCase() === CORREO_ADMIN.toLowerCase()) {
-            entrar(NOMBRE_ADMIN, true);
-        } else {
-            alert("❌ Solo el dueño con correo autorizado");
-        }
-    });
-
-    formSocio.addEventListener('submit', e => {
-        e.preventDefault();
-        const user = document.getElementById('user-in').value.trim();
-        const pin = document.getElementById('pin-in').value.trim();
-        if(usuariosRegistrados[user] && usuariosRegistrados[user] === pin) {
-            alertaAcceso.style.display = 'none';
-            entrar(user, false);
-        } else {
-            alertaAcceso.style.display = 'block';
-        }
-    });
-
-    // 👤 CREAR USUARIO Y GUARDAR
-    document.getElementById('crear-usuario').addEventListener('click', () => {
-        const nom = document.getElementById('nuevo-nombre').value.trim();
-        const pin = document.getElementById('nuevo-pin').value.trim();
-        if(!nom || !pin) return alert("Llena ambos campos");
-        usuariosRegistrados[nom] = pin;
-        guardarUsuarios(); // 💾 GUARDADO AUTOMÁTICO
-        document.getElementById('alert-usuario-ok').style.display = 'block';
-        setTimeout(() => document.getElementById('alert-usuario-ok').style.display = 'none', 2500);
-        document.getElementById('nuevo-nombre').value = '';
-        document.getElementById('nuevo-pin').value = '';
-        renderizarTodo();
-    });
-
-    // 📄 RENDERIZADO COMPLETO
-    function renderizarTodo() {
-        // Tabla de usuarios
-        const tbody = document.getElementById('tabla-usuarios');
-        tbody.innerHTML = '';
-        Object.entries(usuariosRegistrados).forEach(([u,p]) => {
-            const fila = document.createElement('tr');
-            fila.innerHTML = `<td>${u}</td><td>${p}</td><td><button class="btn-action btn-sm btn-danger" onclick="eliminarUsuario('${u}')">Eliminar</button></td>`;
-            tbody.appendChild(fila);
-        });
-        document.getElementById('stat-total').textContent = Object.keys(usuariosRegistrados).length;
-
-        // Productos
-        const contUser = document.getElementById('lista-productos');
-        const contAdmin = document.getElementById('lista-productos-admin');
-        contUser.innerHTML = ''; contAdmin.innerHTML = '';
-
-        listaProductos.forEach(prod => {
-            const cardU = document.createElement('div');
-            cardU.className = 'card';
-            cardU.innerHTML = `
-                <h3 class="card-title">${prod.nombre}</h3>
-                <p class="card-desc">${prod.desc}</p>
-                <div style="color:var(--accent);font-size:1.5rem;font-weight:bold;margin:1rem 0;">$${prod.precio} MXN</div>
-                <button class="btn-action comprar" data-id="${prod.id}">Comprar</button>
-            `;
-            contUser.appendChild(cardU);
-
-            const cardA = document.createElement('div');
-            cardA.className = 'card';
-            cardA.innerHTML = `
-                <h3 class="card-title">${prod.nombre}</h3>
-                <p class="card-desc">${prod.desc}</p>
-                <div style="color:var(--accent);font-size:1.5rem;font-weight:bold;margin:1rem 0;">$${prod.precio} MXN</div>
-                <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
-                    <button class="btn-action btn-sm" onclick="editarProducto(${prod.id})">Editar</button>
-                    <button class="btn-action btn-sm btn-danger" onclick="borrarProducto(${prod.id})">Eliminar</button>
-                </div>
-            `;
-            contAdmin.appendChild(cardA);
-        });
-
-        document.querySelectorAll('.comprar').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.getElementById('alerta-compra').style.display = 'block';
-                setTimeout(()=>document.getElementById('alerta-compra').style.display='none',3000);
-            });
-        });
-    }
-
-    // FUNCIONES GLOBALES PARA ADMIN
-    window.eliminarUsuario = function(nombre) {
-        if(confirm(`¿Eliminar usuario ${nombre}?`)) {
-            delete usuariosRegistrados[nombre];
-            guardarUsuarios(); // 💾 GUARDADO
-            renderizarTodo();
-        }
-    };
-
-    window.borrarProducto = function(id) {
-        if(confirm("¿Eliminar este producto?")) {
-            listaProductos = listaProductos.filter(p => p.id !== id);
-            guardarProductos(); // 💾 GUARDADO
-            renderizarTodo();
-        }
-    };
-
-    window.editarProducto = function(id) {
-        const prod = listaProductos.find(p=>p.id===id);
-        if(prod) {
-            document.getElementById('prod-nombre').value = prod.nombre;
-            document.getElementById('prod-desc').value = prod.desc;
-            document.getElementById('prod-precio').value = prod.precio;
-            borrarProducto(id);
-        }
-    };
-
-    document.getElementById('agregar-producto').addEventListener('click', () => {
-        const nom = document.getElementById('prod-nombre').value.trim();
-        const desc = document.getElementById('prod-desc').value.trim();
-        const pre = parseInt(document.getElementById('prod-precio').value);
-        if(!nom || !desc || !pre) return alert("Llena todo");
-        listaProductos.push({id:Date.now(), nombre:nom, desc:desc, precio:pre});
-        guardarProductos(); // 💾 GUARDADO
-        document.getElementById('alert-prod-ok').style.display = 'block';
-        setTimeout(()=>document.getElementById('alert-prod-ok').style.display='none',2500);
-        document.getElementById('prod-nombre').value='';
-        document.getElementById('prod-desc').value='';
-        document.getElementById('prod-precio').value='';
-        renderizarTodo();
-    });
-</script>
-</body>
-</html>
-             
+        const linkAct = document.que
