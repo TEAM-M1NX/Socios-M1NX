@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROXY M1NX - Sistema Completo</title>
+    <title>PROXY M1NX - Sistema Completo Estable</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
@@ -97,8 +97,7 @@
         .modal-footer { text-align: right; }
         .modal-btn { background: transparent; border: none; color: var(--accent); font-weight: 500; font-size: 1rem; cursor: pointer; }
 
-        /* ESTRUCTURAS PANELES */
-        #socio-panel, #admin-panel { display: none; }
+        /* NAVEGACIÓN COMÚN */
         .base-nav {
             background: rgba(13,13,21,.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
             position: sticky; top: 0; z-index: 100;
@@ -110,6 +109,7 @@
         .container { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem; }
 
         /* PANEL SOCIOS */
+        #socio-panel { display: none; }
         .hero { text-align: center; margin-bottom: 4rem; }
         .hero h1 { font-size: clamp(2rem,5vw,3rem); margin-bottom: 1rem; }
         .hero p { color: var(--muted); font-size: 1.2rem; max-width:750px; margin:0 auto; }
@@ -132,6 +132,7 @@
         .feature-item p { color: var(--muted); font-size: .9rem; }
 
         /* PANEL ADMINISTRADOR */
+        #admin-panel { display: none; }
         .admin-wrap { display: grid; grid-template-columns: 260px 1fr; gap: 2rem; }
         .sidebar { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; height: fit-content; position: sticky; top: 90px; }
         .sidebar-menu { list-style: none; }
@@ -160,12 +161,16 @@
         .form-admin { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; max-width: 600px; }
         .form-row { margin-bottom: 1.25rem; }
         .form-row label { display: block; margin-bottom: .5rem; color: var(--muted); font-size: .9rem; }
-        .form-row input, .form-row select { width: 100%; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; padding: .75rem; color: var(--text); }
+        .form-row input, .form-row select { width: 100%; background: var(--input-bg); border: 1px solid var(--border); border-radius: 6px; padding: .75rem; color: var(--text); font-size: 1rem; }
         .btn-save { background: var(--success); color: white; border: none; padding: .75rem 1.25rem; border-radius: 6px; cursor: pointer; font-weight: 600; }
 
         @media (max-width: 900px) {
             .admin-wrap { grid-template-columns: 1fr; }
             .sidebar { position: static; }
+        }
+        @media (max-width: 768px) {
+            .nav-wrap { padding: 0 1rem; }
+            .container { padding: 2rem 1rem; }
         }
     </style>
 </head>
@@ -298,7 +303,4 @@
                         </tbody></table>
                     </div>
                 </section>
-                <section id="planes" class="admin-section">
-                    <div class="panel-head"><h2>Editar Planes y Precios</h2></div>
-                    <form class="form-admin">
-                        <div class="f
+                <section id="planes" class
