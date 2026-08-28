@@ -2,392 +2,303 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>PROXY M1NX — ANÓNIMO MX</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROXY M1NX — ACCESO PRIVADO</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
-            --bg: #05050a;
-            --card: #0d0d15;
-            --border: #1a1a2e;
-            --accent: #8b5cf6;
-            --accent-alt: #06b6d4;
-            --text: #ffffff;
-            --muted: #a1a1aa;
-            --input-bg: #0a0a10;
-            --success: #22c55e;
-            --danger: #ef4444;
-            --warning: #f59e0b;
+            --fondo: #05060d;
+            --tarjeta: #0d1020;
+            --borde: #1a2040;
+            --color-ppal: #7c3aed;
+            --color-sec: #06b6d4;
+            --texto: #ffffff;
+            --texto-claro: #a5a8c0;
+            --exito: #22c55e;
+            --peligro: #ef4444;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
+            background-color: var(--fondo);
+            color: var(--texto);
             background-image: 
-                radial-gradient(circle at 0% 0%, rgba(139,92,246,0.06) 0%, transparent 40%),
-                radial-gradient(circle at 100% 0%, rgba(6,182,212,0.04) 0%, transparent 40%);
+                radial-gradient(circle at top left, rgba(124,58,237,0.08) 0%, transparent 50%),
+                radial-gradient(circle at top right, rgba(6,182,212,0.05) 0%, transparent 50%);
             min-height: 100vh;
         }
 
         /* LOGIN */
-        #login-screen {
+        #pantalla-login {
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             padding: 2rem;
         }
-        .login-container { max-width: 450px; width: 100%; }
-        .login-header { text-align: center; margin-bottom: 2.5rem; }
+        .contenedor-login { max-width: 420px; width: 100%; }
+        .cabecera-login { text-align: center; margin-bottom: 2.5rem; }
         .logo {
             font-size: 1.8rem; font-weight: 800;
-            background: linear-gradient(90deg, var(--accent), var(--accent-alt));
+            background: linear-gradient(90deg, var(--color-ppal), var(--color-sec));
             -webkit-background-clip: text; background-clip: text; color: transparent;
             margin-bottom: 1rem;
-            white-space: nowrap;
         }
-        .login-header p { color: var(--muted); }
-        .login-box {
-            background: var(--card); border: 1px solid var(--border); border-radius: 16px;
-            padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        .caja-login {
+            background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 16px;
+            padding: 2.5rem; box-shadow: 0 12px 45px rgba(0,0,0,0.4);
         }
-        .btn-google {
-            width: 100%; background: transparent; border: 1px solid var(--border); color: var(--text);
-            padding: .85rem 1rem; border-radius: 8px; font-size: .95rem; font-weight: 500;
-            display: flex; align-items: center; justify-content: center; gap: .75rem;
-            margin-bottom: 2rem; cursor: pointer; transition: .2s;
+        .divisor {
+            position: relative; text-align: center; margin: 1.5rem 0; color: var(--texto-claro); font-size: 0.9rem;
         }
-        .btn-google:hover { border-color: var(--accent); background: rgba(139,92,246,.05); }
-        .btn-google svg { width: 18px; height: 18px; }
-        .divider { position: relative; text-align: center; margin-bottom: 2rem; }
-        .divider::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: var(--border); }
-        .divider span { background: var(--card); padding: 0 1rem; color: var(--muted); position: relative; }
-        .form-group { margin-bottom: 1.5rem; }
-        .form-group label { display: block; margin-bottom: .6rem; color: var(--muted); font-size: .9rem; }
-        .form-group input, .form-control {
-            width: 100%; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px;
-            padding: .9rem 1rem; color: var(--text); font-size: 1rem; font-family: inherit;
+        .divisor::before {
+            content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: var(--borde);
         }
-        .form-group input:focus, .form-control:focus { outline: none; border-color: var(--accent); }
-        .btn-primary {
-            width: 100%; background: var(--accent); color: white; border: none;
-            padding: .95rem; border-radius: 8px; font-size: 1rem; font-weight: 600;
-            cursor: pointer; transition: .2s;
+        .divisor span { background: var(--tarjeta); padding: 0 1rem; position: relative; }
+        .grupo-input { margin-bottom: 1.5rem; }
+        .grupo-input label {
+            display: block; margin-bottom: 0.6rem; color: var(--texto-claro); font-size: 0.9rem;
         }
-        .btn-primary:hover { background: #7c3aed; }
-        .alert { padding: 1rem; border-radius: 8px; margin: 1rem 0; display: none; }
-        .alert.success { background: rgba(34, 197, 94, .1); border: 1px solid var(--success); color: var(--success); }
-        .alert.danger { background: rgba(239, 68, 68, .1); border: 1px solid var(--danger); color: var(--danger); }
-        .alert.warning { background: rgba(245, 158, 11, .1); border: 1px solid var(--warning); color: var(--warning); }
-        .admin-inputs { margin-bottom: 1.5rem; display: none; }
+        .grupo-input input {
+            width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--borde); border-radius: 8px;
+            padding: 0.9rem 1rem; color: var(--texto); font-size: 1rem; transition: border-color .2s;
+        }
+        .grupo-input input:focus {
+            outline: none; border-color: var(--color-ppal);
+        }
+        .boton-ppal {
+            width: 100%; background: linear-gradient(90deg, var(--color-ppal), #6d28d9);
+            color: white; border: none; padding: 0.95rem; border-radius: 8px; font-size: 1rem; font-weight: 600;
+            cursor: pointer; transition: transform .2s, opacity .2s;
+        }
+        .boton-ppal:hover { transform: translateY(-2px); opacity: 0.95; }
+        .alerta {
+            padding: 1rem; border-radius: 8px; margin: 1rem 0; display: none; font-size: 0.9rem;
+        }
+        .alerta.peligro {
+            background: rgba(239,68,68,0.1); border: 1px solid var(--peligro); color: #ff6b6b;
+        }
 
         /* ESTRUCTURA PRINCIPAL */
-        #main-panel { display: none; }
-        .top-bar {
-            background: rgba(13,13,21,.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+        #panel-principal { display: none; }
+        .barra-superior {
+            background: rgba(13,16,32,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--borde);
             padding: 0 2rem; height: 70px; display: flex; align-items: center; justify-content: space-between;
             position: sticky; top: 0; z-index: 100;
         }
-        .top-left { display: flex; align-items: center; gap: 1rem; }
-        .brand { 
-            font-weight: 800; font-size: 1.3rem; 
-            background: linear-gradient(90deg, var(--accent), var(--accent-alt)); 
-            -webkit-background-clip: text; color: transparent; 
-            white-space: nowrap;
+        .marca {
+            font-weight: 800; font-size: 1.3rem;
+            background: linear-gradient(90deg, var(--color-ppal), var(--color-sec));
+            -webkit-background-clip: text; color: transparent;
         }
-        .sep { color: var(--border); font-size: 1.2rem; }
-        .admin-toggle-btn { 
-            background: none; border: none; color: var(--text); 
-            font-size: 1.1rem; font-weight: 600; cursor: pointer; 
-            transition: color .2s; display: none;
-            padding: 0.5rem;
+        .info-usuario { display: flex; align-items: center; gap: 1rem; }
+        .nombre-usuario { color: var(--texto-claro); font-weight: 500; }
+        .boton-salir {
+            background: var(--peligro); color: white; border: none; padding: 0.5rem 1.2rem; border-radius: 6px;
+            cursor: pointer; font-weight: 500; transition: background .2s;
         }
-        .admin-toggle-btn:hover, .admin-toggle-btn.active { color: var(--accent); }
-        .user-tag { color: var(--muted); font-weight: 500; }
-        .btn-logout { background: var(--danger); color: white; border: none; padding: .5rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: 500; }
+        .boton-salir:hover { background: #dc2626; }
 
         /* CONTENIDO */
-        .content { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 6rem; }
-        .page-section { display: none; }
-        .page-section.active { display: block; }
-        .sub-seccion { display: none; margin-top: 2rem; }
-        .sub-seccion.active { display: block; }
-        h1 { font-size: 2rem; margin-bottom: 2rem; text-align: center; }
-        h2 { font-size: 1.4rem; margin-bottom: 1.5rem; color: var(--accent); }
-        .info-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; color: var(--muted); line-height: 1.6; }
-        .grid-admin, .grid-products { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1.5rem; }
-        .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; transition: transform .3s; }
-        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
-        .card-title { font-size: 1.25rem; margin-bottom: .5rem; font-weight: 700; }
-        .card-desc { color: var(--muted); margin-bottom: 1rem; font-size: .95rem; }
-        .btn-action { width: 100%; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: .75rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: .2s; }
-        .btn-action:hover, .btn-action.active { background: var(--accent); color: white; }
-        .btn-danger { border-color: var(--danger); color: var(--danger); }
-        .btn-danger:hover { background: var(--danger); color: white; }
-        .btn-sm { width: auto; padding: .4rem .8rem; font-size: .9rem; }
-        table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: var(--card); border-radius: 12px; overflow: hidden; }
-        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: rgba(139,92,246,.1); }
-        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .contenido { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+        .seccion { display: none; }
+        .seccion.activa { display: block; }
+        h1 { font-size: 2rem; margin-bottom: 2rem; text-align: center; color: var(--texto); }
+        .caja-info {
+            background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 12px;
+            padding: 2rem; margin-bottom: 2rem; color: var(--texto-claro); line-height: 1.7;
+        }
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;
+        }
+        .tarjeta {
+            background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 12px;
+            padding: 2rem; transition: transform .3s, border-color .3s;
+        }
+        .tarjeta:hover { transform: translateY(-6px); border-color: var(--color-ppal); }
+        .titulo-tarjeta { font-size: 1.2rem; margin-bottom: 0.8rem; font-weight: 700; }
+        .desc-tarjeta { color: var(--texto-claro); margin-bottom: 1rem; font-size: 0.95rem; }
+        .precio { font-size: 1.6rem; font-weight: 800; color: var(--color-ppal); margin-bottom: 1rem; }
+        .boton {
+            width: 100%; background: transparent; border: 1px solid var(--color-ppal); color: var(--color-ppal);
+            padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all .2s;
+        }
+        .boton:hover { background: var(--color-ppal); color: white; }
 
         /* NAVEGACIÓN INFERIOR */
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(13,13,21,.95); backdrop-filter: blur(12px);
-            border-top: 1px solid var(--border); display: flex; justify-content: center; gap: 2rem; padding: 1.2rem 0;
+        .navegacion-inferior {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(13,16,32,0.95); backdrop-filter: blur(12px);
+            border-top: 1px solid var(--borde); display: flex; justify-content: center; gap: 2.5rem; padding: 1.2rem 0;
         }
-        .bottom-nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 1rem; transition: .2s; }
-        .bottom-nav a:hover, .bottom-nav a.active { color: var(--accent); }
+        .navegacion-inferior a {
+            color: var(--texto-claro); text-decoration: none; font-weight: 600; font-size: 1rem; transition: color .2s;
+        }
+        .navegacion-inferior a:hover, .navegacion-inferior a.activo { color: var(--color-ppal); }
     </style>
 </head>
 <body>
 
-<!-- PANTALLA DE INICIO -->
-<div id="login-screen">
-    <div class="login-container">
-        <div class="login-header">
+<!-- PANTALLA DE INICIO DE SESIÓN -->
+<div id="pantalla-login">
+    <div class="contenedor-login">
+        <div class="cabecera-login">
             <div class="logo">PROXY M1NX</div>
-            <p>Acceso seguro — Solo usuarios registrados</p>
+            <p style="color:var(--texto-claro);font-size:0.95rem;">Acceso exclusivo — Usuarios autorizados</p>
         </div>
-        <div class="login-box">
-            <button class="btn-google" id="btn-admin-toggle">
-                <svg viewBox="0 0 24 24" width="18" height="18">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l2.96-2.96C18.45 2.09 15.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                </svg>
-                Acceso Administrador
-            </button>
-            <div class="admin-inputs" id="admin-fields">
-                <div class="form-group">
-                    <label>Correo Autorizado (Dueño)</label>
-                    <input type="email" id="admin-email" placeholder="jesusgutierrezmontanez05@gmail.com">
+        <div class="caja-login">
+            <div class="divisor"><span>INGRESO</span></div>
+            <form id="formulario-ingreso">
+                <div class="grupo-input">
+                    <label>Usuario / Teléfono</label>
+                    <input type="text" id="campo-usuario" required autocomplete="off">
                 </div>
-                <button class="btn-primary" id="admin-enter">Ingresar al Control Total</button>
-            </div>
-
-            <div class="divider"><span>ACCESO USUARIOS REGISTRADOS</span></div>
-
-            <form id="form-socio">
-                <div class="form-group">
-                    <label>Nombre de Usuario</label>
-                    <input type="text" id="user-in" required>
-                </div>
-                <div class="form-group">
+                <div class="grupo-input">
                     <label>PIN de Acceso</label>
-                    <input type="password" id="pin-in" required>
+                    <input type="password" id="campo-pin" required autocomplete="off">
                 </div>
-                <div class="alert danger" id="alerta-acceso">❌ ACCESO DENEGADO: Usuario o PIN incorrectos / No registrado</div>
-                <button type="submit" class="btn-primary">Entrar al Sistema</button>
+                <div class="alerta peligro" id="aviso-acceso">
+                    <i class="fas fa-exclamation-triangle"></i> Usuario o PIN incorrectos
+                </div>
+                <button type="submit" class="boton-ppal">Ingresar al Sistema</button>
             </form>
         </div>
     </div>
 </div>
 
-<!-- PANEL PRINCIPAL -->
-<div id="main-panel">
-    <nav class="top-bar">
-        <div class="top-left">
-            <span class="brand">PROXY M1NX</span>
-            <span class="sep">|</span>
-            <button class="admin-toggle-btn" id="btn-admin-top">ADMIN PANEL</button>
-            <span class="user-tag" id="etiqueta-usuario"></span>
+<!-- PANEL PRINCIPAL DEL SISTEMA -->
+<div id="panel-principal">
+    <nav class="barra-superior">
+        <div class="marca">PROXY M1NX</div>
+        <div class="info-usuario">
+            <span class="nombre-usuario" id="etiqueta-nombre"></span>
+            <button class="boton-salir" id="boton-cerrar">
+                <i class="fas fa-sign-out-alt"></i> Salir
+            </button>
         </div>
-        <button class="btn-logout" id="salir-btn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
     </nav>
 
-    <main class="content">
-        <!-- SECCIÓN ADMIN -->
-        <section id="admin-section" class="page-section">
-            <h1>⚙️ PANEL DE CONTROL TOTAL — SOLO PARA ANÓNIMO MX</h1>
-            <div class="info-box">
-                Aquí gestionas TODO: Crear usuarios con PIN, eliminar, editar, agregar/modificar/quitar productos, ajustar precios y configuraciones. <strong>Todo se guarda automáticamente.</strong>
+    <main class="contenido">
+        <section id="seccion-cuenta" class="seccion activa">
+            <h1>👤 Tu Cuenta</h1>
+            <div class="caja-info">
+                <p><strong>Bienvenido de nuevo.</strong></p>
+                <p>Usuario: <span id="mostrar-usuario" style="color:var(--texto);font-weight:bold;">—</span></p>
+                <p>Estado: <span style="color:var(--exito);font-weight:bold;">✅ ACTIVO</span></p>
+                <p>Nivel: Estándar</p>
             </div>
+        </section>
 
-            <div class="grid-admin">
-                <div class="card"><h3 class="card-title">👥 Gestión de Usuarios</h3><p class="card-desc">Crea, revisa y elimina cuentas con su PIN de acceso.</p><button class="btn-action admin-sub active" data-target="mod-usuarios">Ir a Usuarios</button></div>
-                <div class="card"><h3 class="card-title">🛒 Gestión de Productos</h3><p class="card-desc">Agrega nuevos planes, cambia precios o elimina lo que no quieras.</p><button class="btn-action admin-sub" data-target="mod-productos">Ir a Productos</button></div>
-                <div class="card"><h3 class="card-title">📊 Sistema y Ajustes</h3><p class="card-desc">Estadísticas y control general del sistema.</p><button class="btn-action admin-sub" data-target="mod-sistema">Ver Sistema</button></div>
-            </div>
-
-            <!-- SUB: USUARIOS -->
-            <div id="mod-usuarios" class="sub-seccion active">
-                <h2>➕ Crear Nuevo Usuario</h2>
-                <div class="form-row">
-                    <input type="text" id="nuevo-nombre" class="form-control" placeholder="Nombre usuario">
-                    <input type="text" id="nuevo-pin" class="form-control" placeholder="PIN de acceso">
-                    <button id="crear-usuario" class="btn-action">Guardar Usuario</button>
+        <section id="seccion-productos" class="seccion">
+            <h1>📦 Planes Disponibles</h1>
+            <div class="grid">
+                <div class="tarjeta">
+                    <h3 class="titulo-tarjeta">Básico</h3>
+                    <p class="desc-tarjeta">Conexión estable y rápida para uso diario.</p>
+                    <div class="precio">$100 <span style="font-size:1rem;">MXN</span></div>
+                    <button class="boton">Adquirir</button>
                 </div>
-                <div class="alert success" id="alert-usuario-ok">Usuario creado correctamente ✅</div>
-
-                <h2 style="margin-top:3rem;">📋 Lista de Usuarios Registrados</h2>
-                <table>
-                    <thead><tr><th>Usuario</th><th>PIN</th><th>Acción</th></tr></thead>
-                    <tbody id="tabla-usuarios"></tbody>
-                </table>
-            </div>
-
-            <!-- SUB: PRODUCTOS -->
-            <div id="mod-productos" class="sub-seccion">
-                <h2>➕ Agregar / Editar Producto</h2>
-                <div class="form-row">
-                    <input type="text" id="prod-nombre" class="form-control" placeholder="Nombre del plan">
-                    <input type="text" id="prod-desc" class="form-control" placeholder="Descripción">
-                    <input type="number" id="prod-precio" class="form-control" placeholder="Precio MXN">
-                    <button id="agregar-producto" class="btn-action">Guardar Producto</button>
+                <div class="tarjeta">
+                    <h3 class="titulo-tarjeta">Avanzado</h3>
+                    <p class="desc-tarjeta">Mayor velocidad y estabilidad para uso intensivo.</p>
+                    <div class="precio">$150 <span style="font-size:1rem;">MXN</span></div>
+                    <button class="boton">Adquirir</button>
                 </div>
-                <div class="alert success" id="alert-prod-ok">Producto actualizado ✅</div>
-
-                <h2 style="margin-top:3rem;">📦 Productos Actuales (Edita o elimina)</h2>
-                <div id="lista-productos-admin" class="grid-products"></div>
-            </div>
-
-            <!-- SUB: SISTEMA -->
-            <div id="mod-sistema" class="sub-seccion">
-                <h2>📊 Estado del Sistema</h2>
-                <div class="grid-admin">
-                    <div class="card"><h3>Total Usuarios</h3><p style="font-size:2rem; color:var(--accent)" id="stat-total">0</p></div>
-                    <div class="card"><h3>Estado General</h3><p style="font-size:1.3rem; color:var(--success)">💾 DATOS GUARDADOS</p></div>
+                <div class="tarjeta">
+                    <h3 class="titulo-tarjeta">Premium</h3>
+                    <p class="desc-tarjeta">Acceso total, soporte prioritario y máxima velocidad.</p>
+                    <div class="precio">$250 <span style="font-size:1rem;">MXN</span></div>
+                    <button class="boton">Adquirir</button>
                 </div>
             </div>
         </section>
 
-        <!-- CUENTA -->
-        <section id="cuenta" class="page-section active">
-            <h1>👤 TU CUENTA</h1>
-            <div class="info-box">
-                <p><strong>Usuario:</strong> <span id="mostrar-usuario">—</span></p>
-                <p><strong>Rol:</strong> <span id="tipo-cuenta">Socio</span></p>
-                <p><strong>Estado:</strong> <span style="color:var(--success);">Activo</span></p>
-            </div>
-        </section>
-
-        <!-- TIENDA USUARIOS -->
-        <section id="productos" class="page-section">
-            <h1>📦 NUESTROS PLANES</h1>
-            <div id="lista-productos" class="grid-products"></div>
-            <div class="alert success" id="alerta-compra">✅ Compra realizada con éxito</div>
-        </section>
-
-        <!-- BENEFICIOS -->
-        <section id="beneficios" class="page-section">
-            <h1>✨ BENEFICIOS</h1>
-            <div class="info-box">
-                <ul style="margin-top:1rem; padding-left:1.2rem;">
-                    <li>Conexión rápida y segura</li>
-                    <li>Soporte directo</li>
-                    <li>Estabilidad 99.9%</li>
+        <section id="seccion-beneficios" class="seccion">
+            <h1>✨ Beneficios</h1>
+            <div class="caja-info">
+                <ul style="padding-left:1.2rem;margin:0;">
+                    <li>🔒 Conexión cifrada y segura</li>
+                    <li>⚡ Velocidad optimizada</li>
+                    <li>🛡️ Protección contra riesgos</li>
+                    <li>📞 Soporte directo</li>
+                    <li>🌐 Estabilidad garantizada</li>
                 </ul>
             </div>
         </section>
     </main>
 
-    <nav class="bottom-nav">
-        <a href="#" data-target="cuenta" class="active">CUENTA</a>
-        <a href="#" data-target="productos">PRODUCTOS</a>
-        <a href="#" data-target="beneficios">BENEFICIOS</a>
+    <nav class="navegacion-inferior">
+        <a href="#" data-seccion="cuenta" class="activo">CUENTA</a>
+        <a href="#" data-seccion="productos">PLANES</a>
+        <a href="#" data-seccion="beneficios">BENEFICIOS</a>
     </nav>
 </div>
 
 <script>
-    // ⚙️ CONFIGURACIÓN PRINCIPAL
-    const CORREO_ADMIN = "jesusgutierrezmontanez05@gmail.com";
-    let esAdmin = false;
-    const NOMBRE_ADMIN = "ANÓNIMO MX";
-    
-    // 🔒 USUARIOS FIJOS (LOS QUE PEDISTE)
-    const USUARIOS_FIJOS = {
+    // 🔒 USUARIOS FIJOS PROTEGIDOS (NO SE MODIFICAN NI SE BORRAN)
+    const USUARIOS_AUTORIZADOS = {
         "+593 98 342 5400": "3076",
         "+1 (829) 325-9377": "1990",
         "+52 55 1696 2513": "1010",
         "+52 720 792 8578": "0012"
     };
-    
-    // 🔑 CLAVES PARA LOCALSTORAGE (GUARDADO PERMANENTE)
-    const STORAGE_USUARIOS = "proxy_m1nx_usuarios";
-    const STORAGE_PRODUCTOS = "proxy_m1nx_productos";
 
-    // 📦 CARGAR DATOS AL INICIAR
-    let usuariosRegistrados = {...USUARIOS_FIJOS}; // Incluye siempre los fijos
-    let listaProductos = [];
-
-    function cargarDatos() {
-        try {
-            const usuariosGuardados = localStorage.getItem(STORAGE_USUARIOS);
-            const productosGuardados = localStorage.getItem(STORAGE_PRODUCTOS);
-            
-            if (usuariosGuardados) {
-                // Mantiene los fijos y agrega los adicionales guardados
-                const adicionales = JSON.parse(usuariosGuardados);
-                usuariosRegistrados = {...USUARIOS_FIJOS, ...adicionales};
-            }
-            
-            if (productosGuardados) {
-                listaProductos = JSON.parse(productosGuardados);
-            } else {
-                // Productos por defecto si es primera vez
-                listaProductos = [
-                    {id:1, nombre:"Socio Básico", desc:"Conexión estable", precio:100},
-                    {id:2, nombre:"Socio Avanzado", desc:"Mayor rendimiento", precio:150},
-                    {id:3, nombre:"Socio Premium", desc:"Acceso total", precio:250}
-                ];
-                guardarProductos();
-            }
-        } catch (e) {
-            console.error("Error al cargar datos:", e);
-            usuariosRegistrados = {...USUARIOS_FIJOS};
-            listaProductos = [];
-        }
-    }
-
-    // 💾 FUNCIONES PARA GUARDAR
-    function guardarUsuarios() {
-        // Solo guarda usuarios nuevos, protege los fijos
-        const paraGuardar = {};
-        for (let u in usuariosRegistrados) {
-            if (!USUARIOS_FIJOS[u]) {
-                paraGuardar[u] = usuariosRegistrados[u];
-            }
-        }
-        localStorage.setItem(STORAGE_USUARIOS, JSON.stringify(paraGuardar));
-    }
-    function guardarProductos() {
-        localStorage.setItem(STORAGE_PRODUCTOS, JSON.stringify(listaProductos));
-    }
-
-    // CARGAR ANTES DE TODO
-    cargarDatos();
-
-    // ELEMENTOS
-    const login = document.getElementById('login-screen');
-    const main = document.getElementById('main-panel');
-    const btnToggle = document.getElementById('btn-admin-toggle');
-    const fieldsAdmin = document.getElementById('admin-fields');
-    const inputEmail = document.getElementById('admin-email');
-    const btnEntrarAdmin = document.getElementById('admin-enter');
-    const formSocio = document.getElementById('form-socio');
-    const alertaAcceso = document.getElementById('alerta-acceso');
-    const salirBtn = document.getElementById('salir-btn');
-    const secciones = document.querySelectorAll('.page-section');
-    const navInferior = document.querySelectorAll('.bottom-nav a');
-    const btnAdminArriba = document.getElementById('btn-admin-top');
+    // ELEMENTOS DEL DOM
+    const pantallaLogin = document.getElementById('pantalla-login');
+    const panelPrincipal = document.getElementById('panel-principal');
+    const formulario = document.getElementById('formulario-ingreso');
+    const campoUsuario = document.getElementById('campo-usuario');
+    const campoPin = document.getElementById('campo-pin');
+    const avisoAcceso = document.getElementById('aviso-acceso');
+    const etiquetaNombre = document.getElementById('etiqueta-nombre');
     const mostrarUsuario = document.getElementById('mostrar-usuario');
-    const etiquetaUsuario = document.getElementById('etiqueta-usuario');
-    const tipoCuenta = document.getElementById('tipo-cuenta');
-    const btnsSubAdmin = document.querySelectorAll('.admin-sub');
-    const subSecciones = document.querySelectorAll('.sub-seccion');
+    const botonCerrar = document.getElementById('boton-cerrar');
+    const enlacesNavegacion = document.querySelectorAll('.navegacion-inferior a');
+    const secciones = document.querySelectorAll('.seccion');
 
-    // INICIO
-    alertaAcceso.style.display = 'none';
-    renderizarTodo();
+    // OCULTAR AVISO AL INICIAR
+    avisoAcceso.style.display = 'none';
 
-    // MOSTRAR CAMPOS ADMIN
-    btnToggle.addEventListener('click', () => {
-        fieldsAdmin.style.display = fieldsAdmin.style.display === 'block' ? 'none' : 'block';
+    // FUNCIÓN CAMBIAR SECCIÓN
+    function cambiarSeccion(nombreSeccion) {
+        secciones.forEach(s => s.classList.remove('activa'));
+        document.getElementById(`seccion-${nombreSeccion}`).classList.add('activa');
+        enlacesNavegacion.forEach(e => e.classList.remove('activo'));
+        document.querySelector(`.navegacion-inferior a[data-seccion="${nombreSeccion}"]`).classList.add('activo');
+    }
+
+    // EVENTO NAVEGACIÓN
+    enlacesNavegacion.forEach(enlace => {
+        enlace.addEventListener('click', e => {
+            e.preventDefault();
+            cambiarSeccion(enlace.dataset.seccion);
+        });
     });
 
-    // 🔑 FUNCIÓN CLAVE: CAMBIAR SECCIÓN
-    function cambiarSeccion(id) {
-        secciones.forEach(s => s.classList.remove('active'));
-        const seccionObjetivo = docu
+    // INICIO DE SESIÓN
+    formulario.addEventListener('submit', e => {
+        e.preventDefault();
+        const usuarioIngresado = campoUsuario.value.trim();
+        const pinIngresado = campoPin.value.trim();
+
+        if (USUARIOS_AUTORIZADOS[usuarioIngresado] === pinIngresado) {
+            avisoAcceso.style.display = 'none';
+            pantallaLogin.style.display = 'none';
+            panelPrincipal.style.display = 'block';
+            etiquetaNombre.textContent = usuarioIngresado;
+            mostrarUsuario.textContent = usuarioIngresado;
+        } else {
+            avisoAcceso.style.display = 'block';
+        }
+    });
+
+    // CERRAR SESIÓN
+    botonCerrar.addEventListener('click', () => {
+        panelPrincipal.style.display = 'none';
+        pantallaLogin.style.display = 'flex';
+        formulario.reset();
+        avisoAcceso.style.display = 'none';
+    });
+</script>
+</body>
+</html>
+
