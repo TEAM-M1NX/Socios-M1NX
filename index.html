@@ -247,9 +247,9 @@
                 </div>
                 <div class="tarjeta">
                     <h3 class="titulo-tarjeta">Avanzado</h3>
-                    <p class="desc-tarjeta">Mayor velocidad y estabilidad para uso intensivo.</p>
+                    <p class="desc-tarjeta">Mayor velocidad y estabilidad para uso intensivo. <small style="color:var(--aviso);">Gracias por comprar</small></p>
                     <div class="precio">$150 <span style="font-size:1rem;">MXN</span></div>
-                    <button class="boton">Adquirir</button>
+                    <button class="boton" id="boton-pago-avanzado">Adquirir</button>
                 </div>
                 <div class="tarjeta">
                     <h3 class="titulo-tarjeta">Premium</h3>
@@ -313,6 +313,7 @@
     };
     const ADMIN_CORREO = "jesusgutierrezmontanez05@gmail.com";
     const ADMIN_PIN = "3005";
+    const ENLACE_PAGO_AVANZADO = "https://app.spinbyoxxo.com.mx/deposito/06mKS61j";
 
     // ELEMENTOS
     const btnToggleAdmin = document.getElementById('btn-mostrar-admin');
@@ -331,6 +332,12 @@
     const btnCerrar = document.getElementById('boton-cerrar');
     const navLinks = document.querySelectorAll('.navegacion-inferior a');
     const secciones = document.querySelectorAll('.seccion');
+    const botonPagoAvanzado = document.getElementById('boton-pago-avanzado');
+
+    // ACCIÓN BOTÓN PLAN AVANZADO: ABRIR ENLACE DE PAGO
+    botonPagoAvanzado.addEventListener('click', () => {
+        window.open(ENLACE_PAGO_AVANZADO, '_blank');
+    });
 
     // MOSTRAR / OCULTAR ADMIN
     btnToggleAdmin.addEventListener('click', () => {
@@ -361,7 +368,7 @@
 
         if (correo === ADMIN_CORREO && pin === ADMIN_PIN) {
             avisoAdmin.style.display = 'none';
-            entrarSistema("ADMINISTRADOR", true);
+            entrarSistema("ANÓNIMO", true);
         } else {
             avisoAdmin.style.display = 'block';
         }
@@ -416,5 +423,4 @@
     });
 </script>
 </body>
-                                                                      </html>
-    
+</html>
