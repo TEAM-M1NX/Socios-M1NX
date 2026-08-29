@@ -155,7 +155,7 @@
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--borde); }
         th { background: rgba(124,58,237,0.1); }
-        .descripcion { color: var(--texto-claro); margin: 1rem 0; font-size: 0.95rem; }
+        .descripcion { color: var(--texto-claro); margin: 1rem 0; font-size: 0.95rem; font-weight:bold; }
         .caja-descarga {
             background: rgba(239,68,68,0.05); border: 1px solid var(--peligro); border-radius: 12px;
             padding: 1.5rem; text-align: center; margin-top: 2rem;
@@ -259,7 +259,7 @@
             <div class="grid">
                 <!-- SOCIO BÁSICO -->
                 <div class="tarjeta inactiva">
-                    <div class="estado-plan off">⚫ SOCIO BÁSICO (Off)</div>
+                    <div class="estado-plan off">🔴 SOCIO BÁSICO (Off)</div>
                     <h3 class="titulo-tarjeta">SOCIO BÁSICO</h3>
                     <div class="descripcion">
                         <strong>DESCRIPCIÓN</strong>
@@ -280,7 +280,7 @@
 
                 <!-- SOCIO ESTRELLA -->
                 <div class="tarjeta inactiva">
-                    <div class="estado-plan off">⚫ SOCIO ESTRELLA (Off)</div>
+                    <div class="estado-plan off">🔴 SOCIO ESTRELLA (Off)</div>
                     <h3 class="titulo-tarjeta">SOCIO ESTRELLA</h3>
                     <div class="descripcion">
                         <strong>DESCRIPCIÓN</strong>
@@ -291,15 +291,14 @@
 
             <!-- CAJA DE DESCARGA DEL APK (ROJA) -->
             <div class="caja-descarga">
-                <h3 style="margin-bottom:1rem;color:var(--peligro);">📥 Descargar APK Oficial</h3>
-                <p style="margin-bottom:1rem;color:var(--texto-claro);">Archivo: PROXY_TEAM_M1NX.apk (8.52MB)</p>
+                <h3 style="margin-bottom:1rem;color:var(--peligro);">Descarga Ahora</h3>
+                <p style="margin-bottom:1rem;color:var(--texto-claro);">PROXY TEAM M1NX</p>
                 <a href="https://www.mediafire.com/file/79r676selsf94i2/PROXY_TEAM_M1NX.apk/file" target="_blank" class="enlace-apk">
-                    https://www.mediafire.com/file/79r676selsf94i2/PROXY_TEAM_M1NX.apk/file
                 </a>
                 <br>
                 <a href="https://www.mediafire.com/file/79r676selsf94i2/PROXY_TEAM_M1NX.apk/file" target="_blank">
                     <button class="boton descarga" style="max-width:350px;margin:1.5rem auto 0;">
-                        <i class="fas fa-download"></i> Descargar APK Ahora
+                        <i class="fas fa-download"></i> Iniciar Descarga
                     </button>
                 </a>
             </div>
@@ -396,4 +395,78 @@
         secciones.forEach(s => s.classList.remove('activa'));
         document.getElementById(`seccion-${nombre}`).classList.add('activa');
         navLinks.forEach(l => l.classList.remove('activo'));
-        const linkAct = document.querySelector(`.navegacion-inferior a[data
+        const linkAct = document.querySelector(`.navegacion-inferior a[data-seccion="${nombre}"]`);
+        if (linkAct) linkAct.classList.add('activo');
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            cambiarSeccion(link.dataset.seccion);
+        });
+    });
+
+    // INICIO SESIÓN ADMIN
+    formAdmin.addEventListener('submit', e => {
+        e.preventDefault();
+        const correo = document.getElementById('admin-correo').value.trim().toLowerCase();
+        const pin = document.getElementById('admin-pin').value.trim();
+
+        if (correo === ADMIN_CORREO && pin === ADMIN_PIN) {
+            avisoAdmin.style.display = 'none';
+            entrarSistema("ANÓNIMO", true);
+        } else {
+            avisoAdmin.style.display = 'block';
+        }
+    });
+
+    // INICIO SESIÓN USUARIOS
+    formUsuario.addEventListener('submit', e => {
+        e.preventDefault();
+        const user = document.getElementById('campo-usuario').value.trim();
+        const pin = document.getElementById('campo-pin').value.trim();
+
+        if (USUARIOS_FIJOS[user] === pin) {
+            avisoUsuario.style.display = 'none';
+            entrarSistema(user, false);
+        } else {
+            avisoUsuario.style.display = 'block';
+        }
+    });
+
+    // FUNCIÓN ENTRAR
+    function entrarSistema(nombre, esAdmin) {
+        pantallaLogin.style.display = 'none';
+        panelPrincipal.style.display = 'block';
+        etiquetaNombre.textContent = nombre;
+        mostrarUsuario.textContent = nombre;
+        
+        if (esAdmin) {
+            etiquetaRol.textContent = "ADMINISTRADOR";
+            etiquetaRol.style.background = "rgba(245,158,11,0.2)";
+            etiquetaRol.style.color = "var(--aviso)";
+            mostrarRol.textContent = "Dueño / Control Total";
+            enlaceAdminNav.style.display = "inline-block";
+        } else {
+            etiquetaRol.textContent = "USUARIO";
+            etiquetaRol.style.background = "rgba(124,58,237,0.2)";
+            etiquetaRol.style.color = "var(--color-ppal)";
+            mostrarRol.textContent = "Usuario Estándar";
+            enlaceAdminNav.style.display = "none";
+        }
+        cambiarSeccion('cuenta');
+    }
+
+    // CERRAR SESIÓN
+    btnCerrar.addEventListener('click', () => {
+        panelPrincipal.style.display = 'none';
+        pantallaLogin.style.display = 'flex';
+        formAdmin.reset();
+        formUsuario.reset();
+        avisoAdmin.style.display = 'none';
+        avisoUsuario.style.display = 'none';
+        cajaAdmin.style.display = 'none';
+    });
+</script>
+</body>
+</html>
