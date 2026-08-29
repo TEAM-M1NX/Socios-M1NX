@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>PROXY M1NX — ACCESO PRIVADO</title>
+    <title>SENSI HANZX — TIENDA</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
@@ -203,7 +203,7 @@
                     </div>
                     <div class="alerta peligro" id="aviso-admin">Datos incorrectos</div>
                     <button type="submit" class="boton-ppal" style="background:linear-gradient(90deg,#f59e0b,#d97706);">
-                        Ingresar como ADMIN
+                        Ingresar como socio
                     </button>
                 </form>
             </div>
@@ -213,11 +213,11 @@
             <!-- FORMULARIO USUARIOS NORMALES -->
             <form id="formulario-ingreso">
                 <div class="grupo-input">
-                    <label>Usuario / Teléfono</label>
+                    <label>Ingresa USUARIO</label>
                     <input type="text" id="campo-usuario" required autocomplete="off">
                 </div>
                 <div class="grupo-input">
-                    <label>PIN de Acceso</label>
+                    <label>Ingresa PIN</label>
                     <input type="password" id="campo-pin" required autocomplete="off">
                 </div>
                 <div class="alerta peligro" id="aviso-acceso">
@@ -232,7 +232,7 @@
 <!-- PANEL PRINCIPAL DEL SISTEMA -->
 <div id="panel-principal">
     <nav class="barra-superior">
-        <div class="marca">PROXY M1NX</div>
+        <div class="marca">SENSI HANZX</div>
         <div class="info-usuario">
             <span class="etiqueta-rol" id="etiqueta-rol-tipo">USUARIO</span>
             <span class="nombre-usuario" id="etiqueta-nombre"></span>
@@ -328,12 +328,12 @@
             <h2>👥 Usuarios Autorizados (Fijos)</h2>
             <div class="tabla">
                 <table>
-                    <thead><tr><th>Usuario / Teléfono</th><th>PIN</th><th>Estado</th></tr></thead>
+                    <thead><tr><th>Usuarios</th><th>PIN</th><th>Estado</th></tr></thead>
                     <tbody>
-                        <tr><td>+593 98 342 5400</td><td>3076</td><td style="color:var(--exito);">✅ Activo</td></tr>
-                        <tr><td>+1 (829) 325-9377</td><td>1990</td><td style="color:var(--exito);">✅ Activo</td></tr>
-                        <tr><td>+52 55 1696 2513</td><td>1010</td><td style="color:var(--exito);">✅ Activo</td></tr>
-                        <tr><td>+52 720 792 8578</td><td>0012</td><td style="color:var(--exito);">✅ Activo</td></tr>
+                        <tr><td>+593 98 342 5400</td><td>3076</td><td style="color:var(--exito);">✅ Registrado</td></tr>
+                        <tr><td>Daurios</td><td>1990</td><td style="color:var(--exito);">✅ Registrado</td></tr>
+                        <tr><td>+52 55 1696 2513</td><td>1010</td><td style="color:var(--exito);">✅ Registrado</td></tr>
+                        <tr><td>+52 720 792 8578</td><td>0012</td><td style="color:var(--exito);">✅ Registrado</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -342,8 +342,8 @@
 
     <nav class="navegacion-inferior">
         <a href="#" data-seccion="cuenta" class="activo">CUENTA</a>
-        <a href="#" data-seccion="productos">PLANES</a>
-        <a href="#" data-seccion="beneficios">BENEFICIOS</a>
+        <a href="#" data-seccion="productos">PRODUCTOS</a>
+        <a href="#" data-seccion="beneficios">SOCIOS</a>
         <a href="#" data-seccion="admin" id="enlace-admin" style="display:none;">ADMIN</a>
     </nav>
 </div>
@@ -352,7 +352,7 @@
     // 🔒 CONFIGURACIÓN
     const USUARIOS_FIJOS = {
         "+593 98 342 5400": "3076",
-        "+1 (829) 325-9377": "1990",
+        "Daurios": "1990",
         "+52 55 1696 2513": "1010",
         "+52 720 792 8578": "0012"
     };
