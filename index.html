@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>SENSI HANZX — TIENDA</title>
+    <title>SENSI HANZX - TIENDA</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
@@ -15,9 +15,9 @@
             --texto: #ffffff;
             --texto-claro: #a5a8c0;
             --exito: #22c55e;
-            --peligro: #ef4444; /* Rojo principal */
+            --peligro: #ef4444;
             --aviso: #f59e0b;
-            --inactivo: #ef4444; /* Rojo para estados apagados */
+            --invitado: #8b5cf6;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -80,15 +80,18 @@
             transition: all .2s;
         }
         .boton-admin-toggle:hover { background: rgba(245,158,11,0.1); }
+        .boton-invitado {
+            width: 100%; background: transparent; border: 1px solid var(--invitado); color: var(--invitado);
+            padding: 0.75rem; border-radius: 8px; cursor: pointer; margin-top: 1rem;
+            font-weight: 600; transition: all .2s;
+        }
+        .boton-invitado:hover { background: rgba(139,92,246,0.15); color: white; }
         .caja-admin { display: none; border-top: 1px solid var(--borde); padding-top: 1.5rem; }
         .alerta {
             padding: 1rem; border-radius: 8px; margin: 1rem 0; display: none; font-size: 0.9rem;
         }
         .alerta.peligro {
             background: rgba(239,68,68,0.1); border: 1px solid var(--peligro); color: #ff6b6b;
-        }
-        .alerta.exito {
-            background: rgba(34,197,94,0.1); border: 1px solid var(--exito); color: var(--exito);
         }
 
         /* ESTRUCTURA PRINCIPAL */
@@ -108,6 +111,8 @@
             background: rgba(124,58,237,0.2); color: var(--color-ppal); padding: 0.25rem 0.7rem;
             border-radius: 20px; font-size: 0.8rem; font-weight: 600;
         }
+        .etiqueta-rol.admin { background: rgba(245,158,11,0.2); color: var(--aviso); }
+        .etiqueta-rol.invitado { background: rgba(139,92,246,0.2); color: var(--invitado); }
         .boton-salir {
             background: var(--peligro); color: white; border: none; padding: 0.5rem 1.2rem; border-radius: 6px;
             cursor: pointer; font-weight: 500; transition: background .2s;
@@ -119,26 +124,17 @@
         .seccion { display: none; }
         .seccion.activa { display: block; }
         h1 { font-size: 2rem; margin-bottom: 0.5rem; text-align: center; color: var(--texto); }
-        h2 { font-size: 1.3rem; margin: 1.5rem 0; color: var(--color-ppal); }
         .subtitulo { text-align: center; color: var(--texto-claro); margin-bottom: 2rem; }
         .estado-plan {
             display: inline-block; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.75rem; font-weight: bold; margin-bottom: 1rem;
         }
         .estado-plan.on { background: rgba(34,197,94,0.15); color: var(--exito); border: 1px solid var(--exito); }
-        .estado-plan.off { background: rgba(239,68,68,0.15); color: var(--peligro); border: 1px solid var(--peligro); }
-        .caja-info {
-            background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 12px;
-            padding: 2rem; margin-bottom: 2rem; color: var(--texto-claro); line-height: 1.7;
-        }
-        .grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
         .tarjeta {
             background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 12px;
             padding: 2rem; transition: transform .3s, border-color .3s;
         }
         .tarjeta:hover { transform: translateY(-6px); border-color: var(--color-ppal); }
-        .tarjeta.inactiva { opacity: 0.6; border-style: dashed; }
         .titulo-tarjeta { font-size: 1.2rem; margin-bottom: 0.5rem; font-weight: 700; }
         .desc-tarjeta { color: var(--texto-claro); margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.6; }
         .precio { font-size: 1.6rem; font-weight: 800; color: var(--color-ppal); margin-bottom: 1rem; }
@@ -147,21 +143,11 @@
             padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all .2s;
         }
         .boton:hover { background: var(--color-ppal); color: white; }
-        .boton:disabled { opacity: 0.45; cursor: not-allowed; border-color: var(--inactivo); color: var(--inactivo); }
-        /* Botón descarga en ROJO */
-        .boton.descarga { background: rgba(239,68,68,0.1); border-color: var(--peligro); color: var(--peligro); margin-top: 1rem; }
-        .boton.descarga:hover { background: var(--peligro); color: white; }
-        .tabla { width: 100%; background: var(--tarjeta); border-radius: 12px; overflow: hidden; border: 1px solid var(--borde); }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--borde); }
-        th { background: rgba(124,58,237,0.1); }
-        .descripcion { color: var(--texto-claro); margin: 1rem 0; font-size: 0.95rem; font-weight:bold; }
-        .caja-descarga {
-            background: rgba(239,68,68,0.05); border: 1px solid var(--peligro); border-radius: 12px;
-            padding: 1.5rem; text-align: center; margin-top: 2rem;
+        .caja-info { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 12px; padding: 1.5rem; }
+        .aviso-invitado {
+            background: rgba(139,92,246,0.1); border: 1px solid var(--invitado); border-radius: 12px;
+            padding: 1rem; text-align: center; color: var(--texto-claro); margin-bottom: 2rem;
         }
-        .enlace-apk { color: var(--peligro); font-weight: bold; text-decoration: none; word-break: break-all; }
-        .enlace-apk:hover { text-decoration: underline; }
 
         /* NAVEGACIÓN INFERIOR */
         .navegacion-inferior {
@@ -180,62 +166,63 @@
 <div id="pantalla-login">
     <div class="contenedor-login">
         <div class="cabecera-login">
-            <div class="logo">PROXY M1NX</div>
-            <p style="color:var(--texto-claro);font-size:0.95rem;">Acceso exclusivo — Usuarios autorizados</p>
+            <div class="logo">SENSI HANZX</div>
         </div>
         <div class="caja-login">
-            <!-- BOTÓN ADMIN -->
             <button class="boton-admin-toggle" id="btn-mostrar-admin">
-                <i class="fas fa-user-shield"></i> Acceso Administrador
+                <i class="fas fa-user-shield"></i> Acceso Privado
             </button>
 
-            <!-- FORMULARIO ADMIN (OCULTO) -->
             <div class="caja-admin" id="caja-admin">
-                <div class="divisor"><span>ADMINISTRADOR</span></div>
+                <div class="divisor"><span>IDENTIFICACIÓN</span></div>
                 <form id="form-admin">
                     <div class="grupo-input">
-                        <label>Correo Electrónico</label>
-                        <input type="email" id="admin-correo" placeholder="jesusgutierrezmontanez05@gmail.com" required>
+                        <label>Usuario</label>
+                        <input type="text" id="admin-usuario" placeholder="Ingresa Usuario" required>
                     </div>
                     <div class="grupo-input">
-                        <label>PIN de Seguridad</label>
-                        <input type="password" id="admin-pin" placeholder="Tu PIN" required>
+                        <label>Código de Acceso</label>
+                        <input type="password" id="admin-pin" placeholder="Ingresa PIN" required>
                     </div>
-                    <div class="alerta peligro" id="aviso-admin">Datos incorrectos</div>
+                    <div class="alerta peligro" id="aviso-admin">Credenciales inválidas</div>
                     <button type="submit" class="boton-ppal" style="background:linear-gradient(90deg,#f59e0b,#d97706);">
-                        Ingresar como socio
+                        Ingresar
                     </button>
                 </form>
             </div>
 
-            <div class="divisor"><span>USUARIOS</span></div>
+            <div class="divisor"><span>ACCESO SOCIOS</span></div>
 
-            <!-- FORMULARIO USUARIOS NORMALES -->
-            <form id="formulario-ingreso">
+            <form id="formulario-socio">
                 <div class="grupo-input">
-                    <label>Ingresa USUARIO</label>
-                    <input type="text" id="campo-usuario" required autocomplete="off">
+                    <label>Usuario</label>
+                    <input type="text" id="campo-usuario" placeholder="Ingresa tu USUARIO" required autocomplete="off">
                 </div>
                 <div class="grupo-input">
-                    <label>Ingresa PIN</label>
-                    <input type="password" id="campo-pin" required autocomplete="off">
+                    <label>PIN</label>
+                    <input type="password" id="campo-pin" placeholder="Ingresa tu PIN" required autocomplete="off">
                 </div>
-                <div class="alerta peligro" id="aviso-acceso">
-                    <i class="fas fa-exclamation-triangle"></i> Usuario o PIN incorrectos
+                <div class="alerta peligro" id="aviso-socio">
+                    <i class="fas fa-exclamation-triangle"></i> Datos incorrectos
                 </div>
-                <button type="submit" class="boton-ppal">Ingresar al Sistema</button>
+                <button type="submit" class="boton-ppal">Ingresar</button>
             </form>
+
+            <div class="divisor"><span>VISTA INVITADO</span></div>
+
+            <button class="boton-invitado" id="btn-invitado">
+                <i class="fas fa-eye"></i> Continuar sin cuenta
+            </button>
         </div>
     </div>
 </div>
 
-<!-- PANEL PRINCIPAL DEL SISTEMA -->
+<!-- PANEL PRINCIPAL -->
 <div id="panel-principal">
     <nav class="barra-superior">
         <div class="marca">SENSI HANZX</div>
         <div class="info-usuario">
-            <span class="etiqueta-rol" id="etiqueta-rol-tipo">USUARIO</span>
-            <span class="nombre-usuario" id="etiqueta-nombre"></span>
+            <span class="etiqueta-rol" id="etiqueta-rol-tipo">—</span>
             <button class="boton-salir" id="boton-cerrar">
                 <i class="fas fa-sign-out-alt"></i> Salir
             </button>
@@ -244,227 +231,222 @@
 
     <main class="contenido">
         <section id="seccion-cuenta" class="seccion activa">
-            <h1>👤 Tu Cuenta</h1>
+            <h1>👤 Tu Sesión</h1>
             <div class="caja-info">
                 <p><strong>Bienvenido al sistema.</strong></p>
-                <p>Identificador: <span id="mostrar-usuario" style="color:var(--texto);font-weight:bold;">—</span></p>
-                <p>Rol: <span id="mostrar-rol">Usuario Estándar</span></p>
-                <p>Estado: <span style="color:var(--exito);font-weight:bold;">✅ ACTIVO</span></p>
-            </div>
-        </section>
-
-        <section id="seccion-productos" class="seccion">
-            <h1>📦 PLANES TOTALES</h1>
-            <p class="subtitulo">Estado y detalles del sistema</p>
-            <div class="grid">
-                <!-- SOCIO BÁSICO -->
-                <div class="tarjeta inactiva">
-                    <div class="estado-plan off">🔴 SOCIO BÁSICO (Off)</div>
-                    <h3 class="titulo-tarjeta">SOCIO BÁSICO</h3>
-                    <div class="descripcion">
-                        <strong>DESCRIPCIÓN</strong>
-                    </div>
-                    <button class="boton" disabled>No disponible</button>
-                </div>
-
-                <!-- SOCIO AVANZADO -->
-                <div class="tarjeta" style="border-color:var(--exito);">
-                    <div class="estado-plan on">🟢 SOCIO AVANZADO (On)</div>
-                    <h3 class="titulo-tarjeta">SOCIO AVANZADO</h3>
-                    <div class="descripcion">
-                        <strong>DESCRIPCIÓN</strong>
-                    </div>
-                    <div class="precio">$150 <span style="font-size:1rem;">MXN</span></div>
-                    <button class="boton" id="boton-pago-avanzado">Adquirir Plan Avanzado</button>
-                </div>
-
-                <!-- SOCIO ESTRELLA -->
-                <div class="tarjeta inactiva">
-                    <div class="estado-plan off">🔴 SOCIO ESTRELLA (Off)</div>
-                    <h3 class="titulo-tarjeta">SOCIO ESTRELLA</h3>
-                    <div class="descripcion">
-                        <strong>DESCRIPCIÓN</strong>
-                    </div>
-                    <button class="boton" disabled>Apagado</button>
-                </div>
-            </div>
-
-            <!-- CAJA DE DESCARGA DEL APK (ROJA) -->
-            <div class="caja-descarga">
-                <h3 style="margin-bottom:1rem;color:var(--peligro);">Descarga Ahora</h3>
-                <p style="margin-bottom:1rem;color:var(--texto-claro);">PROXY TEAM M1NX</p>
-                <a href="https://www.mediafire.com/file/79r676selsf94i2/PROXY_TEAM_M1NX.apk/file" target="_blank" class="enlace-apk">
-                </a>
                 <br>
-                <a href="https://www.mediafire.com/file/79r676selsf94i2/PROXY_TEAM_M1NX.apk/file" target="_blank">
-                    <button class="boton descarga" style="max-width:350px;margin:1.5rem auto 0;">
-                        <i class="fas fa-download"></i> Iniciar Descarga
-                    </button>
-                </a>
+                <p>Tipo de cuenta: <span id="mostrar-rol-nombre" style="color:var(--texto);font-weight:bold;">—</span></p>
+                <p>Identificador: <span id="mostrar-usuario" style="color:var(--texto);font-weight:bold;">—</span></p>
+                <p>Estado: <span style="color:var(--exito);font-weight:bold;">✅ ACTIVO</span></p>
+                <br>
+                <div id="aviso-restriccion" class="aviso-invitado" style="display:none;">
+                    ⚠️ <strong>Modo limitado:</strong> Algunas funciones no están disponibles.
+                </div>
             </div>
         </section>
 
-        <section id="seccion-beneficios" class="seccion">
-            <h1>✨ DETALLE DE BENEFICIOS</h1>
-            <div class="caja-info">
-                <h2>📌 SOCIO BÁSICO (<span style="color:var(--peligro);">Off</span>)</h2>
-                <div class="descripcion"><strong>DESCRIPCIÓN</strong></div>
-
-                <h2>📌 SOCIO AVANZADO (<span style="color:var(--exito);">On</span>)</h2>
-                <div class="descripcion"><strong>DESCRIPCIÓN</strong></div>
-
-                <h2>📌 SOCIO ESTRELLA (<span style="color:var(--peligro);">Off</span>)</h2>
-                <div class="descripcion"><strong>DESCRIPCIÓN</strong></div>
+        <!-- PRODUCTOS -->
+        <section id="seccion-productos" class="seccion">
+            <h1>📦 PRODUCTOS DISPONIBLES</h1>
+            <p class="subtitulo">Planes y servicios disponibles</p>
+            <div class="grid">
+                <div class="tarjeta" style="border-color:#60a5fa;">
+                    <div class="estado-plan on">🟢 DISPONIBLE</div>
+                    <h3 class="titulo-tarjeta">DRIPCLIENT MOBILE</h3>
+                    <p class="desc-tarjeta">Ideal para empezar. Acceso estable, funciones básicas y soporte regular.</p>
+                    <div class="precio">$280 <span style="font-size:1rem;">MXN</span></div>
+                    <button class="boton" onclick="pagar()">Adquirir</button>
+                </div>
+                <div class="tarjeta" style="border-color:var(--exito);">
+                    <div class="estado-plan on">🟢 DISPONIBLE</div>
+                    <h3 class="titulo-tarjeta">DELTA FFH4X</h3>
+                    <p class="desc-tarjeta">Acceso completo al proxy, actualizaciones automáticas y soporte prioritario.</p>
+                    <div class="precio">$280 <span style="font-size:1rem;">MXN</span></div>
+                    <button class="boton" onclick="pagar()">Adquirir</button>
+                </div>
+                <div class="tarjeta" style="border-color:#f59e0b;">
+                    <div class="estado-plan on">🟢 CUBAN MODS</div>
+                    <h3 class="titulo-tarjeta">SOCIO ESTRELLA</h3>
+                    <p class="desc-tarjeta">Nivel máximo: funciones exclusivas, velocidad premium y atención personalizada 24/7.</p>
+                    <div class="precio">$280 <span style="font-size:1rem;">MXN</span></div>
+                    <button class="boton" onclick="pagar()">Adquirir</button>
+                </div>
             </div>
         </section>
 
-        <!-- SECCIÓN SOLO PARA ADMIN -->
-        <section id="seccion-admin" class="seccion">
-            <h1>⚙️ PANEL DE ADMINISTRACIÓN</h1>
-            <div class="caja-info" style="border-color:var(--aviso);">
-                <p><strong>Control Total del Sistema — Solo para Dueño</strong></p>
-                <p>Desde aquí podrás gestionar usuarios, productos y configuraciones futuras.</p>
-            </div>
-            <h2>👥 Usuarios Autorizados (Fijos)</h2>
-            <div class="tabla">
-                <table>
-                    <thead><tr><th>Usuarios</th><th>PIN</th><th>Estado</th></tr></thead>
-                    <tbody>
-                        <tr><td>+593 98 342 5400</td><td>3076</td><td style="color:var(--exito);">✅ Registrado</td></tr>
-                        <tr><td>Daurios</td><td>1990</td><td style="color:var(--exito);">✅ Registrado</td></tr>
-                        <tr><td>+52 55 1696 2513</td><td>1010</td><td style="color:var(--exito);">✅ Registrado</td></tr>
-                        <tr><td>+52 720 792 8578</td><td>0012</td><td style="color:var(--exito);">✅ Registrado</td></tr>
-                    </tbody>
-                </table>
+        <!-- ZONA EXCLUSIVA SOCIOS -->
+        <section id="seccion-socio" class="seccion">
+            <h1>👤 ÁREA EXCLUSIVA</h1>
+            <p class="subtitulo">Contenido reservado</p>
+            <div class="grid">
+                <div class="tarjeta" style="border-color:#60a5fa;">
+                    <div class="estado-plan on">🟢 DISPONIBLE</div>
+                    <h3 class="titulo-tarjeta">DRIPCLIENT MOBILE</h3>
+                    <p class="desc-tarjeta">Ideal para empezar. Acceso estable, funciones básicas y soporte regular.</p>
+                    <div class="precio">$220 <span style="font-size:1rem;">MXN</span></div>
+                    <button class="boton" onclick="pagar()">Adquirir</button>
+                </div>
+                <div class="tarjeta" style="border-color:var(--exito);">
+                    <div class="estado-plan on">🟢 DISPONIBLE</div>
+                    <h3 class="titulo-tarjeta">DELTA FFH4X</h3>
+                    <p class="desc-tarjeta">Acceso completo al proxy, actualizaciones automáticas y soporte prioritario.</p>
+                    <div class="precio">$150 <span style="font-size:1rem;">MXN</span></div>
+                    <button class="boton" onclick="pagar()">Adquirir</button>
+                </div>
+                <div class="tarjeta" style="border-color:#f59e0b;">
+                    <div class="estado-plan on">🟢 DISPONIBLE</div>
+                    <h3 class="titulo-tarjeta">SOCIO ESTRELLA</h3>
+                    <p class="desc-tarjeta">Nivel máximo: funciones exclusivas, velocidad premium y atención personalizada 24/7.</p>
+                    <div class="precio">$300 <span style="font-size:1rem;">MXN</span></div>
+                    <button class="boton" onclick="pagar()">Adquirir</button>
+                </div>
             </div>
         </section>
     </main>
 
-    <nav class="navegacion-inferior">
-        <a href="#" data-seccion="cuenta" class="activo">CUENTA</a>
-        <a href="#" data-seccion="productos">PRODUCTOS</a>
-        <a href="#" data-seccion="beneficios">SOCIOS</a>
-        <a href="#" data-seccion="admin" id="enlace-admin" style="display:none;">ADMIN</a>
-    </nav>
+    <nav class="navegacion-inferior" id="navegacion-menu"></nav>
 </div>
 
 <script>
-    // 🔒 CONFIGURACIÓN
-    const USUARIOS_FIJOS = {
+    // ⚙️ CONFIGURACIÓN
+    const USUARIOS = {
         "+593 98 342 5400": "3076",
         "Daurios": "1990",
         "+52 55 1696 2513": "1010",
         "+52 720 792 8578": "0012"
     };
-    const ADMIN_CORREO = "jesusgutierrezmontanez05@gmail.com";
+    const ADMIN_USUARIO = "SENSI HANZX";
     const ADMIN_PIN = "3005";
-    const ENLACE_PAGO_AVANZADO = "https://app.spinbyoxxo.com.mx/deposito/06mKS61j";
-    const ENLACE_DESCARGA_APK = "https://www.mediafire.com/file/79r676selsf94i2/PROXY_TEAM_M1NX.apk/file";
+    const ENLACE_PAGO = "https://app.spinbyoxxo.com.mx/deposito/06mKS61j";
 
     // ELEMENTOS
     const btnToggleAdmin = document.getElementById('btn-mostrar-admin');
     const cajaAdmin = document.getElementById('caja-admin');
     const formAdmin = document.getElementById('form-admin');
     const avisoAdmin = document.getElementById('aviso-admin');
-    const formUsuario = document.getElementById('formulario-ingreso');
-    const avisoUsuario = document.getElementById('aviso-acceso');
-    const pantallaLogin = document.getElementById('pantalla-login');
+    const formSocio = document.getElementById('formulario-socio');
+    const avisoSocio = document.getElementById('aviso-socio');
+    const btnInvitado = document.getElementById('btn-invitado');
+    const loginPantalla = document.getElementById('pantalla-login');
     const panelPrincipal = document.getElementById('panel-principal');
-    const etiquetaNombre = document.getElementById('etiqueta-nombre');
     const etiquetaRol = document.getElementById('etiqueta-rol-tipo');
     const mostrarUsuario = document.getElementById('mostrar-usuario');
-    const mostrarRol = document.getElementById('mostrar-rol');
-    const enlaceAdminNav = document.getElementById('enlace-admin');
-    const btnCerrar = document.getElementById('boton-cerrar');
-    const navLinks = document.querySelectorAll('.navegacion-inferior a');
+    const mostrarRolNombre = document.getElementById('mostrar-rol-nombre');
+    const avisoRestriccion = document.getElementById('aviso-restriccion');
+    const navContenedor = document.getElementById('navegacion-menu');
     const secciones = document.querySelectorAll('.seccion');
-    const botonPagoAvanzado = document.getElementById('boton-pago-avanzado');
 
-    // ACCIÓN BOTÓN PLAN AVANZADO: ABRIR ENLACE DE PAGO
-    botonPagoAvanzado.addEventListener('click', () => {
-        window.open(ENLACE_PAGO_AVANZADO, '_blank');
-    });
+    // FUNCIÓN PAGO
+    function pagar() {
+        window.open(ENLACE_PAGO, '_blank');
+    }
 
-    // MOSTRAR / OCULTAR ADMIN
+    // MOSTRAR/OCULTAR ACCESO PRIVADO
     btnToggleAdmin.addEventListener('click', () => {
         cajaAdmin.style.display = cajaAdmin.style.display === 'block' ? 'none' : 'block';
     });
 
-    // CAMBIAR SECCIÓN
+    // NAVEGACIÓN DINÁMICA
     function cambiarSeccion(nombre) {
         secciones.forEach(s => s.classList.remove('activa'));
         document.getElementById(`seccion-${nombre}`).classList.add('activa');
-        navLinks.forEach(l => l.classList.remove('activo'));
-        const linkAct = document.querySelector(`.navegacion-inferior a[data-seccion="${nombre}"]`);
-        if (linkAct) linkAct.classList.add('activo');
+        document.querySelectorAll('#navegacion-menu a').forEach(l => l.classList.remove('activo'));
+        document.querySelector(`#navegacion-menu a[data-seccion="${nombre}"]`).classList.add('activo');
     }
 
-    navLinks.forEach(link => {
-        link.addEventListener('click', e => {
-            e.preventDefault();
-            cambiarSeccion(link.dataset.seccion);
+    // GENERAR MENÚ: Invitado, Socios y Privado
+    function generarMenu(rol) {
+        let enlaces = [];
+        if (rol === "Invitado") {
+            enlaces = [
+                {id: "cuenta", texto: "CUENTA"},
+                {id: "productos", texto: "PRODUCTOS"}
+            ];
+        } else if (rol === "Socio") {
+            enlaces = [
+                {id: "productos", texto: "PRODUCTOS"},
+                {id: "cuenta", texto: "CUENTA"},
+                {id: "socio", texto: "SOCIOS"}
+            ];
+        } else if (rol === "Privado") {
+            enlaces = [
+                {id: "cuenta", texto: "CUENTA"},
+                {id: "productos", texto: "PRODUCTOS"},
+                {id: "socio", texto: "SOCIOS"}
+            ];
+        }
+        navContenedor.innerHTML = '';
+        enlaces.forEach((enlace, idx) => {
+            const a = document.createElement('a');
+            a.href = "#";
+            a.dataset.seccion = enlace.id;
+            a.textContent = enlace.texto;
+            if (idx === 0) a.classList.add('activo');
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                cambiarSeccion(enlace.id);
+            });
+            navContenedor.appendChild(a);
         });
-    });
+    }
 
-    // INICIO SESIÓN ADMIN
+    // ACCESO PRIVADO
     formAdmin.addEventListener('submit', e => {
         e.preventDefault();
-        const correo = document.getElementById('admin-correo').value.trim().toLowerCase();
+        const usuario = document.getElementById('admin-usuario').value.trim();
         const pin = document.getElementById('admin-pin').value.trim();
-
-        if (correo === ADMIN_CORREO && pin === ADMIN_PIN) {
-            avisoAdmin.style.display = 'none';
-            entrarSistema("ANÓNIMO", true);
+        if (usuario === ADMIN_USUARIO && pin === ADMIN_PIN) {
+            entrarSistema(usuario, "Creador");
         } else {
             avisoAdmin.style.display = 'block';
         }
     });
 
-    // INICIO SESIÓN USUARIOS
-    formUsuario.addEventListener('submit', e => {
+    // ACCESO SOCIO
+    formSocio.addEventListener('submit', e => {
         e.preventDefault();
         const user = document.getElementById('campo-usuario').value.trim();
         const pin = document.getElementById('campo-pin').value.trim();
-
-        if (USUARIOS_FIJOS[user] === pin) {
-            avisoUsuario.style.display = 'none';
-            entrarSistema(user, false);
+        if (USUARIOS[user] === pin) {
+            entrarSistema(user, "Socio");
         } else {
-            avisoUsuario.style.display = 'block';
+            avisoSocio.style.display = 'block';
         }
     });
 
-    // FUNCIÓN ENTRAR
-    function entrarSistema(nombre, esAdmin) {
-        pantallaLogin.style.display = 'none';
+    // ACCESO INVITADO
+    btnInvitado.addEventListener('click', () => {
+        entrarSistema("—", "Invitado");
+    });
+
+    // ENTRAR AL SISTEMA
+    function entrarSistema(nombre, rol) {
+        loginPantalla.style.display = 'none';
         panelPrincipal.style.display = 'block';
-        etiquetaNombre.textContent = nombre;
+
         mostrarUsuario.textContent = nombre;
-        
-        if (esAdmin) {
-            etiquetaRol.textContent = "ADMINISTRADOR";
-            etiquetaRol.style.background = "rgba(245,158,11,0.2)";
-            etiquetaRol.style.color = "var(--aviso)";
-            mostrarRol.textContent = "Dueño / Control Total";
-            enlaceAdminNav.style.display = "inline-block";
+        mostrarRolNombre.textContent = rol;
+
+        etiquetaRol.textContent = rol.toUpperCase();
+        etiquetaRol.className = "etiqueta-rol";
+        if (rol === "Creador") {
+            etiquetaRol.classList.add('admin');
+            avisoRestriccion.style.display = "none";
+        } else if (rol === "Socio") {
+            etiquetaRol.classList.add('invitado');
+            avisoRestriccion.style.display = "block";
         } else {
-            etiquetaRol.textContent = "USUARIO";
-            etiquetaRol.style.background = "rgba(124,58,237,0.2)";
-            etiquetaRol.style.color = "var(--color-ppal)";
-            mostrarRol.textContent = "Usuario Estándar";
-            enlaceAdminNav.style.display = "none";
+            avisoRestriccion.style.display = "none";
         }
-        cambiarSeccion('cuenta');
+        generarMenu(rol);
     }
 
     // CERRAR SESIÓN
-    btnCerrar.addEventListener('click', () => {
+    document.getElementById('boton-cerrar').addEventListener('click', () => {
         panelPrincipal.style.display = 'none';
-        pantallaLogin.style.display = 'flex';
-        formAdmin.reset();
-        formUsuario.reset();
-        avisoAdmin.style.display = 'none';
-        avisoUsuario.style.display = 'none';
+        loginPantalla.style.display = 'flex';
+        formAdmin.reset(); formSocio.reset();
+        avisoAdmin.style.display = 'none'; avisoSocio.style.display = 'none';
         cajaAdmin.style.display = 'none';
     });
 </script>
