@@ -136,6 +136,7 @@
         }
         .tarjeta:hover { transform: translateY(-6px); border-color: var(--color-ppal); }
         .titulo-tarjeta { font-size: 1.2rem; margin-bottom: 0.5rem; font-weight: 700; }
+        .duracion { color: var(--aviso); font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem; }
         .desc-tarjeta { color: var(--texto-claro); margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.6; }
         .precio { font-size: 1.6rem; font-weight: 800; color: var(--color-ppal); margin-bottom: 1rem; }
         .boton {
@@ -253,6 +254,7 @@
                 <div class="tarjeta" style="border-color:#60a5fa;">
                     <div class="estado-plan on">🟢 DISPONIBLE</div>
                     <h3 class="titulo-tarjeta">DRIPCLIENT MOBILE</h3>
+                    <div class="duracion">⏱️ DURACIÓN: NADA</div>
                     <p class="desc-tarjeta">Ideal para empezar. Acceso estable, funciones básicas y soporte regular.</p>
                     <div class="precio">$280 <span style="font-size:1rem;">MXN</span></div>
                     <button class="boton" onclick="pagar()">Adquirir</button>
@@ -260,6 +262,7 @@
                 <div class="tarjeta" style="border-color:var(--exito);">
                     <div class="estado-plan on">🟢 DISPONIBLE</div>
                     <h3 class="titulo-tarjeta">DELTA FFH4X</h3>
+                    <div class="duracion">⏱️ DURACIÓN: NADA</div>
                     <p class="desc-tarjeta">Acceso completo al proxy, actualizaciones automáticas y soporte prioritario.</p>
                     <div class="precio">$280 <span style="font-size:1rem;">MXN</span></div>
                     <button class="boton" onclick="pagar()">Adquirir</button>
@@ -267,6 +270,7 @@
                 <div class="tarjeta" style="border-color:#f59e0b;">
                     <div class="estado-plan on">🟢 DISPONIBLE</div>
                     <h3 class="titulo-tarjeta">CUBAN MODS</h3>
+                    <div class="duracion">⏱️ DURACIÓN: NADA</div>
                     <p class="desc-tarjeta">Nivel máximo: funciones exclusivas, velocidad premium y atención personalizada 24/7.</p>
                     <div class="precio">$280 <span style="font-size:1rem;">MXN</span></div>
                     <button class="boton" onclick="pagar()">Adquirir</button>
@@ -282,6 +286,7 @@
                 <div class="tarjeta" style="border-color:#60a5fa;">
                     <div class="estado-plan on">🟢 DISPONIBLE</div>
                     <h3 class="titulo-tarjeta">DRIPCLIENT MOBILE</h3>
+                    <div class="duracion">⏱️ DURACIÓN: NADA</div>
                     <p class="desc-tarjeta">Ideal para empezar. Acceso estable, funciones básicas y soporte regular.</p>
                     <div class="precio">$220 <span style="font-size:1rem;">MXN</span></div>
                     <button class="boton" onclick="pagar()">Adquirir</button>
@@ -289,6 +294,7 @@
                 <div class="tarjeta" style="border-color:var(--exito);">
                     <div class="estado-plan on">🟢 DISPONIBLE</div>
                     <h3 class="titulo-tarjeta">DELTA FFH4X</h3>
+                    <div class="duracion">⏱️ DURACIÓN: NADA</div>
                     <p class="desc-tarjeta">Acceso completo al proxy, actualizaciones automáticas y soporte prioritario.</p>
                     <div class="precio">$240 <span style="font-size:1rem;">MXN</span></div>
                     <button class="boton" onclick="pagar()">Adquirir</button>
@@ -296,6 +302,7 @@
                 <div class="tarjeta" style="border-color:#f59e0b;">
                     <div class="estado-plan on">🟢 DISPONIBLE</div>
                     <h3 class="titulo-tarjeta">CUBAN MODS</h3>
+                    <div class="duracion">⏱️ DURACIÓN: NADA</div>
                     <p class="desc-tarjeta">Nivel máximo: funciones exclusivas, velocidad premium y atención personalizada 24/7.</p>
                     <div class="precio">$220 <span style="font-size:1rem;">MXN</span></div>
                     <button class="boton" onclick="pagar()">Adquirir</button>
@@ -313,10 +320,14 @@
         "+593 98 342 5400": "3076",
         "Daurios": "1990",
         "+52 55 1696 2513": "1010",
+        "+52 720 792 8578": "0012",
         "Anyelowink": "160224"
     };
-    const ADMIN_USUARIO = "SENSI HANZX";
-    const ADMIN_PIN = "3005";
+    // ✅ AMBOS ADMINISTRADORES
+    const ADMIN_USUARIOS = {
+        "SENSI HANZX": "3005",
+        "ANGEL STORE": "1943"
+    };
     const ENLACE_PAGO = "https://app.spinbyoxxo.com.mx/deposito/06mKS61j";
 
     // ELEMENTOS
@@ -369,7 +380,6 @@
                 {id: "socio", texto: "SOCIOS"}
             ];
         } else if (rol === "Creador") {
-            // ✅ AQUÍ ESTÁ LA CORRECCIÓN: Orden exacto para Privado
             enlaces = [
                 {id: "cuenta", texto: "CUENTA"},
                 {id: "productos", texto: "PRODUCTOS"},
@@ -396,7 +406,7 @@
         e.preventDefault();
         const usuario = document.getElementById('admin-usuario').value.trim();
         const pin = document.getElementById('admin-pin').value.trim();
-        if (usuario === ADMIN_USUARIO && pin === ADMIN_PIN) {
+        if (ADMIN_USUARIOS[usuario] === pin) {
             entrarSistema(usuario, "Creador");
         } else {
             avisoAdmin.style.display = 'block';
@@ -420,7 +430,7 @@
         entrarSistema("—", "Invitado");
     });
 
-    // ENTRAR AL SISTEMA - CORREGIDO PARA OCULTAR AVISO EN CREADOR
+    // ENTRAR AL SISTEMA
     function entrarSistema(nombre, rol) {
         loginPantalla.style.display = 'none';
         panelPrincipal.style.display = 'block';
@@ -433,7 +443,7 @@
         
         if (rol === "Creador") {
             etiquetaRol.classList.add('admin');
-            avisoRestriccion.style.display = "none"; // ✅ Sin aviso
+            avisoRestriccion.style.display = "none";
         } else if (rol === "Socio") {
             avisoRestriccion.style.display = "none";
         } else {
