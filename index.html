@@ -354,7 +354,7 @@
         document.querySelector(`#navegacion-menu a[data-seccion="${nombre}"]`).classList.add('activo');
     }
 
-    // GENERAR MENÚ: Invitado, Socios y Privado
+    // GENERAR MENÚ CORREGIDO
     function generarMenu(rol) {
         let enlaces = [];
         if (rol === "Invitado") {
@@ -368,7 +368,8 @@
                 {id: "cuenta", texto: "CUENTA"},
                 {id: "socio", texto: "SOCIOS"}
             ];
-        } else if (rol === "Privado") {
+        } else if (rol === "Creador") {
+            // ✅ AQUÍ ESTÁ LA CORRECCIÓN: Orden exacto para Privado
             enlaces = [
                 {id: "cuenta", texto: "CUENTA"},
                 {id: "productos", texto: "PRODUCTOS"},
@@ -419,7 +420,7 @@
         entrarSistema("—", "Invitado");
     });
 
-    // ENTRAR AL SISTEMA
+    // ENTRAR AL SISTEMA - CORREGIDO PARA OCULTAR AVISO EN CREADOR
     function entrarSistema(nombre, rol) {
         loginPantalla.style.display = 'none';
         panelPrincipal.style.display = 'block';
@@ -429,15 +430,16 @@
 
         etiquetaRol.textContent = rol.toUpperCase();
         etiquetaRol.className = "etiqueta-rol";
+        
         if (rol === "Creador") {
             etiquetaRol.classList.add('admin');
-            avisoRestriccion.style.display = "none";
+            avisoRestriccion.style.display = "none"; // ✅ Sin aviso
         } else if (rol === "Socio") {
-            etiquetaRol.classList.add('invitado');
-            avisoRestriccion.style.display = "block";
-        } else {
             avisoRestriccion.style.display = "none";
+        } else {
+            avisoRestriccion.style.display = "block";
         }
+        
         generarMenu(rol);
     }
 
